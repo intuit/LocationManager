@@ -1,6 +1,8 @@
 # INTULocationManager
 INTULocationManager makes it easy to get the device's current location on iOS.
 
+INTULocationManager provides a block-based asynchronous API to request the current location. It internally manages multiple simultaneous location requests, and each request specifies its own desired accuracy level and timeout duration. INTULocationManager automatically starts location services when the first request comes in, and stops location services once all requests have been completed.
+
 ## What's wrong with CLLocationManager?
 CLLocationManager's API works well when you need to track changes in the user's location over time, such as for turn-by-turn GPS navigation apps. However, if you just need to ask "Where am I?" every now and then, CLLocationManager is fairly difficult to work with.
 
