@@ -7,6 +7,8 @@ CLLocationManager's API works well when you need to track changes in the user's 
 Getting one-off location updates is a common task for many apps, such as when you want to autofill an address from the current location, or determine which city the user is currently in. Not only does INTULocationManager make this easy, but it also conserves the user's battery by powering down location services (e.g. GPS) as soon as they are no longer needed.
 
 ## Usage
+**Important:** Because `INTULocationManager` automatically starts & stops location updates, do not use it in combination with any other code that starts or stops location updates on `CLLocationManager` directly.
+
 To get the device's current location, use the method `requestLocationWithDesiredAccuracy:timeout:block:`.
 
 The `desiredAccuracy` specifies how **accurate and recent** of a location you need. The possible values are:
