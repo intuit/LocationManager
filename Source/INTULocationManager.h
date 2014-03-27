@@ -47,6 +47,7 @@
  
  @param desiredAccuracy The accuracy level desired (refers to the accuracy and recency of the location).
  @param timeout The maximum amount of time (in seconds) to wait for the desired accuracy before completing.
+                If this value is 0.0, no timeout will be set (will wait indefinitely for success, unless request is force completed or cancelled).
  @param block The block to execute upon success, failure, or timeout.
  
  @return The location request ID, which can be used to force early completion or cancel the request while it is in progress.

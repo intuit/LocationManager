@@ -91,6 +91,7 @@ static id _sharedInstance;
  
  @param desiredAccuracy The desired accuracy for this request, which if achieved will trigger the successful completion.
  @param timeout The maximum number of seconds to wait while attempting to achieve the desired accuracy.
+                If this value is 0.0, no timeout will be set (will wait indefinitely for success, unless request is force completed or cancelled).
  @param block The block to be executed when the request succeeds, fails, or times out. Three parameters are passed into the block:
                     - The current location (the most recent one acquired, regardless of accuracy level), or nil if no valid location was acquired
                     - The achieved accuracy for the current location (may be less than the desired accuracy if the request failed)

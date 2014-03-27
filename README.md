@@ -22,7 +22,7 @@ INTULocationAccuracyHouse         // 15 meters or better, received within the la
 INTULocationAccuracyRoom          // 5 meters or better, received within the last 5 seconds      -- highest accuracy
 ```
 
-The `timeout` specifies how long you are willing to wait for a location with the accuracy you requested. The timeout guarantees that your block will execute within this period of time, either with a location of at least the accuracy you requested (`INTULocationStatusSuccess`), or with whatever location could be determined before the timeout interval was up (`INTULocationStatusTimedOut`).
+The `timeout` specifies how long you are willing to wait for a location with the accuracy you requested. The timeout guarantees that your block will execute within this period of time, either with a location of at least the accuracy you requested (`INTULocationStatusSuccess`), or with whatever location could be determined before the timeout interval was up (`INTULocationStatusTimedOut`). Pass `0.0` for no timeout (*not recommended*).
 
 ```objective-c
 INTULocationManager *locMgr = [INTULocationManager sharedInstance];
