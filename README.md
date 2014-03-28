@@ -15,7 +15,7 @@ Getting one-off location updates is a common task for many apps, such as when yo
 
 To get the device's current location, use the method `requestLocationWithDesiredAccuracy:timeout:block:`.
 
-The `desiredAccuracy` specifies how **accurate and recent** of a location you need. The possible values are:
+The `desiredAccuracy` parameter specifies how **accurate and recent** of a location you need. The possible values are:
 ```objective-c
 INTULocationAccuracyCity          // 5000 meters or better, received within the last 10 minutes  -- lowest accuracy
 INTULocationAccuracyNeighborhood  // 1000 meters or better, received within the last 5 minutes
@@ -24,8 +24,9 @@ INTULocationAccuracyHouse         // 15 meters or better, received within the la
 INTULocationAccuracyRoom          // 5 meters or better, received within the last 5 seconds      -- highest accuracy
 ```
 
-The `timeout` specifies how long you are willing to wait for a location with the accuracy you requested. The timeout guarantees that your block will execute within this period of time, either with a location of at least the accuracy you requested (`INTULocationStatusSuccess`), or with whatever location could be determined before the timeout interval was up (`INTULocationStatusTimedOut`). Pass `0.0` for no timeout (*not recommended*).
+The `timeout` parameter specifies how long you are willing to wait for a location with the accuracy you requested. The timeout guarantees that your block will execute within this period of time, either with a location of at least the accuracy you requested (`INTULocationStatusSuccess`), or with whatever location could be determined before the timeout interval was up (`INTULocationStatusTimedOut`). Pass `0.0` for no timeout *(not recommended)*.
 
+Here's an example:
 ```objective-c
 INTULocationManager *locMgr = [INTULocationManager sharedInstance];
 [locMgr requestLocationWithDesiredAccuracy:INTULocationAccuracyCity
@@ -78,6 +79,11 @@ NSInteger requestID = [[INTULocationManager sharedInstance] requestLocationWithD
 1.	Download all the files in the [Source directory](https://github.com/intuit/LocationManager/tree/master/Source).
 2.	Add all the files to your Xcode project (drag and drop is easiest).
 3.	`#import INTULocationManager.h` wherever you want to use it.
+
+## Issues & Contributions
+Please [open an issue here on GitHub](https://github.com/intuit/LocationManager/issues/new) if you have a problem, suggestion, or other comment.
+
+Pull requests are welcome and encouraged! There are no official guidelines, but please try to be consistent with the existing code style.
 
 ## License
 INTULocationManager is provided under the MIT license.
