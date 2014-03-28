@@ -4,9 +4,9 @@ INTULocationManager makes it easy to get the device's current location on iOS.
 INTULocationManager provides a block-based asynchronous API to request the current location. It internally manages multiple simultaneous location requests, and each request specifies its own desired accuracy level and timeout duration. INTULocationManager automatically starts location services when the first request comes in, and stops location services once all requests have been completed.
 
 ## What's wrong with CLLocationManager?
-CLLocationManager's API works well when you need to track changes in the user's location over time, such as for turn-by-turn GPS navigation apps. However, if you just need to ask "Where am I?" every now and then, CLLocationManager is fairly difficult to work with.
+The CLLocationManager API works best when you need to track changes in the user's location over time, such as for turn-by-turn GPS navigation apps. However, if you just need to ask "Where am I?" every now and then, CLLocationManager is fairly difficult to work with. Getting these one-off location updates is a common task for many apps, such as when you want to autofill an address from the current location, or determine which city the user is currently in.
 
-Getting one-off location updates is a common task for many apps, such as when you want to autofill an address from the current location, or determine which city the user is currently in. Not only does INTULocationManager make this easy, but it also conserves the user's battery by powering down location services (e.g. GPS) as soon as they are no longer needed.
+INTULocationManager makes it easy to request the device's current location, with a single API method that allows you to specify how accurate of a location you need, and how long you're willing to wait to get it. INTULocationManager is power efficient and conserves the user's battery by powering down location services (e.g. GPS) as soon as they are no longer needed.
 
 ## Usage
 **Important:** Because `INTULocationManager` automatically starts & stops location updates, do not use it in combination with any other code that starts or stops location updates on `CLLocationManager` directly.
