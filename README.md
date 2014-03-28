@@ -12,7 +12,6 @@ Getting one-off location updates is a common task for many apps, such as when yo
 **Important:** Because `INTULocationManager` automatically starts & stops location updates, do not use it in combination with any other code that starts or stops location updates on `CLLocationManager` directly.
 
 ### Getting the Current Location
-
 To get the device's current location, use the method `requestLocationWithDesiredAccuracy:timeout:block:`.
 
 The `desiredAccuracy` parameter specifies how **accurate and recent** of a location you need. The possible values are:
@@ -48,7 +47,6 @@ INTULocationManager *locMgr = [INTULocationManager sharedInstance];
 ```
 
 ### Managing In-Progress Requests
-
 When issuing a location request, you can optionally store the request ID, which allows you to force completion or cancel the request at any time:
 ```objective-c
 NSInteger requestID = [[INTULocationManager sharedInstance] requestLocationWithDesiredAccuracy:INTULocationAccuracyHouse
@@ -61,6 +59,9 @@ NSInteger requestID = [[INTULocationManager sharedInstance] requestLocationWithD
 // Cancel the request (won't execute the block)
 [[INTULocationManager sharedInstance] cancelLocationRequest:requestID];
 ```
+
+## Example Project
+An [example project](https://github.com/intuit/LocationManager/tree/master/LocationManagerExample) is provided. It requires Xcode 5 and iOS 7.0 or later. Please note that it can run in the iOS Simulator, but you need to go to the iOS Simulator's **Debug > Location** menu once running the app to simulate a location (the default is **None**).
 
 ## Installation
 *INTULocationManager requires iOS 6.0 or later.*
