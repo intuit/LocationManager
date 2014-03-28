@@ -9,7 +9,7 @@ The CLLocationManager API works best when you need to track changes in the user'
 INTULocationManager makes it easy to request the device's current location, with a single API method that allows you to specify how accurate of a location you need, and how long you're willing to wait to get it. INTULocationManager is power efficient and conserves the user's battery by powering down location services (e.g. GPS) as soon as they are no longer needed.
 
 ## Usage
-**Important:** Because `INTULocationManager` automatically starts & stops location updates, do not use it in combination with any other code that starts or stops location updates on `CLLocationManager` directly.
+**Important:** Because `INTULocationManager` automatically starts & stops location updates, make sure not to use any other code that starts or stops location updates on `CLLocationManager` directly.
 
 ### Getting the Current Location
 To get the device's current location, use the method `requestLocationWithDesiredAccuracy:timeout:block:`.
