@@ -40,7 +40,7 @@
 
 #if INTU_ENABLE_LOCATION_LOGGING != 0
     #ifdef LOG_VERBOSE
-        extern int ddLogLevel;
+        extern const int ddLogLevel;
         #define INTULMLog(...)  DDLogVerbose("INTULocationManager: %@", [NSString stringWithFormat:__VA_ARGS__])
     #else
         #define INTULMLog(...) NSLog(@"INTULocationManager: %@", [NSString stringWithFormat:__VA_ARGS__]);
