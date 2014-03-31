@@ -28,6 +28,29 @@
 #import "INTULocationRequestDefines.h"
 
 /**
+ INTULocationManager Logging
+ */
+#ifndef INTU_ENABLE_LOCATION_LOGGING
+    #ifdef DEBUG
+        #define INTU_ENABLE_LOCATION_LOGGING 1
+    #else
+        #define INTU_ENABLE_LOCATION_LOGGING 0
+    #endif
+#endif
+
+#if INTU_ENABLE_LOCATION_LOGGING != 0
+    #ifdef LOG_VERBOSE
+        extern const int ddLogLevel;
+        #define INTULMLog(...)  DDLogVerbose("INTULocationManager: %@", [NSString stringWithFormat:__VA_ARGS__])
+    #else
+        #define INTULMLog(...) NSLog(@"INTULocationManager: %@", [NSString stringWithFormat:__VA_ARGS__]);
+    #endif
+#else
+    #define INTULMLog(...)
+#endif
+
+
+/**
  An abstraction around CLLocationManager that provides a block-based asynchronous API for obtaining the device's location.
  
  This class will automatically start and stop location services as needed to conserve battery. As a result, this class should
