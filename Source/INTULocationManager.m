@@ -27,6 +27,21 @@
 #import "INTULocationRequest.h"
 
 
+#ifndef INTU_ENABLE_LOGGING
+    #ifdef DEBUG
+        #define INTU_ENABLE_LOGGING 1
+    #else
+        #define INTU_ENABLE_LOGGING 0
+    #endif /* DEBUG */
+#endif /* INTU_ENABLE_LOGGING */
+
+#if INTU_ENABLE_LOGGING
+    #define INTULMLog(...)          NSLog(@"INTULocationManager: %@", [NSString stringWithFormat:__VA_ARGS__]);
+#else
+    #define INTULMLog(...)
+#endif /* INTU_ENABLE_LOGGING */
+
+
 @interface INTULocationManager () <CLLocationManagerDelegate, INTULocationRequestDelegate>
 
 // The instance of CLLocationManager encapsulated by this class.
@@ -145,7 +160,7 @@ static id _sharedInstance;
     }
     [self.locationRequests removeObject:locationRequestToCancel];
     [locationRequestToCancel cancelLocationRequest];
-    NSLog(@"INTULocationManager: Location Request cancelled with ID: %ld", (long)locationRequestToCancel.requestID);
+    INTULMLog(@"Location Request cancelled with ID: %ld", (long)locationRequestToCancel.requestID);
     [self stopUpdatingLocationIfPossible];
 }
 
@@ -165,7 +180,7 @@ static id _sharedInstance;
     
     [self startUpdatingLocationIfNeeded];
     [self.locationRequests addObject:locationRequest];
-    NSLog(@"INTULocationManager: Location Request added with ID: %ld", (long)locationRequest.requestID);
+    INTULMLog(@"Location Request added with ID: %ld", (long)locationRequest.requestID);
 }
 
 /**
@@ -197,7 +212,7 @@ static id _sharedInstance;
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
         [self.locationManager startUpdatingLocation];
         if (self.isUpdatingLocation == NO) {
-            NSLog(@"INTULocationManager: Location services started.");
+            INTULMLog(@"Location services started.");
         }
         self.isUpdatingLocation = YES;
     }
@@ -212,7 +227,7 @@ static id _sharedInstance;
     if ([self.locationRequests count] == 0) {
         [self.locationManager stopUpdatingLocation];
         if (self.isUpdatingLocation) {
-            NSLog(@"INTULocationManager: Location services stopped.");
+            INTULMLog(@"Location services stopped.");
         }
         self.isUpdatingLocation = NO;
     }
@@ -267,7 +282,7 @@ static id _sharedInstance;
     for (INTULocationRequest *locationRequest in locationRequests) {
         [self completeLocationRequest:locationRequest];
     }
-    NSLog(@"INTULocationManager: Finished completing all location requests.");
+    INTULMLog(@"Finished completing all location requests.");
 }
 
 /**
@@ -291,7 +306,7 @@ static id _sharedInstance;
     if (locationRequest.block) {
         locationRequest.block(currentLocation, achievedAccuracy, status);
     }
-    NSLog(@"INTULocationManager: Location Request completed with ID: %ld, currentLocation: %@, achievedAccuracy: %lu, status: %lu", (long)locationRequest.requestID, currentLocation, (unsigned long) achievedAccuracy, (unsigned long)status);
+    INTULMLog(@"Location Request completed with ID: %ld, currentLocation: %@, achievedAccuracy: %lu, status: %lu", (long)locationRequest.requestID, currentLocation, (unsigned long) achievedAccuracy, (unsigned long)status);
 }
 
 /**
@@ -389,7 +404,7 @@ static id _sharedInstance;
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
 {
-	NSLog(@"INTULocationManager: Location update error: %@", [error localizedDescription]);
+	INTULMLog(@"Location update error: %@", [error localizedDescription]);
 	self.updateFailed = YES;
 	
 	[self completeAllLocationRequests];
