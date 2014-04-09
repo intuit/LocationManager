@@ -27,6 +27,21 @@
 #import "INTULocationRequest.h"
 
 
+#ifndef INTU_ENABLE_LOGGING
+    #ifdef DEBUG
+        #define INTU_ENABLE_LOGGING 1
+    #else
+        #define INTU_ENABLE_LOGGING 0
+    #endif /* DEBUG */
+#endif /* INTU_ENABLE_LOGGING */
+
+#if INTU_ENABLE_LOGGING
+    #define INTULMLog(...)          NSLog(@"INTULocationManager: %@", [NSString stringWithFormat:__VA_ARGS__]);
+#else
+    #define INTULMLog(...)
+#endif /* INTU_ENABLE_LOGGING */
+
+
 @interface INTULocationManager () <CLLocationManagerDelegate, INTULocationRequestDelegate>
 
 // The instance of CLLocationManager encapsulated by this class.
