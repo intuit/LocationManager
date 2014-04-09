@@ -107,6 +107,7 @@ static id _sharedInstance;
  @param desiredAccuracy The desired accuracy for this request, which if achieved will trigger the successful completion.
  @param timeout The maximum number of seconds to wait while attempting to achieve the desired accuracy.
                 If this value is 0.0, no timeout will be set (will wait indefinitely for success, unless request is force completed or cancelled).
+ @param deferFirstRequestTimeout The flag specifying whether the timeout timer is started until the user decides to permit location services
  @param block The block to be executed when the request succeeds, fails, or times out. Three parameters are passed into the block:
                     - The current location (the most recent one acquired, regardless of accuracy level), or nil if no valid location was acquired
                     - The achieved accuracy for the current location (may be less than the desired accuracy if the request failed)
@@ -114,15 +115,22 @@ static id _sharedInstance;
  
  @return An NSInteger representing the location request's unique ID, which can be used to force early completion or cancel the request while it is in progress.
  */
-- (NSInteger)requestLocationWithDesiredAccuracy:(INTULocationAccuracy)desiredAccuracy timeout:(NSTimeInterval)timeout block:(INTULocationRequestBlock)block
+- (NSInteger)requestLocationWithDesiredAccuracy:(INTULocationAccuracy)desiredAccuracy timeout:(NSTimeInterval)timeout deferFirstRequestTimeout:(BOOL)deferFirstRequestTimeout block:(INTULocationRequestBlock)block
 {
     NSAssert(desiredAccuracy != INTULocationAccuracyNone, @"INTULocationAccuracyNone is not a valid desired accuracy.");
+
+    BOOL deferredTimeout = deferFirstRequestTimeout && ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined);
     
     INTULocationRequest *locationRequest = [[INTULocationRequest alloc] init];
     locationRequest.delegate = self;
     locationRequest.desiredAccuracy = desiredAccuracy;
     locationRequest.timeout = timeout;
+    locationRequest.deferredTimeout = deferredTimeout;
     locationRequest.block = block;
+    
+    if (!deferredTimeout) {
+        [locationRequest startLocationRequestTimer];
+    }
     
     [self addLocationRequest:locationRequest];
     
@@ -230,6 +238,17 @@ static id _sharedInstance;
             INTULMLog(@"Location services stopped.");
         }
         self.isUpdatingLocation = NO;
+    }
+}
+
+/**
+ Iterates over the array of pending location requests and shedule deferred timers
+ */
+- (void)startLocationRequestsDeferredTimers {
+    for (INTULocationRequest *locationRequest in self.locationRequests) {
+        if (locationRequest.deferredTimeout) {
+            [locationRequest startLocationRequestTimer];
+        }
     }
 }
 
@@ -392,6 +411,9 @@ static id _sharedInstance;
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
+    // Start deferred location requests timers
+    [self startLocationRequestsDeferredTimers];
+    
     // Received update successfully, so clear any previous errors
 	self.updateFailed = NO;
 	

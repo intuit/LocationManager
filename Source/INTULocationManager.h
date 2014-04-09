@@ -71,11 +71,14 @@
  @param desiredAccuracy The accuracy level desired (refers to the accuracy and recency of the location).
  @param timeout The maximum amount of time (in seconds) to wait for the desired accuracy before completing.
                 If this value is 0.0, no timeout will be set (will wait indefinitely for success, unless request is force completed or cancelled).
+ @param deferFirstRequestTimeout The flag specifying whether the timeout timer is started until the user decides to permit location services
+                                 If this value is YES and ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined) timeout timer starts after
+                                 user decide to allow or deny location services.
  @param block The block to execute upon success, failure, or timeout.
  
  @return The location request ID, which can be used to force early completion or cancel the request while it is in progress.
  */
-- (NSInteger)requestLocationWithDesiredAccuracy:(INTULocationAccuracy)desiredAccuracy timeout:(NSTimeInterval)timeout block:(INTULocationRequestBlock)block;
+- (NSInteger)requestLocationWithDesiredAccuracy:(INTULocationAccuracy)desiredAccuracy timeout:(NSTimeInterval)timeout deferFirstRequestTimeout:(BOOL)deferFirstRequestTimeout block:(INTULocationRequestBlock)block;
 
 /** Immediately forces completion of the location request with the given requestID (if it exists), and executes the original request block with the results.
     This is effectively a manual timeout, and will result in the request completing with status INTULocationStatusTimedOut. */
