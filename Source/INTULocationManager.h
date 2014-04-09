@@ -28,6 +28,29 @@
 #import "INTULocationRequestDefines.h"
 
 /**
+ INTULocationManager Logging
+ */
+#ifndef INTU_ENABLE_LOCATION_LOGGING
+    #ifdef DEBUG
+        #define INTU_ENABLE_LOCATION_LOGGING 1
+    #else
+        #define INTU_ENABLE_LOCATION_LOGGING 0
+    #endif
+#endif
+
+#if INTU_ENABLE_LOCATION_LOGGING != 0
+    #ifdef LOG_VERBOSE
+        extern const int ddLogLevel;
+        #define INTULMLog(...)  DDLogVerbose("INTULocationManager: %@", [NSString stringWithFormat:__VA_ARGS__])
+    #else
+        #define INTULMLog(...) NSLog(@"INTULocationManager: %@", [NSString stringWithFormat:__VA_ARGS__]);
+    #endif
+#else
+    #define INTULMLog(...)
+#endif
+
+
+/**
  An abstraction around CLLocationManager that provides a block-based asynchronous API for obtaining the device's location.
  
  This class will automatically start and stop location services as needed to conserve battery. As a result, this class should
@@ -48,11 +71,14 @@
  @param desiredAccuracy The accuracy level desired (refers to the accuracy and recency of the location).
  @param timeout The maximum amount of time (in seconds) to wait for the desired accuracy before completing.
                 If this value is 0.0, no timeout will be set (will wait indefinitely for success, unless request is force completed or cancelled).
+ @param deferFirstRequestTimeout The flag specifying whether the timeout timer is started until the user decides to permit location services
+                                 If this value is YES and ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined) timeout timer starts after
+                                 user decide to allow or deny location services.
  @param block The block to execute upon success, failure, or timeout.
  
  @return The location request ID, which can be used to force early completion or cancel the request while it is in progress.
  */
-- (NSInteger)requestLocationWithDesiredAccuracy:(INTULocationAccuracy)desiredAccuracy timeout:(NSTimeInterval)timeout block:(INTULocationRequestBlock)block;
+- (NSInteger)requestLocationWithDesiredAccuracy:(INTULocationAccuracy)desiredAccuracy timeout:(NSTimeInterval)timeout deferFirstRequestTimeout:(BOOL)deferFirstRequestTimeout block:(INTULocationRequestBlock)block;
 
 /** Immediately forces completion of the location request with the given requestID (if it exists), and executes the original request block with the results.
     This is effectively a manual timeout, and will result in the request completing with status INTULocationStatusTimedOut. */

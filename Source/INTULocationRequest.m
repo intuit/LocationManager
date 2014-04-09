@@ -150,16 +150,16 @@ static NSInteger _nextRequestID = 0;
 }
 
 /**
- Sets the timeout value for this request, also triggering a timer to start which will fire at the timeout time.
+ Triggering a timer to start which will fire at the timeout time.
  If the given timeout value is exactly 0.0, it will be ignored (the request will never timeout by itself).
  */
-- (void)setTimeout:(NSTimeInterval)timeout
+- (void)startLocationRequestTimer
 {
+    self.deferredTimeout = NO;
     self.requestStartTime = [NSDate date];
-    _timeout = timeout;
     [self.timeoutTimer invalidate];
-    if (timeout > 0.0) {
-        self.timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:timeout target:self selector:@selector(timeoutTimerFired:) userInfo:nil repeats:NO];
+    if (self.timeout > 0) {
+        self.timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:self.timeout target:self selector:@selector(timeoutTimerFired:) userInfo:nil repeats:NO];
     }
 }
 

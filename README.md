@@ -25,11 +25,14 @@ INTULocationAccuracyRoom          // 5 meters or better, received within the las
 
 The `timeout` parameter specifies how long you are willing to wait for a location with the accuracy you requested. The timeout guarantees that your block will execute within this period of time, either with a location of at least the accuracy you requested (`INTULocationStatusSuccess`), or with whatever location could be determined before the timeout interval was up (`INTULocationStatusTimedOut`). Pass `0.0` for no timeout *(not recommended)*.
 
+The `deferFirstRequestTimeout` parameter specifies to defer first location request, when the user has not yet decided to allow or deny location services for app. Pass `YES` to start `timeout` timer.
+
 Here's an example:
 ```objective-c
 INTULocationManager *locMgr = [INTULocationManager sharedInstance];
 [locMgr requestLocationWithDesiredAccuracy:INTULocationAccuracyCity
                                    timeout:10.0
+                  deferFirstRequestTimeout:YES
                                      block:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
                                          if (status == INTULocationStatusSuccess) {
                                              // Request succeeded, meaning achievedAccuracy is at least the requested accuracy, and
@@ -51,6 +54,7 @@ When issuing a location request, you can optionally store the request ID, which 
 ```objective-c
 NSInteger requestID = [[INTULocationManager sharedInstance] requestLocationWithDesiredAccuracy:INTULocationAccuracyHouse
                                                                                        timeout:5.0
+                                                                      deferFirstRequestTimeout:YES
                                                                                          block:locationRequestBlock];
 
 // Force the request to complete early, like a manual timeout (will execute the block)
