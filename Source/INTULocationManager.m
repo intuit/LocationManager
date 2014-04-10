@@ -104,17 +104,47 @@ static id _sharedInstance;
 /**
  Asynchronously requests the current location of the device using location services.
  
- @param desiredAccuracy The desired accuracy for this request, which if achieved will trigger the successful completion.
- @param timeout The maximum number of seconds to wait while attempting to achieve the desired accuracy.
+ @param desiredAccuracy The accuracy level desired (refers to the accuracy and recency of the location).
+ @param timeout The maximum amount of time (in seconds) to wait for the desired accuracy before completing.
                 If this value is 0.0, no timeout will be set (will wait indefinitely for success, unless request is force completed or cancelled).
  @param block The block to be executed when the request succeeds, fails, or times out. Three parameters are passed into the block:
                     - The current location (the most recent one acquired, regardless of accuracy level), or nil if no valid location was acquired
                     - The achieved accuracy for the current location (may be less than the desired accuracy if the request failed)
                     - The request status (if it succeeded, or if not, why it failed)
  
- @return An NSInteger representing the location request's unique ID, which can be used to force early completion or cancel the request while it is in progress.
+ @return The location request ID, which can be used to force early completion or cancel the request while it is in progress.
  */
-- (NSInteger)requestLocationWithDesiredAccuracy:(INTULocationAccuracy)desiredAccuracy timeout:(NSTimeInterval)timeout block:(INTULocationRequestBlock)block
+- (NSInteger)requestLocationWithDesiredAccuracy:(INTULocationAccuracy)desiredAccuracy
+                                        timeout:(NSTimeInterval)timeout
+                                          block:(INTULocationRequestBlock)block
+{
+    return [self requestLocationWithDesiredAccuracy:desiredAccuracy
+                                            timeout:timeout
+                               delayUntilAuthorized:NO
+                                              block:block];
+}
+
+/**
+ Asynchronously requests the current location of the device using location services, optionally waiting until the user grants the app permission
+ to access location services before starting the timeout countdown.
+ 
+ @param desiredAccuracy The accuracy level desired (refers to the accuracy and recency of the location).
+ @param timeout The maximum amount of time (in seconds) to wait for the desired accuracy before completing.
+                If this value is 0.0, no timeout will be set (will wait indefinitely for success, unless request is force completed or cancelled).
+ @param delayUntilAuthorized A flag specifying whether the timeout should only take effect after the user responds to the system prompt requesting
+                             permission for this app to access location services. If YES, the timeout countdown will not begin until after the
+                             app receives location services permissions. If NO, the timeout countdown begins immediately when calling this method.
+ @param block The block to be executed when the request succeeds, fails, or times out. Three parameters are passed into the block:
+                    - The current location (the most recent one acquired, regardless of accuracy level), or nil if no valid location was acquired
+                    - The achieved accuracy for the current location (may be less than the desired accuracy if the request failed)
+                    - The request status (if it succeeded, or if not, why it failed)
+ 
+ @return The location request ID, which can be used to force early completion or cancel the request while it is in progress.
+ */
+- (NSInteger)requestLocationWithDesiredAccuracy:(INTULocationAccuracy)desiredAccuracy
+                                        timeout:(NSTimeInterval)timeout
+                           delayUntilAuthorized:(BOOL)delayUntilAuthorized
+                                          block:(INTULocationRequestBlock)block
 {
     NSAssert(desiredAccuracy != INTULocationAccuracyNone, @"INTULocationAccuracyNone is not a valid desired accuracy.");
     
@@ -123,6 +153,11 @@ static id _sharedInstance;
     locationRequest.desiredAccuracy = desiredAccuracy;
     locationRequest.timeout = timeout;
     locationRequest.block = block;
+    
+    BOOL deferTimeout = delayUntilAuthorized && ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined);
+    if (!deferTimeout) {
+        [locationRequest startTimeoutTimerIfNeeded];
+    }
     
     [self addLocationRequest:locationRequest];
     
@@ -416,6 +451,12 @@ static id _sharedInstance;
         // Clear out any pending location requests (which will execute the blocks with a status that reflects
         // the unavailability of location services) since we now no longer have location services permissions
         [self completeAllLocationRequests];
+    }
+    else if (status == kCLAuthorizationStatusAuthorized) {
+        // Start the timeout timer for location requests that were waiting for authorization
+        for (INTULocationRequest *locationRequest in self.locationRequests) {
+            [locationRequest startTimeoutTimerIfNeeded];
+        }
     }
 }
 

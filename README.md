@@ -25,11 +25,14 @@ INTULocationAccuracyRoom          // 5 meters or better, received within the las
 
 The `timeout` parameter specifies how long you are willing to wait for a location with the accuracy you requested. The timeout guarantees that your block will execute within this period of time, either with a location of at least the accuracy you requested (`INTULocationStatusSuccess`), or with whatever location could be determined before the timeout interval was up (`INTULocationStatusTimedOut`). Pass `0.0` for no timeout *(not recommended)*.
 
+By default, the timeout countdown begins as soon as the `requestLocationWithDesiredAccuracy:timeout:block:` method is called. However, there is another variant of this method that includes a `delayUntilAuthorized` parameter, which allows you to pass YES to delay the start of the timeout countdown until the user has responded to the system location services permissions prompt (if the user hasn't allowed or denied the app access yet).
+
 Here's an example:
 ```objective-c
 INTULocationManager *locMgr = [INTULocationManager sharedInstance];
 [locMgr requestLocationWithDesiredAccuracy:INTULocationAccuracyCity
                                    timeout:10.0
+                      delayUntilAuthorized:YES	// This parameter is optional, defaults to NO if omitted
                                      block:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
                                          if (status == INTULocationStatusSuccess) {
                                              // Request succeeded, meaning achievedAccuracy is at least the requested accuracy, and

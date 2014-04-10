@@ -137,6 +137,7 @@ static NSInteger _nextRequestID = 0;
 {
     self.hasTimedOut = YES;
     [self.timeoutTimer invalidate];
+    self.timeoutTimer = nil;
     self.requestStartTime = nil;
 }
 
@@ -146,20 +147,18 @@ static NSInteger _nextRequestID = 0;
 - (void)cancelLocationRequest
 {
     [self.timeoutTimer invalidate];
+    self.timeoutTimer = nil;
     self.requestStartTime = nil;
 }
 
 /**
- Sets the timeout value for this request, also triggering a timer to start which will fire at the timeout time.
- If the given timeout value is exactly 0.0, it will be ignored (the request will never timeout by itself).
+ Starts the location request's timeout timer if a nonzero timeout value is set, and the timer has not already been started.
  */
-- (void)setTimeout:(NSTimeInterval)timeout
+- (void)startTimeoutTimerIfNeeded
 {
-    self.requestStartTime = [NSDate date];
-    _timeout = timeout;
-    [self.timeoutTimer invalidate];
-    if (timeout > 0.0) {
-        self.timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:timeout target:self selector:@selector(timeoutTimerFired:) userInfo:nil repeats:NO];
+    if (self.timeout > 0 && !self.timeoutTimer) {
+        self.requestStartTime = [NSDate date];
+        self.timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:self.timeout target:self selector:@selector(timeoutTimerFired:) userInfo:nil repeats:NO];
     }
 }
 

@@ -70,6 +70,7 @@
     INTULocationManager *locMgr = [INTULocationManager sharedInstance];
     self.locationRequestID = [locMgr requestLocationWithDesiredAccuracy:self.desiredAccuracy
                                                                 timeout:self.timeout
+                                                   delayUntilAuthorized:NO
                                                                   block:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
                                                                       __typeof(weakSelf) strongSelf = weakSelf;
                                                                       

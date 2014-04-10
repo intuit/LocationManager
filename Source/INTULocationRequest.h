@@ -57,7 +57,7 @@
 // The desired accuracy for this location request.
 @property (nonatomic, assign) INTULocationAccuracy desiredAccuracy;
 // The maximum amount of time the location request should be allowed to live before completing.
-// When this is set, the location request will automatically configure a timer that notifies the delegate when fired.
+// If this value is exactly 0.0, it will be ignored (the request will never timeout by itself).
 @property (nonatomic, assign) NSTimeInterval timeout;
 // How long the location request has been alive since the timeout value was last set.
 @property (nonatomic, readonly) NSTimeInterval timeAlive;
@@ -71,6 +71,9 @@
 
 /** Cancels the location request. */
 - (void)cancelLocationRequest;
+
+/** Starts the location request's timeout timer if a nonzero timeout value is set, and the timer has not already been started. */
+- (void)startTimeoutTimerIfNeeded;
 
 /** Returns the associated recency threshold (in seconds) for the location request's desired accuracy level. */
 - (NSTimeInterval)updateTimeStaleThreshold;
