@@ -6,7 +6,7 @@ INTULocationManager provides a block-based asynchronous API to request the curre
 ## What's wrong with CLLocationManager?
 The CLLocationManager API works best when you need to track changes in the user's location over time, such as for turn-by-turn GPS navigation apps. However, if you just need to ask "Where am I?" every now and then, CLLocationManager is fairly difficult to work with. Getting these one-off location updates is a common task for many apps, such as when you want to autofill an address from the current location, or determine which city the user is currently in.
 
-INTULocationManager makes it easy to request the device's current location, with a single API method that allows you to specify how accurate of a location you need, and how long you're willing to wait to get it. INTULocationManager is power efficient and conserves the user's battery by powering down location services (e.g. GPS) as soon as they are no longer needed.
+INTULocationManager makes it easy to request the device's current location, with a simple API that allows you to specify how accurate of a location you need, and how long you're willing to wait to get it. INTULocationManager is power efficient and conserves the user's battery by powering down location services (e.g. GPS) as soon as they are no longer needed.
 
 ## Usage
 **Important:** Because `INTULocationManager` automatically starts & stops location updates, make sure not to use any other code that starts or stops location updates on `CLLocationManager` directly.
@@ -50,7 +50,7 @@ INTULocationManager *locMgr = [INTULocationManager sharedInstance];
 ```
 
 ### Managing In-Progress Requests
-When issuing a location request, you can optionally store the request ID, which allows you to force completion or cancel the request at any time:
+When issuing a location request, you can optionally store the request ID, which allows you to force complete or cancel the request at any time:
 ```objective-c
 NSInteger requestID = [[INTULocationManager sharedInstance] requestLocationWithDesiredAccuracy:INTULocationAccuracyHouse
                                                                                        timeout:5.0
