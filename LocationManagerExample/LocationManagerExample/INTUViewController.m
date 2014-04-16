@@ -66,38 +66,40 @@
 - (IBAction)startLocationRequest:(id)sender
 {
     __weak __typeof(self) weakSelf = self;
-    
     INTULocationManager *locMgr = [INTULocationManager sharedInstance];
     self.locationRequestID = [locMgr requestLocationWithDesiredAccuracy:self.desiredAccuracy
                                                                 timeout:self.timeout
                                                    delayUntilAuthorized:NO
                                                                   block:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
-                                                                      __typeof(weakSelf) strongSelf = weakSelf;
-                                                                      
+                                                                      NSString *message = nil;
+																	  
                                                                       if (status == INTULocationStatusSuccess) {
                                                                           // achievedAccuracy is at least the desired accuracy (potentially better)
-                                                                          strongSelf.statusLabel.text = [NSString stringWithFormat:@"Location request successful! Current Location:\n%@", currentLocation];
+                                                                          message = [NSString stringWithFormat:@"Location request successful! Current Location:\n%@", currentLocation];
                                                                       }
                                                                       else if (status == INTULocationStatusTimedOut) {
                                                                           // You may wish to inspect achievedAccuracy here to see if it is acceptable, if you plan to use currentLocation
-                                                                          strongSelf.statusLabel.text = [NSString stringWithFormat:@"Location request timed out. Current Location:\n%@", currentLocation];
+                                                                          message = [NSString stringWithFormat:@"Location request timed out. Current Location:\n%@", currentLocation];
                                                                       }
                                                                       else {
                                                                           // An error occurred
                                                                           if (status == INTULocationStatusServicesNotDetermined) {
-                                                                              strongSelf.statusLabel.text = @"Error: User has not responded to the permissions alert.";
+                                                                              message = @"Error: User has not responded to the permissions alert.";
                                                                           } else if (status == INTULocationStatusServicesDenied) {
-                                                                              strongSelf.statusLabel.text = @"Error: User has denied this app permissions to access device location.";
+                                                                              message = @"Error: User has denied this app permissions to access device location.";
                                                                           } else if (status == INTULocationStatusServicesRestricted) {
-                                                                              strongSelf.statusLabel.text = @"Error: User is restricted from using location services by a usage policy.";
+                                                                              message = @"Error: User is restricted from using location services by a usage policy.";
                                                                           } else if (status == INTULocationStatusServicesDisabled) {
-                                                                              strongSelf.statusLabel.text = @"Error: Location services are turned off for all apps on this device.";
+                                                                              message = @"Error: Location services are turned off for all apps on this device.";
                                                                           } else {
-                                                                              strongSelf.statusLabel.text = @"An unknown error occurred.\n(Are you using iOS Simulator with location set to 'None'?)";
+                                                                              message = @"An unknown error occurred.\n(Are you using iOS Simulator with location set to 'None'?)";
                                                                           }
                                                                       }
                                                                       
-                                                                      strongSelf.locationRequestID = NSNotFound;
+																	  weakSelf.locationRequestID = NSNotFound;
+																	  dispatch_async(dispatch_get_main_queue(), ^{
+																		  weakSelf.statusLabel.text = message;
+																	  });
                                                                   }];
 }
 
