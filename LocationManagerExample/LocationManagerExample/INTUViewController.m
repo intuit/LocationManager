@@ -71,7 +71,7 @@
                                                                 timeout:self.timeout
                                                    delayUntilAuthorized:NO
                                                                   block:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
-                                                                      NSString *message = nil;
+																	  NSString *message = nil; // Will hold the correct message to be displayed in the label.
 																	  
                                                                       if (status == INTULocationStatusSuccess) {
                                                                           // achievedAccuracy is at least the desired accuracy (potentially better)
@@ -96,8 +96,9 @@
                                                                           }
                                                                       }
                                                                       
-																	  weakSelf.locationRequestID = NSNotFound;
+																	  // Perform the UI updates inside the main queue.
 																	  dispatch_async(dispatch_get_main_queue(), ^{
+																		  weakSelf.locationRequestID = NSNotFound;
 																		  weakSelf.statusLabel.text = message;
 																	  });
                                                                   }];
@@ -159,11 +160,11 @@
     
     BOOL isProcessingLocationRequest = (locationRequestID != NSNotFound);
     
-    self.desiredAccuracyControl.enabled = !isProcessingLocationRequest;
-    self.timeoutSlider.enabled = !isProcessingLocationRequest;
+    self.desiredAccuracyControl.enabled       = !isProcessingLocationRequest;
+    self.timeoutSlider.enabled                = !isProcessingLocationRequest;
     self.requestCurrentLocationButton.enabled = !isProcessingLocationRequest;
-    self.forceCompleteRequestButton.enabled = isProcessingLocationRequest;
-    self.cancelRequestButton.enabled = isProcessingLocationRequest;
+    self.forceCompleteRequestButton.enabled   = isProcessingLocationRequest;
+    self.cancelRequestButton.enabled          = isProcessingLocationRequest;
     
     if (isProcessingLocationRequest) {
         [self.activityIndicator startAnimating];
