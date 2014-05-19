@@ -76,13 +76,13 @@ An [example project](https://github.com/intuit/LocationManager/tree/master/Locat
     	pod 'INTULocationManager'
 
 2.	Run `pod install` from Terminal, then open your app's `.xcworkspace` file to launch Xcode.
-3.	`#import INTULocationManager.h` wherever you want to use it.
+3.	`#import "INTULocationManager.h"` wherever you want to use it.
 
 **Manually from GitHub**
 
 1.	Download all the files in the [Source directory](https://github.com/intuit/LocationManager/tree/master/Source).
 2.	Add all the files to your Xcode project (drag and drop is easiest).
-3.	`#import INTULocationManager.h` wherever you want to use it.
+3.	`#import "INTULocationManager.h"` wherever you want to use it.
 
 ## Issues & Contributions
 Please [open an issue here on GitHub](https://github.com/intuit/LocationManager/issues/new) if you have a problem, suggestion, or other comment.
