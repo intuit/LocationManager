@@ -481,6 +481,7 @@
 				B116687318E5CEDD00D1E022 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B116687418E5CEDD00D1E022 /* Build configuration list for PBXNativeTarget "LocationManagerExampleTests" */ = {
 			isa = XCConfigurationList;
@@ -489,6 +490,7 @@
 				B116687618E5CEDD00D1E022 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
