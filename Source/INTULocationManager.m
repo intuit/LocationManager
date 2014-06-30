@@ -338,9 +338,15 @@ static id _sharedInstance;
     [locationRequest completeLocationRequest];
     [self stopUpdatingLocationIfPossible];
     
-    if (locationRequest.block) {
-        locationRequest.block(currentLocation, achievedAccuracy, status);
-    }
+    // INTULocationManager is not thread safe and should only be called from the main thread, so we should already be executing on the main thread now.
+    // dispatch_async is used to ensure that the completion block for a request is not executed before the request ID is returned, for example in the
+    // case where the user has denied permission to access location services and the request is immediately completed with the appropriate error.
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (locationRequest.block) {
+            locationRequest.block(currentLocation, achievedAccuracy, status);
+        }
+    });
+    
     INTULMLog(@"Location Request completed with ID: %ld, currentLocation: %@, achievedAccuracy: %lu, status: %lu", (long)locationRequest.requestID, currentLocation, (unsigned long) achievedAccuracy, (unsigned long)status);
 }
 
