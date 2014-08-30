@@ -240,23 +240,27 @@ static id _sharedInstance;
  */
 - (void)startUpdatingLocationIfNeeded
 {
-#if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_7_1
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
     // As of iOS 8, apps must explicitly request location services permissions. INTULocationManager supports both levels, "Always" and "When In Use".
     // INTULocationManager determines which level of permissions to request based on which description key is present in your app's Info.plist
     // If you provide values for both description keys, the more permissive "Always" level is requested.
-    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1 && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined) {
-        BOOL hasAlwaysKey = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"NSLocationAlwaysUsageDescription"] != nil;
-        BOOL hasWhenInUseKey = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"NSLocationWhenInUseUsageDescription"] != nil;
-        if (hasAlwaysKey) {
-            [self.locationManager requestAlwaysAuthorization];
-        } else if (hasWhenInUseKey) {
-            [self.locationManager requestWhenInUseAuthorization];
-        } else {
-            // At least one of the keys NSLocationAlwaysUsageDescription or NSLocationWhenInUseUsageDescription MUST be present in the Info.plist file to use location services on iOS 8+.
-            NSAssert(hasAlwaysKey || hasWhenInUseKey, @"To use location services in iOS 8+, your Info.plist must provide a value for either NSLocationWhenInUseUsageDescription or NSLocationAlwaysUsageDescription.");
+    if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)] && [self.locationManager respondsToSelector:@selector(requestAlwaysAuthorization)]) {
+        if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined) {
+            BOOL hasAlwaysKey = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"NSLocationAlwaysUsageDescription"] != nil;
+            BOOL hasWhenInUseKey = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"NSLocationWhenInUseUsageDescription"] != nil;
+            
+            if (hasAlwaysKey) {
+                [self.locationManager performSelector:@selector(requestAlwaysAuthorization)];
+            } else if (hasWhenInUseKey) {
+                [self.locationManager performSelector:@selector(requestWhenInUseAuthorization)];
+            } else {
+                // At least one of the keys NSLocationAlwaysUsageDescription or NSLocationWhenInUseUsageDescription MUST be present in the Info.plist file to use location services on iOS 8+.
+                NSAssert(hasAlwaysKey || hasWhenInUseKey, @"To use location services in iOS 8+, your Info.plist must provide a value for either NSLocationWhenInUseUsageDescription or NSLocationAlwaysUsageDescription.");
+            }
         }
     }
-#endif /* __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_7_1 */
+#pragma clang diagnostic pop
     
     // We only enable location updates while there are open location requests, so power usage isn't a concern.
     // As a result, we use the Best accuracy on CLLocationManager so that we can quickly get a fix on the location,
