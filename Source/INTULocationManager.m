@@ -240,23 +240,27 @@ static id _sharedInstance;
  */
 - (void)startUpdatingLocationIfNeeded
 {
-#if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_7_1
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
     // As of iOS 8, apps must explicitly request location services permissions. INTULocationManager supports both levels, "Always" and "When In Use".
     // INTULocationManager determines which level of permissions to request based on which description key is present in your app's Info.plist
     // If you provide values for both description keys, the more permissive "Always" level is requested.
-    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1 && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined) {
-        BOOL hasAlwaysKey = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"NSLocationAlwaysUsageDescription"] != nil;
-        BOOL hasWhenInUseKey = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"NSLocationWhenInUseUsageDescription"] != nil;
-        if (hasAlwaysKey) {
-            [self.locationManager requestAlwaysAuthorization];
-        } else if (hasWhenInUseKey) {
-            [self.locationManager requestWhenInUseAuthorization];
-        } else {
-            // At least one of the keys NSLocationAlwaysUsageDescription or NSLocationWhenInUseUsageDescription MUST be present in the Info.plist file to use location services on iOS 8+.
-            NSAssert(hasAlwaysKey || hasWhenInUseKey, @"To use location services in iOS 8+, your Info.plist must provide a value for either NSLocationWhenInUseUsageDescription or NSLocationAlwaysUsageDescription.");
+    if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)] && [self.locationManager respondsToSelector:@selector(requestAlwaysAuthorization)]) {
+        if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined) {
+            BOOL hasAlwaysKey = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"NSLocationAlwaysUsageDescription"] != nil;
+            BOOL hasWhenInUseKey = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"NSLocationWhenInUseUsageDescription"] != nil;
+            
+            if (hasAlwaysKey) {
+                [self.locationManager performSelector:@selector(requestAlwaysAuthorization)];
+            } else if (hasWhenInUseKey) {
+                [self.locationManager performSelector:@selector(requestWhenInUseAuthorization)];
+            } else {
+                // At least one of the keys NSLocationAlwaysUsageDescription or NSLocationWhenInUseUsageDescription MUST be present in the Info.plist file to use location services on iOS 8+.
+                NSAssert(hasAlwaysKey || hasWhenInUseKey, @"To use location services in iOS 8+, your Info.plist must provide a value for either NSLocationWhenInUseUsageDescription or NSLocationAlwaysUsageDescription.");
+            }
         }
     }
-#endif /* __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_7_1 */
+#pragma clang diagnostic pop
     
     // We only enable location updates while there are open location requests, so power usage isn't a concern.
     // As a result, we use the Best accuracy on CLLocationManager so that we can quickly get a fix on the location,
@@ -471,16 +475,13 @@ static id _sharedInstance;
 
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 {
-    if (status == kCLAuthorizationStatusDenied || status == kCLAuthorizationStatusRestricted) {
+    if (status == kCLAuthorizationStatusNotDetermined) {
+        // Intentially do nothing since we have not yet determined what we can/should do
+    } else if (status == kCLAuthorizationStatusDenied || status == kCLAuthorizationStatusRestricted) {
         // Clear out any pending location requests (which will execute the blocks with a status that reflects
         // the unavailability of location services) since we now no longer have location services permissions
         [self completeAllLocationRequests];
-    }
-#if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_7_1
-    else if (status == kCLAuthorizationStatusAuthorizedAlways || status == kCLAuthorizationStatusAuthorizedWhenInUse) {
-#else
-    else if (status == kCLAuthorizationStatusAuthorized) {
-#endif /* __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_7_1 */
+    } else {
         // Start the timeout timer for location requests that were waiting for authorization
         for (INTULocationRequest *locationRequest in self.locationRequests) {
             [locationRequest startTimeoutTimerIfNeeded];
