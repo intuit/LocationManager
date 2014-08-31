@@ -475,16 +475,13 @@ static id _sharedInstance;
 
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 {
-    if (status == kCLAuthorizationStatusDenied || status == kCLAuthorizationStatusRestricted) {
+    if (status == kCLAuthorizationStatusNotDetermined) {
+        // Intentially do nothing since we have not yet determined what we can/should do
+    } else if (status == kCLAuthorizationStatusDenied || status == kCLAuthorizationStatusRestricted) {
         // Clear out any pending location requests (which will execute the blocks with a status that reflects
         // the unavailability of location services) since we now no longer have location services permissions
         [self completeAllLocationRequests];
-    }
-#if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_7_1
-    else if (status == kCLAuthorizationStatusAuthorizedAlways || status == kCLAuthorizationStatusAuthorizedWhenInUse) {
-#else
-    else if (status == kCLAuthorizationStatusAuthorized) {
-#endif /* __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_7_1 */
+    } else {
         // Start the timeout timer for location requests that were waiting for authorization
         for (INTULocationRequest *locationRequest in self.locationRequests) {
             [locationRequest startTimeoutTimerIfNeeded];
