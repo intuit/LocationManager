@@ -1,3 +1,5 @@
+![INTULocationManager](https://github.com/intuit/LocationManager/blob/master/Images/INTULocationManager.png?raw=true)
+
 # INTULocationManager
 INTULocationManager makes it easy to get the device's current location on iOS.
 
