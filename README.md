@@ -99,3 +99,6 @@ Pull requests are welcome and encouraged! There are no official guidelines, but 
 
 ## License
 INTULocationManager is provided under the MIT license.
+
+# INTU on GitHub
+Check out more [iOS and OS X open source projects from Intuit](https://github.com/search?utf8=✓&q=user%3Aintuit+language%3Aobjective-c&type=Repositories&ref=searchresults)!
