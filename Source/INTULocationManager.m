@@ -91,14 +91,9 @@ static id _sharedInstance;
  */
 - (BOOL)locationServicesAvailable
 {
-	if ([CLLocationManager locationServicesEnabled] == NO) {
-		return NO;
-	} else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied) {
-        return NO;
-    } else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusRestricted) {
-        return NO;
-    }
-    return YES;
+    return !(![CLLocationManager locationServicesEnabled] ||
+        [CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied ||
+        [CLLocationManager authorizationStatus] == kCLAuthorizationStatusRestricted);
 }
 
 /**
@@ -206,7 +201,7 @@ static id _sharedInstance;
  */
 - (void)addLocationRequest:(INTULocationRequest *)locationRequest
 {
-    if ([self locationServicesAvailable] == NO) {
+    if (![self locationServicesAvailable]) {
         // Don't even bother trying to do anything since location services are off or the user has
         // explcitly denied us permission to use them
         [self completeLocationRequest:locationRequest];
@@ -261,10 +256,10 @@ static id _sharedInstance;
     // We only enable location updates while there are open location requests, so power usage isn't a concern.
     // As a result, we use the Best accuracy on CLLocationManager so that we can quickly get a fix on the location,
     // clear out the pending location requests, and then power down the location services.
-    if ([self.locationRequests count] == 0) {
+    if (![self.locationRequests count]) {
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
         [self.locationManager startUpdatingLocation];
-        if (self.isUpdatingLocation == NO) {
+        if (!self.isUpdatingLocation) {
             INTULMLog(@"Location services started.");
         }
         self.isUpdatingLocation = YES;
@@ -277,7 +272,7 @@ static id _sharedInstance;
  */
 - (void)stopUpdatingLocationIfPossible
 {
-    if ([self.locationRequests count] == 0) {
+    if (![self.locationRequests count]) {
         [self.locationManager stopUpdatingLocation];
         if (self.isUpdatingLocation) {
             INTULMLog(@"Location services stopped.");
@@ -305,7 +300,7 @@ static id _sharedInstance;
             continue;
         }
         
-        if (mostRecentLocation != nil) {
+        if (mostRecentLocation) {
             NSTimeInterval currentLocationTimeSinceUpdate = fabs([mostRecentLocation.timestamp timeIntervalSinceNow]);
             CLLocationAccuracy currentLocationHorizontalAccuracy = mostRecentLocation.horizontalAccuracy;
             NSTimeInterval staleThreshold = [locationRequest updateTimeStaleThreshold];
@@ -344,7 +339,7 @@ static id _sharedInstance;
  */
 - (void)completeLocationRequest:(INTULocationRequest *)locationRequest
 {
-    if (locationRequest == nil) {
+    if (!locationRequest) {
         return;
     }
     

@@ -155,7 +155,7 @@ static NSInteger _nextRequestID = 0;
  */
 - (NSTimeInterval)timeAlive
 {
-    if (self.requestStartTime == nil) {
+    if (!self.requestStartTime) {
         return 0.0;
     }
     return fabs([self.requestStartTime timeIntervalSinceNow]);
