@@ -82,23 +82,17 @@ static NSInteger _nextRequestID = 0;
     switch (self.desiredAccuracy) {
         case INTULocationAccuracyRoom:
             return kINTUUpdateTimeStaleThresholdRoom;
-            break;
         case INTULocationAccuracyHouse:
             return kINTUUpdateTimeStaleThresholdHouse;
-            break;
         case INTULocationAccuracyBlock:
             return kINTUUpdateTimeStaleThresholdBlock;
-            break;
         case INTULocationAccuracyNeighborhood:
             return kINTUUpdateTimeStaleThresholdNeighborhood;
-            break;
         case INTULocationAccuracyCity:
             return kINTUUpdateTimeStaleThresholdCity;
-            break;
         default:
             NSAssert(NO, @"Unknown desired accuracy.");
             return 0.0;
-            break;
     }
 }
 
@@ -110,23 +104,17 @@ static NSInteger _nextRequestID = 0;
     switch (self.desiredAccuracy) {
         case INTULocationAccuracyRoom:
             return kINTUHorizontalAccuracyThresholdRoom;
-            break;
         case INTULocationAccuracyHouse:
             return kINTUHorizontalAccuracyThresholdHouse;
-            break;
         case INTULocationAccuracyBlock:
             return kINTUHorizontalAccuracyThresholdBlock;
-            break;
         case INTULocationAccuracyNeighborhood:
             return kINTUHorizontalAccuracyThresholdNeighborhood;
-            break;
         case INTULocationAccuracyCity:
             return kINTUHorizontalAccuracyThresholdCity;
-            break;
         default:
             NSAssert(NO, @"Unknown desired accuracy.");
             return 0.0;
-            break;
     }
 }
 
@@ -167,7 +155,7 @@ static NSInteger _nextRequestID = 0;
  */
 - (NSTimeInterval)timeAlive
 {
-    if (self.requestStartTime == nil) {
+    if (!self.requestStartTime) {
         return 0.0;
     }
     return fabs([self.requestStartTime timeIntervalSinceNow]);
