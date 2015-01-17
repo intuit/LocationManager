@@ -48,6 +48,8 @@
 @property (nonatomic, strong) CLLocationManager *locationManager;
 // The most recent current location, or nil if the current location is unknown, invalid, or stale.
 @property (nonatomic, strong) CLLocation *currentLocation;
+// The most recent current heading, or nil if the current heading is unknown, invalid, or stale.
+@property (nonatomic) CLLocationDirection currentHeading;
 // Whether or not the CLLocationManager is currently sending location updates.
 @property (nonatomic, assign) BOOL isUpdatingLocation;
 // Whether an error occurred during the last location update.
@@ -264,6 +266,13 @@ static id _sharedInstance;
     if ([self.locationRequests count] == 0) {
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
         [self.locationManager startUpdatingLocation];
+       
+        if ([CLLocationManager headingAvailable])
+        {
+            self.locationManager.headingFilter = 5;
+            [self.locationManager startUpdatingHeading]; 
+        }
+
         if (self.isUpdatingLocation == NO) {
             INTULMLog(@"Location services started.");
         }
@@ -279,6 +288,7 @@ static id _sharedInstance;
 {
     if ([self.locationRequests count] == 0) {
         [self.locationManager stopUpdatingLocation];
+        [self.locationManager stopUpdatingHeading];
         if (self.isUpdatingLocation) {
             INTULMLog(@"Location services stopped.");
         }
@@ -459,6 +469,19 @@ static id _sharedInstance;
     
     // The updated location may have just satisfied one of the pending location requests, so process them now to check
     [self processLocationRequests];
+}
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading
+{
+    if (newHeading.headingAccuracy < 0)
+        return;
+    
+    self.updateFailed = NO;
+    
+    CLLocationDirection heading = ((newHeading.trueHeading > 0) ? newHeading.trueHeading : newHeading.magneticHeading);
+    
+    self.currentHeading = heading;
+    
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error

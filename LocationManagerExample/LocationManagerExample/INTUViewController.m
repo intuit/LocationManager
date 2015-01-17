@@ -71,7 +71,7 @@
     self.locationRequestID = [locMgr requestLocationWithDesiredAccuracy:self.desiredAccuracy
                                                                 timeout:self.timeout
                                                    delayUntilAuthorized:YES
-                                                                  block:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
+                                                                  block:^(CLLocation *currentLocation, CLLocationDirection direction, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
                                                                       __typeof(weakSelf) strongSelf = weakSelf;
                                                                       
                                                                       if (status == INTULocationStatusSuccess) {
