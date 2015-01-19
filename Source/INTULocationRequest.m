@@ -31,9 +31,9 @@
 // Redeclare this property as readwrite for internal use.
 @property (nonatomic, assign, readwrite) BOOL hasTimedOut;
 
-// The NSDate representing the time when the request started. Set when the |timeout| property is set.
+/** The NSDate representing the time when the request started. Set when the |timeout| property is set. */
 @property (nonatomic, strong) NSDate *requestStartTime;
-// The timer that will fire to notify this request that it has timed out. Started when the |timeout| property is set.
+/** The timer that will fire to notify this request that it has timed out. Started when the |timeout| property is set. */
 @property (nonatomic, strong) NSTimer *timeoutTimer;
 
 @end
@@ -41,12 +41,12 @@
 
 @implementation INTULocationRequest
 
-static NSInteger _nextRequestID = 0;
+static INTULocationRequestID _nextRequestID = 0;
 
 /**
  Returns a unique request ID (within the lifetime of the application).
  */
-+ (NSInteger)getUniqueRequestID
++ (INTULocationRequestID)getUniqueRequestID
 {
     _nextRequestID++;
     return _nextRequestID;
@@ -64,7 +64,7 @@ static NSInteger _nextRequestID = 0;
  Designated initializer.
  Use regular init method to autogenerate a unique requestID.
  */
-- (id)initWithRequestID:(NSInteger)requestID
+- (id)initWithRequestID:(INTULocationRequestID)requestID
 {
     self = [super init];
     if (self) {
@@ -133,18 +133,28 @@ static NSInteger _nextRequestID = 0;
 /**
  Completes the location request.
  */
-- (void)completeLocationRequest
+- (void)complete
 {
-    self.hasTimedOut = YES;
     [self.timeoutTimer invalidate];
     self.timeoutTimer = nil;
     self.requestStartTime = nil;
 }
 
 /**
+ Forces the location request to consider itself timed out.
+ */
+- (void)forceTimeout
+{
+    if (self.desiredAccuracy > INTULocationAccuracyNone) {
+        // Only one-off location requests (not subscription requests) should ever be considered timed out
+        self.hasTimedOut = YES;
+    }
+}
+
+/**
  Cancels the location request.
  */
-- (void)cancelLocationRequest
+- (void)cancel
 {
     [self.timeoutTimer invalidate];
     self.timeoutTimer = nil;
@@ -160,6 +170,14 @@ static NSInteger _nextRequestID = 0;
         self.requestStartTime = [NSDate date];
         self.timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:self.timeout target:self selector:@selector(timeoutTimerFired:) userInfo:nil repeats:NO];
     }
+}
+
+/**
+ Dynamic property that returns whether this is a subscription request (desired accuracy is INTULocationAccuracyNone).
+ */
+- (BOOL)isSubscription
+{
+    return self.desiredAccuracy == INTULocationAccuracyNone;
 }
 
 /**

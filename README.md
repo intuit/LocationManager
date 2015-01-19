@@ -1,12 +1,12 @@
 # [![INTULocationManager](https://github.com/intuit/LocationManager/blob/master/Images/INTULocationManager.png?raw=true)](#)
 INTULocationManager makes it easy to get the device's current location on iOS.
 
-INTULocationManager provides a block-based asynchronous API to request the current location. It internally manages multiple simultaneous location requests, and each request specifies its own desired accuracy level and timeout duration. INTULocationManager automatically starts location services when the first request comes in, and stops location services once all requests have been completed.
+INTULocationManager provides a block-based asynchronous API to request the current location, either once or continuously. It internally manages multiple simultaneous location requests, and each one-time request can specify its own desired accuracy level and timeout duration. INTULocationManager automatically starts location services when the first request comes in, and stops location services as soon as all requests have been completed to conserve power.
 
 ## What's wrong with CLLocationManager?
-The CLLocationManager API works best when you need to track changes in the user's location over time, such as for turn-by-turn GPS navigation apps. However, requesting one-off location updates is a common task for many apps, such as when you want to autofill an address from the current location, or determine which city the user is currently in. If you just need to ask "Where am I?" every now and then, CLLocationManager is fairly difficult to work with because you must check for and handle a variety of things like user permissions, stale/inaccurate locations, errors, and more.
+CLLocationManager requires you to manually detect and handle things like permissions, stale/inaccurate locations, errors, and more. CLLocationManager uses a more traditional delegate pattern instead of the modern block-based callback pattern. And while it works fine to track changes in the user's location over time (such as for turn-by-turn navigation), it is extremely cumbersome to correctly request a single location update (such as to determine the user's current city to get a weather forecast, or to autofill an address from the current location).
 
-INTULocationManager makes it easy to request the device's current location, with a simple API that allows you to specify how accurate of a location you need, and how long you're willing to wait to get it. INTULocationManager is power efficient and conserves the user's battery by powering down location services (e.g. GPS) as soon as they are no longer needed.
+INTULocationManager makes it easy to request the device's current location, either once or continuously. The API is extremely simple for both one-time requests and subscriptions. For one-time location requests, you can specify how accurate of a location you need, and how long you're willing to wait to get it. INTULocationManager is power efficient and conserves the user's battery by powering down location services (e.g. GPS) as soon as they are no longer needed.
 
 ## Usage
 
@@ -19,7 +19,7 @@ For iOS 6 & 7, it is recommended that you provide a description for how your app
 #### iOS 8
 Starting with iOS 8, you **must** provide a description for how your app uses location services by setting a string for the key [`NSLocationWhenInUseUsageDescription`](https://developer.apple.com/library/prerelease/ios/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW26) or [`NSLocationAlwaysUsageDescription`](https://developer.apple.com/library/prerelease/ios/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW18) in your app's `Info.plist` file. INTULocationManager determines which level of permissions to request based on which description key is present. You should only request the minimum permission level that your app requires, therefore it is recommended that you use the "When In Use" level unless you require more access. If you provide values for both description keys, the more permissive "Always" level is requested.
 
-### Getting the Current Location
+### Getting the Current Location (once)
 To get the device's current location, use the method `requestLocationWithDesiredAccuracy:timeout:block:`.
 
 The `desiredAccuracy` parameter specifies how **accurate and recent** of a location you need. The possible values are:
@@ -57,12 +57,31 @@ INTULocationManager *locMgr = [INTULocationManager sharedInstance];
                                      }];
 ```
 
-### Managing In-Progress Requests
+### Subscribing to Continuous Location Updates
+To subscribe to continuous location updates, use the method `subscribeToLocationUpdatesWithBlock:`. The block will execute indefinitely (until canceled), once for every new updated location regardless of its accuracy.
+
+If an error occurs, the block will execute with a status other than INTULocationStatusSuccess, and the subscription will be canceled automatically.
+
+Here's an example:
+```objective-c
+INTULocationManager *locMgr = [INTULocationManager sharedInstance];
+[locMgr subscribeToLocationUpdatesWithBlock:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
+    if (status == INTULocationStatusSuccess) {
+		// A new updated location is available in currentLocation, and achievedAccuracy indicates how accurate this particular location is.
+    }
+    else {
+        // An error occurred, more info is available by looking at the specific status returned. The subscription has been automatically canceled.
+    }
+}];
+```
+
+### Managing In-Progress Requests or Subscriptions
 When issuing a location request, you can optionally store the request ID, which allows you to force complete or cancel the request at any time:
 ```objective-c
-NSInteger requestID = [[INTULocationManager sharedInstance] requestLocationWithDesiredAccuracy:INTULocationAccuracyHouse
-                                                                                       timeout:5.0
-                                                                                         block:locationRequestBlock];
+INTULocationManager *locMgr = [INTULocationManager sharedInstance];
+INTULocationRequestID requestID = [locMgr requestLocationWithDesiredAccuracy:INTULocationAccuracyHouse
+                                                                     timeout:5.0
+                                                                       block:locationRequestBlock];
 
 // Force the request to complete early, like a manual timeout (will execute the block)
 [[INTULocationManager sharedInstance] forceCompleteLocationRequest:requestID];
@@ -71,8 +90,10 @@ NSInteger requestID = [[INTULocationManager sharedInstance] requestLocationWithD
 [[INTULocationManager sharedInstance] cancelLocationRequest:requestID];
 ```
 
+Note that subscriptions never timeout; calling `forceCompleteLocationRequest:` on a subscription will simply cancel it.
+
 ## Example Project
-An [example project](https://github.com/intuit/LocationManager/tree/master/LocationManagerExample) is provided. It requires Xcode 5 and iOS 7.0 or later. Please note that it can run in the iOS Simulator, but you need to go to the iOS Simulator's **Debug > Location** menu once running the app to simulate a location (the default is **None**).
+An [example project](LocationManagerExample) is provided. It requires Xcode 5 and iOS 7.0 or later. Please note that it can run in the iOS Simulator, but you need to go to the iOS Simulator's **Debug > Location** menu once running the app to simulate a location (the default is **None**).
 
 ## Installation
 *INTULocationManager requires iOS 6.0 or later.*
@@ -88,7 +109,7 @@ An [example project](https://github.com/intuit/LocationManager/tree/master/Locat
 
 **Manually from GitHub**
 
-1.	Download all the files in the [Source directory](https://github.com/intuit/LocationManager/tree/master/Source).
+1.	Download all the files in the [Source directory](Source).
 2.	Add all the files to your Xcode project (drag and drop is easiest).
 3.	`#import "INTULocationManager.h"` wherever you want to use it.
 
