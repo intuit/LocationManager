@@ -91,9 +91,9 @@ static id _sharedInstance;
  */
 - (BOOL)locationServicesAvailable
 {
-	if ([CLLocationManager locationServicesEnabled] == NO) {
-		return NO;
-	} else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied) {
+    if ([CLLocationManager locationServicesEnabled] == NO) {
+        return NO;
+    } else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied) {
         return NO;
     } else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusRestricted) {
         return NO;
@@ -502,8 +502,8 @@ static id _sharedInstance;
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
     // Received update successfully, so clear any previous errors
-	self.updateFailed = NO;
-	
+    self.updateFailed = NO;
+    
     CLLocation *mostRecentLocation = [locations lastObject];
     self.currentLocation = mostRecentLocation;
     
@@ -513,10 +513,10 @@ static id _sharedInstance;
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
 {
-	INTULMLog(@"Location update error: %@", [error localizedDescription]);
-	self.updateFailed = YES;
-	
-	[self completeAllLocationRequests];
+    INTULMLog(@"Location update error: %@", [error localizedDescription]);
+    self.updateFailed = YES;
+    
+    [self completeAllLocationRequests];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
