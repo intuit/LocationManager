@@ -26,6 +26,9 @@
 #ifndef INTU_LOCATION_REQUEST_DEFINES_H
 #define INTU_LOCATION_REQUEST_DEFINES_H
 
+#import <Foundation/Foundation.h>
+#import <CoreLocation/CoreLocation.h>
+
 static const CGFloat kINTUHorizontalAccuracyThresholdCity =         5000.0;  // in meters
 static const CGFloat kINTUHorizontalAccuracyThresholdNeighborhood = 1000.0;  // in meters
 static const CGFloat kINTUHorizontalAccuracyThresholdBlock =         100.0;  // in meters
