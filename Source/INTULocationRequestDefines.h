@@ -69,12 +69,12 @@ typedef NS_ENUM(NSInteger, INTULocationStatus) {
  A block type for a location request, which is executed when the request succeeds, fails, or times out.
  
  @param currentLocation The most recent & accurate current location available when the block executes, or nil if no valid location is available.
- @param currentHeading 
+ @param currentHeading The most recent & accurate current heading available when the block executes, or nil if no valid heading is available.
  @param achievedAccuracy The accuracy level that was actually achieved (may be better than, equal to, or worse than the desired accuracy).
  @param status The status of the location request - whether it succeeded, timed out, or failed due to some sort of error. This can be used to
                understand what the outcome of the request was, decide if/how to use the associated currentLocation, and determine whether other
                actions are required (such as displaying an error message to the user, retrying with another request, quietly proceeding, etc).
  */
-typedef void(^INTULocationRequestBlock)(CLLocation *currentLocation, CLLocationDirection currentHeading, INTULocationAccuracy achievedAccuracy, INTULocationStatus status);
+typedef void(^INTULocationRequestBlock)(CLLocation *currentLocation, CLHeading *currentHeading, INTULocationAccuracy achievedAccuracy, INTULocationStatus status);
 
 #endif /* INTU_LOCATION_REQUEST_DEFINES_H */

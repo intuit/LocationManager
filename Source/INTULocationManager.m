@@ -49,7 +49,7 @@
 // The most recent current location, or nil if the current location is unknown, invalid, or stale.
 @property (nonatomic, strong) CLLocation *currentLocation;
 // The most recent current heading, or nil if the current heading is unknown, invalid, or stale.
-@property (nonatomic) CLLocationDirection currentHeading;
+@property (nonatomic) CLHeading *currentHeading;
 // Whether or not the CLLocationManager is currently sending location updates.
 @property (nonatomic, assign) BOOL isUpdatingLocation;
 // Whether an error occurred during the last location update.
@@ -208,7 +208,7 @@ static id _sharedInstance;
  */
 - (void)addLocationRequest:(INTULocationRequest *)locationRequest
 {
-    if ([self locationServicesAvailable] == NO) {
+    if ([CLLocationManager headingAvailable] == NO) {
         // Don't even bother trying to do anything since location services are off or the user has
         // explcitly denied us permission to use them
         [self completeLocationRequest:locationRequest];
@@ -235,6 +235,17 @@ static id _sharedInstance;
     
     // Location is either nil or valid at this point, return it
     return _currentLocation;
+}
+
+- (CLHeading *)currentHeading
+{
+    if (_currentHeading) {
+        if (_currentHeading.headingAccuracy < 0) {
+            _currentHeading = nil;
+        }
+    }
+    
+    return _currentHeading;
 }
 
 /**
@@ -266,12 +277,7 @@ static id _sharedInstance;
     if ([self.locationRequests count] == 0) {
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
         [self.locationManager startUpdatingLocation];
-       
-        if ([CLLocationManager headingAvailable])
-        {
-            self.locationManager.headingFilter = 5;
-            [self.locationManager startUpdatingHeading]; 
-        }
+        [self.locationManager startUpdatingHeading];
 
         if (self.isUpdatingLocation == NO) {
             INTULMLog(@"Location services started.");
@@ -303,6 +309,7 @@ static id _sharedInstance;
 - (void)processLocationRequests
 {
     CLLocation *mostRecentLocation = self.currentLocation;
+    CLHeading *mostRecentHeading = self.currentHeading;
     
     // Keep a separate array of location requests to complete to avoid modifying the locationRequests property
     // while iterating over it at the same time
@@ -315,7 +322,7 @@ static id _sharedInstance;
             continue;
         }
         
-        if (mostRecentLocation != nil) {
+        if (mostRecentLocation != nil || mostRecentHeading != nil) {
             NSTimeInterval currentLocationTimeSinceUpdate = fabs([mostRecentLocation.timestamp timeIntervalSinceNow]);
             CLLocationAccuracy currentLocationHorizontalAccuracy = mostRecentLocation.horizontalAccuracy;
             NSTimeInterval staleThreshold = [locationRequest updateTimeStaleThreshold];
@@ -360,6 +367,7 @@ static id _sharedInstance;
     
     INTULocationStatus status = [self statusForLocationRequest:locationRequest];
     CLLocation *currentLocation = self.currentLocation;
+    CLHeading *currentHeading = self.currentHeading;
     INTULocationAccuracy achievedAccuracy = [self achievedAccuracyForLocation:currentLocation];
     
     [self.locationRequests removeObject:locationRequest];
@@ -371,7 +379,7 @@ static id _sharedInstance;
     // case where the user has denied permission to access location services and the request is immediately completed with the appropriate error.
     dispatch_async(dispatch_get_main_queue(), ^{
         if (locationRequest.block) {
-            locationRequest.block(currentLocation, achievedAccuracy, status);
+            locationRequest.block(currentLocation, currentHeading, achievedAccuracy, status);
         }
     });
     
@@ -392,7 +400,7 @@ static id _sharedInstance;
     else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusRestricted) {
         return INTULocationStatusServicesRestricted;
     }
-    else if ([CLLocationManager locationServicesEnabled] == NO) {
+    else if ([CLLocationManager locationServicesEnabled] == NO || [CLLocationManager headingAvailable] == NO) {
         return INTULocationStatusServicesDisabled;
     }
     else if (self.updateFailed) {
@@ -463,25 +471,20 @@ static id _sharedInstance;
 {
     // Received update successfully, so clear any previous errors
 	self.updateFailed = NO;
-	
+    
     CLLocation *mostRecentLocation = [locations lastObject];
     self.currentLocation = mostRecentLocation;
     
     // The updated location may have just satisfied one of the pending location requests, so process them now to check
-    [self processLocationRequests];
+    
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading
 {
-    if (newHeading.headingAccuracy < 0)
-        return;
-    
     self.updateFailed = NO;
     
-    CLLocationDirection heading = ((newHeading.trueHeading > 0) ? newHeading.trueHeading : newHeading.magneticHeading);
-    
-    self.currentHeading = heading;
-    
+    self.currentHeading = newHeading;
+    [self processLocationRequests];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error

@@ -71,12 +71,12 @@
     self.locationRequestID = [locMgr requestLocationWithDesiredAccuracy:self.desiredAccuracy
                                                                 timeout:self.timeout
                                                    delayUntilAuthorized:YES
-                                                                  block:^(CLLocation *currentLocation, CLLocationDirection direction, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
+                                                                  block:^(CLLocation *currentLocation, CLHeading *currentHeading, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
                                                                       __typeof(weakSelf) strongSelf = weakSelf;
                                                                       
                                                                       if (status == INTULocationStatusSuccess) {
                                                                           // achievedAccuracy is at least the desired accuracy (potentially better)
-                                                                          strongSelf.statusLabel.text = [NSString stringWithFormat:@"Location request successful! Current Location:\n%@", currentLocation];
+                                                                          strongSelf.statusLabel.text = [NSString stringWithFormat:@"Location request successful! Current Heading:\n%@", currentHeading];
                                                                       }
                                                                       else if (status == INTULocationStatusTimedOut) {
                                                                           // You may wish to inspect achievedAccuracy here to see if it is acceptable, if you plan to use currentLocation
