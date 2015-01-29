@@ -200,12 +200,14 @@ static id _sharedInstance;
             break;
         }
     }
-    if (locationRequestToComplete.isSubscription) {
-        // Subscription requests can only be canceled
-        [self cancelLocationRequest:requestID];
-    } else {
-        [locationRequestToComplete forceTimeout];
-        [self completeLocationRequest:locationRequestToComplete];
+    if (locationRequestToComplete) {
+        if (locationRequestToComplete.isSubscription) {
+            // Subscription requests can only be canceled
+            [self cancelLocationRequest:requestID];
+        } else {
+            [locationRequestToComplete forceTimeout];
+            [self completeLocationRequest:locationRequestToComplete];
+        }
     }
 }
 
@@ -221,10 +223,12 @@ static id _sharedInstance;
             break;
         }
     }
-    [self.locationRequests removeObject:locationRequestToCancel];
-    [locationRequestToCancel cancel];
-    INTULMLog(@"Location Request canceled with ID: %ld", (long)locationRequestToCancel.requestID);
-    [self stopUpdatingLocationIfPossible];
+    if (locationRequestToCancel) {
+        [self.locationRequests removeObject:locationRequestToCancel];
+        [locationRequestToCancel cancel];
+        INTULMLog(@"Location Request canceled with ID: %ld", (long)locationRequestToCancel.requestID);
+        [self stopUpdatingLocationIfPossible];
+    }
 }
 
 #pragma mark Internal methods
