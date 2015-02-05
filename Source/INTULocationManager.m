@@ -455,6 +455,10 @@ static id _sharedInstance;
  */
 - (INTULocationAccuracy)achievedAccuracyForLocation:(CLLocation *)location
 {
+    if (!location) {
+        return INTULocationAccuracyNone;
+    }
+    
     NSTimeInterval timeSinceUpdate = fabs([location.timestamp timeIntervalSinceNow]);
     CLLocationAccuracy horizontalAccuracy = location.horizontalAccuracy;
     
