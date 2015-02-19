@@ -60,6 +60,7 @@
 		B116687A18E5CFD100D1E022 /* INTULocationRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INTULocationRequest.h; path = ../../Source/INTULocationRequest.h; sourceTree = "<group>"; };
 		B116687B18E5CFD100D1E022 /* INTULocationRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INTULocationRequest.m; path = ../../Source/INTULocationRequest.m; sourceTree = "<group>"; };
 		B116687C18E5CFD100D1E022 /* INTULocationRequestDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INTULocationRequestDefines.h; path = ../../Source/INTULocationRequestDefines.h; sourceTree = "<group>"; };
+		B1DB5E881A958E9A0026FE86 /* INTULocationManager+Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "INTULocationManager+Internal.h"; path = "../../Source/INTULocationManager+Internal.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,6 +169,7 @@
 				B116687A18E5CFD100D1E022 /* INTULocationRequest.h */,
 				B116687B18E5CFD100D1E022 /* INTULocationRequest.m */,
 				B116687C18E5CFD100D1E022 /* INTULocationRequestDefines.h */,
+				B1DB5E881A958E9A0026FE86 /* INTULocationManager+Internal.h */,
 			);
 			name = LocationManager;
 			sourceTree = "<group>";
