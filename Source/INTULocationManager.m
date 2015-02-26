@@ -100,19 +100,10 @@ static id _sharedInstance;
     return YES;
 }
 
-/**
- Returns YES if location services are enabled in the system settings.
-    Returns NO otherwise.
- */
 - (BOOL) locationServicesEnabled {
     return [CLLocationManager locationServicesEnabled];
 }
 
-/**
- Returns YES if location services for the specific application you are working on are enabled in the system settings.
-    Returns NO otherwise.
- Note that this method will return YES even if the authorization status has not yet been determined.
- */
 -(BOOL) applicationLocationAuthorizationEnabled {
     if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied) {
         return NO;
