@@ -8,6 +8,24 @@ CLLocationManager requires you to manually detect and handle things like permiss
 
 INTULocationManager makes it easy to request the device's current location, either once or continuously. The API is extremely simple for both one-time requests and subscriptions. For one-time location requests, you can specify how accurate of a location you need, and how long you're willing to wait to get it. INTULocationManager is power efficient and conserves the user's battery by powering down location services (e.g. GPS) as soon as they are no longer needed.
 
+## Installation
+*INTULocationManager requires iOS 6.0 or later.*
+
+**Using [CocoaPods](http://cocoapods.org)**
+
+1.	Add the pod `INTULocationManager` to your [Podfile](http://guides.cocoapods.org/using/the-podfile.html).
+
+    	pod 'INTULocationManager'
+
+2.	Run `pod install` from Terminal, then open your app's `.xcworkspace` file to launch Xcode.
+3.	Import the `INTULocationManager.h` header. Typically, this should be written as `#import <INTULocationManager/INTULocationManager.h>`
+
+**Manually from GitHub**
+
+1.	Download all the files in the [Source directory](Source).
+2.	Add all the files to your Xcode project (drag and drop is easiest).
+3.	Import the `INTULocationManager.h` header.
+
 ## Usage
 
 ### Requesting Permission to Access Location Services
@@ -94,24 +112,6 @@ Note that subscriptions never timeout; calling `forceCompleteLocationRequest:` o
 
 ## Example Project
 An [example project](LocationManagerExample) is provided. It requires Xcode 5 and iOS 7.0 or later. Please note that it can run in the iOS Simulator, but you need to go to the iOS Simulator's **Debug > Location** menu once running the app to simulate a location (the default is **None**).
-
-## Installation
-*INTULocationManager requires iOS 6.0 or later.*
-
-**Using [CocoaPods](http://cocoapods.org)**
-
-1.	Add the pod `INTULocationManager` to your [Podfile](http://guides.cocoapods.org/using/the-podfile.html).
-
-    	pod 'INTULocationManager'
-
-2.	Run `pod install` from Terminal, then open your app's `.xcworkspace` file to launch Xcode.
-3.	`#import "INTULocationManager.h"` wherever you want to use it.
-
-**Manually from GitHub**
-
-1.	Download all the files in the [Source directory](Source).
-2.	Add all the files to your Xcode project (drag and drop is easiest).
-3.	`#import "INTULocationManager.h"` wherever you want to use it.
 
 ## Issues & Contributions
 Please [open an issue here on GitHub](https://github.com/intuit/LocationManager/issues/new) if you have a problem, suggestion, or other comment.
