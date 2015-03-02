@@ -92,9 +92,20 @@ static id _sharedInstance;
  */
 - (BOOL)locationServicesAvailable
 {
-    if ([CLLocationManager locationServicesEnabled] == NO) {
+    if (![self locationServicesEnabled]) {
         return NO;
-    } else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied) {
+    } else if (![self applicationLocationAuthorizationEnabled]) {
+        return NO;
+    }
+    return YES;
+}
+
+- (BOOL) locationServicesEnabled {
+    return [CLLocationManager locationServicesEnabled];
+}
+
+-(BOOL) applicationLocationAuthorizationEnabled {
+    if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied) {
         return NO;
     } else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusRestricted) {
         return NO;
