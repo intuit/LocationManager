@@ -41,6 +41,21 @@ static const CGFloat kINTUUpdateTimeStaleThresholdBlock =             60.0;  // 
 static const CGFloat kINTUUpdateTimeStaleThresholdHouse =             15.0;  // in seconds
 static const CGFloat kINTUUpdateTimeStaleThresholdRoom =               5.0;  // in seconds
 
+/** The possible states that location services can be in. */
+typedef NS_ENUM(NSInteger, INTULocationServicesState) {
+    /** User has already granted this app permissions to access location services, and they are enabled and ready for use by this app.
+     Note: this state will be returned for both the "When In Use" and "Always" permission levels. */
+    INTULocationServicesStateAvailable,
+    /** User has not yet responded to the dialog that grants this app permission to access location services. */
+    INTULocationServicesStateNotDetermined,
+    /** User has explicitly denied this app permission to access location services. (The user can enable permissions again for this app from the system Settings app.) */
+    INTULocationServicesStateDenied,
+    /** User does not have ability to enable location services (e.g. parental controls, corporate policy, etc). */
+    INTULocationServicesStateRestricted,
+    /** User has turned off location services device-wide (for all apps) from the system Settings app. */
+    INTULocationServicesStateDisabled
+};
+
 /** A unique ID that corresponds to one location request. */
 typedef NSInteger INTULocationRequestID;
 
@@ -64,7 +79,7 @@ typedef NS_ENUM(NSInteger, INTULocationAccuracy) {
     INTULocationAccuracyRoom,
 };
 
-/** Statuses that can be passed to the completion block of a location request. */
+/** A status that will be passed in to the completion block of a location request. */
 typedef NS_ENUM(NSInteger, INTULocationStatus) {
     // These statuses will accompany a valid location.
     /** Got a location and desired accuracy level was achieved successfully. */
@@ -73,13 +88,13 @@ typedef NS_ENUM(NSInteger, INTULocationStatus) {
     INTULocationStatusTimedOut,
     
     // These statuses indicate some sort of error, and will accompany a nil location.
-    /** User has not responded to the permissions dialog. */
+    /** User has not yet responded to the dialog that grants this app permission to access location services. */
     INTULocationStatusServicesNotDetermined,
     /** User has explicitly denied this app permission to access location services. */
     INTULocationStatusServicesDenied,
     /** User does not have ability to enable location services (e.g. parental controls, corporate policy, etc). */
     INTULocationStatusServicesRestricted,
-    /** User has turned off device-wide location services from system settings. */
+    /** User has turned off location services device-wide (for all apps) from the system Settings app. */
     INTULocationStatusServicesDisabled,
     /** An error occurred while using the system location services. */
     INTULocationStatusError

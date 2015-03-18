@@ -27,12 +27,12 @@
 
 /**
  An abstraction around CLLocationManager that provides a block-based asynchronous API for obtaining the device's location.
- This class will automatically start and stop system location services as needed to conserve battery.
+ INTULocationManager automatically starts and stops system location services as needed to minimize battery drain.
  */
 @interface INTULocationManager : NSObject
 
-/** Returns YES if location services are enabled in the system settings, and the app has NOT been denied/restricted access. Returns NO otherwise. */
-@property (nonatomic, readonly) BOOL locationServicesAvailable;
+/** Returns the current state of location services for this app, based on the system settings and user authorization status. */
++ (INTULocationServicesState)locationServicesState;
 
 /** Returns the singleton instance of this class. */
 + (instancetype)sharedInstance;
@@ -88,5 +88,17 @@
 
 /** Immediately cancels the location request (or subscription) with the given requestID (if it exists), without executing the original request block. */
 - (void)cancelLocationRequest:(INTULocationRequestID)requestID;
+
+@end
+
+
+/**
+ A category on INTULocationManager that exposes deprecated legacy APIs. These should no longer be used, and will be removed in a future release.
+ */
+@interface INTULocationManager (Deprecated)
+
+/** DEPRECATED, will be removed in a future release. Please use +[INTULocationManager locationServicesState] instead.
+    Returns YES if location services are enabled in the system settings, and the app has NOT been denied/restricted access. Returns NO otherwise. */
+@property (nonatomic, readonly) BOOL locationServicesAvailable __attribute__((deprecated));
 
 @end

@@ -65,6 +65,30 @@
 
 static id _sharedInstance;
 
+/**
+ Returns the current state of location services for this app, based on the system settings and user authorization status.
+ */
++ (INTULocationServicesState)locationServicesState
+{
+    if ([CLLocationManager locationServicesEnabled] == NO) {
+        return INTULocationServicesStateDisabled;
+    }
+    else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined) {
+        return INTULocationServicesStateNotDetermined;
+    }
+    else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied) {
+        return INTULocationServicesStateDenied;
+    }
+    else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusRestricted) {
+        return INTULocationServicesStateRestricted;
+    }
+    
+    return INTULocationServicesStateAvailable;
+}
+
+/**
+ Returns the singleton instance of this class.
+ */
 + (instancetype)sharedInstance
 {
     static dispatch_once_t _onceToken;
@@ -84,22 +108,6 @@ static id _sharedInstance;
         _locationRequests = [NSMutableArray array];
     }
     return self;
-}
-
-/**
- Returns YES if location services are enabled in the system settings, and the app has NOT been denied/restricted access. Returns NO otherwise.
- Note that this method will return YES even if the authorization status has not yet been determined.
- */
-- (BOOL)locationServicesAvailable
-{
-    if ([CLLocationManager locationServicesEnabled] == NO) {
-        return NO;
-    } else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied) {
-        return NO;
-    } else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusRestricted) {
-        return NO;
-    }
-    return YES;
 }
 
 /**
@@ -239,8 +247,11 @@ static id _sharedInstance;
  */
 - (void)addLocationRequest:(INTULocationRequest *)locationRequest
 {
-    if ([self locationServicesAvailable] == NO) {
-        // Don't even bother trying to do anything since location services are off or the user has explcitly denied us permission to use them
+    INTULocationServicesState locationServicesState = [INTULocationManager locationServicesState];
+    if (locationServicesState == INTULocationServicesStateDisabled ||
+        locationServicesState == INTULocationServicesStateDenied ||
+        locationServicesState == INTULocationServicesStateRestricted) {
+        // No need to add this location request, because location services are turned off device-wide, or the user has denied this app permissions to use them
         [self completeLocationRequest:locationRequest];
         return;
     }
@@ -428,16 +439,18 @@ static id _sharedInstance;
  */
 - (INTULocationStatus)statusForLocationRequest:(INTULocationRequest *)locationRequest
 {
-    if ([CLLocationManager locationServicesEnabled] == NO) {
+    INTULocationServicesState locationServicesState = [INTULocationManager locationServicesState];
+    
+    if (locationServicesState == INTULocationServicesStateDisabled) {
         return INTULocationStatusServicesDisabled;
     }
-    else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined) {
+    else if (locationServicesState == INTULocationServicesStateNotDetermined) {
         return INTULocationStatusServicesNotDetermined;
     }
-    else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied) {
+    else if (locationServicesState == INTULocationServicesStateDenied) {
         return INTULocationStatusServicesDenied;
     }
-    else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusRestricted) {
+    else if (locationServicesState == INTULocationServicesStateRestricted) {
         return INTULocationStatusServicesRestricted;
     }
     else if (self.updateFailed) {
@@ -545,6 +558,28 @@ static id _sharedInstance;
             [locationRequest startTimeoutTimerIfNeeded];
         }
     }
+}
+    
+#pragma mark Deprecated methods
+    
+/**
+ DEPRECATED, will be removed in a future release. Please use +[INTULocationManager locationServicesState] instead.
+ Returns YES if location services are enabled in the system settings, and the app has NOT been denied/restricted access. Returns NO otherwise.
+ Note that this method will return YES even if the authorization status has not yet been determined.
+ */
+- (BOOL)locationServicesAvailable
+{
+    if ([CLLocationManager locationServicesEnabled] == NO) {
+        return NO;
+    }
+    else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied) {
+        return NO;
+    }
+    else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusRestricted) {
+        return NO;
+    }
+    
+    return YES;
 }
 
 @end
