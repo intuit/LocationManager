@@ -43,7 +43,6 @@
 		B116684A18E5CEDD00D1E022 /* LocationManagerExample-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LocationManagerExample-Info.plist"; sourceTree = "<group>"; };
 		B116684C18E5CEDD00D1E022 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B116684E18E5CEDD00D1E022 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		B116685018E5CEDD00D1E022 /* LocationManagerExample-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LocationManagerExample-Prefix.pch"; sourceTree = "<group>"; };
 		B116685118E5CEDD00D1E022 /* INTUAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = INTUAppDelegate.h; sourceTree = "<group>"; };
 		B116685218E5CEDD00D1E022 /* INTUAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = INTUAppDelegate.m; sourceTree = "<group>"; };
 		B116685518E5CEDD00D1E022 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -138,7 +137,6 @@
 				B116684A18E5CEDD00D1E022 /* LocationManagerExample-Info.plist */,
 				B116684B18E5CEDD00D1E022 /* InfoPlist.strings */,
 				B116684E18E5CEDD00D1E022 /* main.m */,
-				B116685018E5CEDD00D1E022 /* LocationManagerExample-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -401,8 +399,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "LocationManagerExample/LocationManagerExample-Prefix.pch";
 				INFOPLIST_FILE = "LocationManagerExample/LocationManagerExample-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -415,8 +411,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "LocationManagerExample/LocationManagerExample-Prefix.pch";
 				INFOPLIST_FILE = "LocationManagerExample/LocationManagerExample-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -433,8 +427,6 @@
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "LocationManagerExample/LocationManagerExample-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -455,8 +447,6 @@
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "LocationManagerExample/LocationManagerExample-Prefix.pch";
 				INFOPLIST_FILE = "LocationManagerExampleTests/LocationManagerExampleTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
