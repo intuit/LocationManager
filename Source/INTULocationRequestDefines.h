@@ -29,17 +29,17 @@
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
 
-static const CGFloat kINTUHorizontalAccuracyThresholdCity =         5000.0;  // in meters
-static const CGFloat kINTUHorizontalAccuracyThresholdNeighborhood = 1000.0;  // in meters
-static const CGFloat kINTUHorizontalAccuracyThresholdBlock =         100.0;  // in meters
-static const CGFloat kINTUHorizontalAccuracyThresholdHouse =          15.0;  // in meters
-static const CGFloat kINTUHorizontalAccuracyThresholdRoom =            5.0;  // in meters
+static const CLLocationAccuracy kINTUHorizontalAccuracyThresholdCity =         5000.0;  // in meters
+static const CLLocationAccuracy kINTUHorizontalAccuracyThresholdNeighborhood = 1000.0;  // in meters
+static const CLLocationAccuracy kINTUHorizontalAccuracyThresholdBlock =         100.0;  // in meters
+static const CLLocationAccuracy kINTUHorizontalAccuracyThresholdHouse =          15.0;  // in meters
+static const CLLocationAccuracy kINTUHorizontalAccuracyThresholdRoom =            5.0;  // in meters
 
-static const CGFloat kINTUUpdateTimeStaleThresholdCity =             600.0;  // in seconds
-static const CGFloat kINTUUpdateTimeStaleThresholdNeighborhood =     300.0;  // in seconds
-static const CGFloat kINTUUpdateTimeStaleThresholdBlock =             60.0;  // in seconds
-static const CGFloat kINTUUpdateTimeStaleThresholdHouse =             15.0;  // in seconds
-static const CGFloat kINTUUpdateTimeStaleThresholdRoom =               5.0;  // in seconds
+static const NSTimeInterval kINTUUpdateTimeStaleThresholdCity =             600.0;  // in seconds
+static const NSTimeInterval kINTUUpdateTimeStaleThresholdNeighborhood =     300.0;  // in seconds
+static const NSTimeInterval kINTUUpdateTimeStaleThresholdBlock =             60.0;  // in seconds
+static const NSTimeInterval kINTUUpdateTimeStaleThresholdHouse =             15.0;  // in seconds
+static const NSTimeInterval kINTUUpdateTimeStaleThresholdRoom =               5.0;  // in seconds
 
 /** The possible states that location services can be in. */
 typedef NS_ENUM(NSInteger, INTULocationServicesState) {
