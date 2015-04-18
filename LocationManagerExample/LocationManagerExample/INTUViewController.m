@@ -161,6 +161,7 @@
         self.locationRequestID = NSNotFound;
         self.statusLabel.text = @"Subscription canceled.";
     }
+    [self.activityIndicator stopAnimating];
 }
 
 /**
