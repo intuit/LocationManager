@@ -1,4 +1,7 @@
-# [![INTULocationManager](https://github.com/intuit/LocationManager/blob/master/Images/INTULocationManager.png?raw=true)](#)
+# [![INTULocationManager](https://github.com/intuit/LocationManager/blob/master/Images/INTULocationManager.png?raw=true)](#)  
+
+[![Build Status](https://travis-ci.org/intuit/LocationManager.png)](https://travis-ci.org/intuit/LocationManager) [![Coverage Status](https://coveralls.io/repos/intuit/LocationManager/badge.svg)](https://coveralls.io/r/intuit/LocationManager) 
+
 INTULocationManager makes it easy to get the device's current location on iOS. It is an Objective-C library that also works great with Swift using a bridging header.
 
 INTULocationManager provides a block-based asynchronous API to request the current location, either once or continuously. It internally manages multiple simultaneous location requests, and each one-time request can specify its own desired accuracy level and timeout duration. INTULocationManager automatically starts location services when the first request comes in, and stops location services as soon as all requests have been completed to conserve power.
