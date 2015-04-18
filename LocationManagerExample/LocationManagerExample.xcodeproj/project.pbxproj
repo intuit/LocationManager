@@ -47,7 +47,7 @@
 		B116685218E5CEDD00D1E022 /* INTUAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = INTUAppDelegate.m; sourceTree = "<group>"; };
 		B116685518E5CEDD00D1E022 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B116685718E5CEDD00D1E022 /* INTUViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = INTUViewController.h; sourceTree = "<group>"; };
-		B116685818E5CEDD00D1E022 /* INTUViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = INTUViewController.m; sourceTree = "<group>"; };
+		B116685818E5CEDD00D1E022 /* INTUViewController.m */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = INTUViewController.m; sourceTree = "<group>"; tabWidth = 4; };
 		B116685A18E5CEDD00D1E022 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		B116686018E5CEDD00D1E022 /* LocationManagerExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LocationManagerExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B116686118E5CEDD00D1E022 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
