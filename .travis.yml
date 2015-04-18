@@ -1,8 +1,10 @@
 language: objective-c
 before_install:
   - export LANG=en_US.UTF-8
-  - gem install cocoapods xcpretty --no-ri --no-rdoc
+  - gem install cocoapods xcpretty slather --no-ri --no-rdoc
   - pod install --project-directory=LocationManagerExample
   
 script:
   - set -o pipefail && xcodebuild test -workspace LocationManagerExample/LocationManagerExample.xcworkspace -scheme LocationManagerExample -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO | xcpretty -c
+
+after_success: slather
