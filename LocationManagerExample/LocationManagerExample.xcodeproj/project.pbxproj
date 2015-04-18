@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		600C00621AE2C08700EE2005 /* INTULocationManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 600C00611AE2C08700EE2005 /* INTULocationManagerTests.m */; };
 		66D37CF4C48EB1E0EDBC8C63 /* libPods-LocationManagerExampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B12713A3FA178CDE0773800A /* libPods-LocationManagerExampleTests.a */; };
 		B116684318E5CEDD00D1E022 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B116684218E5CEDD00D1E022 /* Foundation.framework */; };
 		B116684518E5CEDD00D1E022 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B116684418E5CEDD00D1E022 /* CoreGraphics.framework */; };
@@ -38,6 +39,7 @@
 
 /* Begin PBXFileReference section */
 		1A675D0EF7DE456FF55FDBD8 /* Pods-LocationManagerExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LocationManagerExampleTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LocationManagerExampleTests/Pods-LocationManagerExampleTests.release.xcconfig"; sourceTree = "<group>"; };
+		600C00611AE2C08700EE2005 /* INTULocationManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INTULocationManagerTests.m; sourceTree = "<group>"; };
 		9775B8FFF4C5D422EB3489E6 /* Pods-LocationManagerExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LocationManagerExampleTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LocationManagerExampleTests/Pods-LocationManagerExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B116683F18E5CEDD00D1E022 /* LocationManagerExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LocationManagerExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B116684218E5CEDD00D1E022 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -161,6 +163,7 @@
 			isa = PBXGroup;
 			children = (
 				B116686D18E5CEDD00D1E022 /* INTULocationRequestTests.m */,
+				600C00611AE2C08700EE2005 /* INTULocationManagerTests.m */,
 				B116686818E5CEDD00D1E022 /* Supporting Files */,
 			);
 			path = LocationManagerExampleTests;
@@ -333,6 +336,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				600C00621AE2C08700EE2005 /* INTULocationManagerTests.m in Sources */,
 				B116686E18E5CEDD00D1E022 /* INTULocationRequestTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
