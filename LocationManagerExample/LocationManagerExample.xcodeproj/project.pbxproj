@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		66D37CF4C48EB1E0EDBC8C63 /* libPods-LocationManagerExampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B12713A3FA178CDE0773800A /* libPods-LocationManagerExampleTests.a */; };
 		B116684318E5CEDD00D1E022 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B116684218E5CEDD00D1E022 /* Foundation.framework */; };
 		B116684518E5CEDD00D1E022 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B116684418E5CEDD00D1E022 /* CoreGraphics.framework */; };
 		B116684718E5CEDD00D1E022 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B116684618E5CEDD00D1E022 /* UIKit.framework */; };
@@ -36,6 +37,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1A675D0EF7DE456FF55FDBD8 /* Pods-LocationManagerExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LocationManagerExampleTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LocationManagerExampleTests/Pods-LocationManagerExampleTests.release.xcconfig"; sourceTree = "<group>"; };
+		9775B8FFF4C5D422EB3489E6 /* Pods-LocationManagerExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LocationManagerExampleTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LocationManagerExampleTests/Pods-LocationManagerExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B116683F18E5CEDD00D1E022 /* LocationManagerExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LocationManagerExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B116684218E5CEDD00D1E022 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		B116684418E5CEDD00D1E022 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -59,6 +62,7 @@
 		B116687A18E5CFD100D1E022 /* INTULocationRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INTULocationRequest.h; path = ../../Source/INTULocationRequest.h; sourceTree = "<group>"; };
 		B116687B18E5CFD100D1E022 /* INTULocationRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INTULocationRequest.m; path = ../../Source/INTULocationRequest.m; sourceTree = "<group>"; };
 		B116687C18E5CFD100D1E022 /* INTULocationRequestDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INTULocationRequestDefines.h; path = ../../Source/INTULocationRequestDefines.h; sourceTree = "<group>"; };
+		B12713A3FA178CDE0773800A /* libPods-LocationManagerExampleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LocationManagerExampleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B1DB5E881A958E9A0026FE86 /* INTULocationManager+Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "INTULocationManager+Internal.h"; path = "../../Source/INTULocationManager+Internal.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -80,12 +84,22 @@
 				B116686218E5CEDD00D1E022 /* XCTest.framework in Frameworks */,
 				B116686418E5CEDD00D1E022 /* UIKit.framework in Frameworks */,
 				B116686318E5CEDD00D1E022 /* Foundation.framework in Frameworks */,
+				66D37CF4C48EB1E0EDBC8C63 /* libPods-LocationManagerExampleTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9FB879D03FCA643276E66129 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				9775B8FFF4C5D422EB3489E6 /* Pods-LocationManagerExampleTests.debug.xcconfig */,
+				1A675D0EF7DE456FF55FDBD8 /* Pods-LocationManagerExampleTests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		B116683618E5CEDD00D1E022 = {
 			isa = PBXGroup;
 			children = (
@@ -93,6 +107,7 @@
 				B116686718E5CEDD00D1E022 /* LocationManagerExampleTests */,
 				B116684118E5CEDD00D1E022 /* Frameworks */,
 				B116684018E5CEDD00D1E022 /* Products */,
+				9FB879D03FCA643276E66129 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -112,6 +127,7 @@
 				B116684418E5CEDD00D1E022 /* CoreGraphics.framework */,
 				B116684618E5CEDD00D1E022 /* UIKit.framework */,
 				B116686118E5CEDD00D1E022 /* XCTest.framework */,
+				B12713A3FA178CDE0773800A /* libPods-LocationManagerExampleTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -196,9 +212,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B116687418E5CEDD00D1E022 /* Build configuration list for PBXNativeTarget "LocationManagerExampleTests" */;
 			buildPhases = (
+				0E55BCFC3541C8D339E421DE /* Check Pods Manifest.lock */,
 				B116685C18E5CEDD00D1E022 /* Sources */,
 				B116685D18E5CEDD00D1E022 /* Frameworks */,
 				B116685E18E5CEDD00D1E022 /* Resources */,
+				06F91033007B343DFBF00295 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -264,6 +282,39 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		06F91033007B343DFBF00295 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LocationManagerExampleTests/Pods-LocationManagerExampleTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		0E55BCFC3541C8D339E421DE /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		B116683B18E5CEDD00D1E022 /* Sources */ = {
@@ -420,6 +471,7 @@
 		};
 		B116687518E5CEDD00D1E022 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9775B8FFF4C5D422EB3489E6 /* Pods-LocationManagerExampleTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/LocationManagerExample.app/LocationManagerExample";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -440,6 +492,7 @@
 		};
 		B116687618E5CEDD00D1E022 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1A675D0EF7DE456FF55FDBD8 /* Pods-LocationManagerExampleTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/LocationManagerExample.app/LocationManagerExample";
 				FRAMEWORK_SEARCH_PATHS = (
