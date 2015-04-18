@@ -39,10 +39,17 @@
 SpecBegin(LocationManager)
 
 __block INTULocationManager *subject;
+__block CLLocation *location;
 
 before(^{
     subject = [[INTULocationManager alloc] init];
-    subject.locationManager = OCMPartialMock(subject.locationManager);
+    subject.locationManager = OCMClassMock(CLLocationManager.class);
+
+    location = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(1, 1)
+                                                         altitude:CLLocationDistanceMax
+                                               horizontalAccuracy:kCLLocationAccuracyBest
+                                                 verticalAccuracy:kCLLocationAccuracyBest
+                                                        timestamp:[NSDate date]];
 });
 
 
@@ -87,12 +94,57 @@ describe(@"After requesting a location", ^{
 
         [subject cancelLocationRequest:requestID];
 
-        CLLocation *location = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(1, 1) altitude:CLLocationDistanceMax horizontalAccuracy:kCLLocationAccuracyBest verticalAccuracy:kCLLocationAccuracyBest timestamp:[NSDate date]];
-
         [subject locationManager:subject.locationManager didUpdateLocations:@[location]];
     });
 });
 
+describe(@"Timeouts", ^{
+    it(@"calls the request callback on location update after a timeout", ^{
+        __block NSInteger callbackCount = 0;
+        [subject requestLocationWithDesiredAccuracy:INTULocationAccuracyRoom timeout:0.1 block:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
+            callbackCount++;
+        }];
 
+        [subject locationManager:subject.locationManager didUpdateLocations:@[location]];
+        expect(callbackCount).will.equal(1);
+    });
+
+    it(@"does not call the request callback on subsequent updates after timeout", ^{
+        __block NSInteger callbackCount = 0;
+        [subject requestLocationWithDesiredAccuracy:INTULocationAccuracyRoom timeout:0.1 block:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
+            callbackCount++;
+        }];
+
+        [subject locationManager:subject.locationManager didUpdateLocations:@[location]];
+        [subject locationManager:subject.locationManager didUpdateLocations:@[location]];
+
+        expect(callbackCount).will.equal(1);
+    });
+
+});
+
+describe(@"subscribing with a block", ^{
+    it(@"calls the block on location update", ^{
+        __block BOOL called = NO;
+        [subject subscribeToLocationUpdatesWithBlock:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
+            called = YES;
+        }];
+
+        [subject locationManager:subject.locationManager didUpdateLocations:@[location]];
+
+        expect(called).to.beTruthy();
+    });
+
+    it(@"passes the location", ^{
+        waitUntil(^(DoneCallback done) {
+            [subject subscribeToLocationUpdatesWithBlock:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
+                expect(currentLocation).to.equal(location);
+                done();
+            }];
+            [subject locationManager:subject.locationManager didUpdateLocations:@[location]];
+        });
+
+    });
+});
 
 SpecEnd
