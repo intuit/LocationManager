@@ -1,0 +1,7 @@
+language: objective-c
+before_install:
+  - export LANG=en_US.UTF-8
+  - gem install cocoapods xcpretty slather --no-ri --no-rdoc --no-ri --no-rdoc
+podfile: LocationManagerExample/Podfile
+xcode_scheme: LocationManagerExampleTests
+xcode_workspace: LocationmanagerExample/LocationmanagerExample.xcworkspace
