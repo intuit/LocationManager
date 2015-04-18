@@ -147,4 +147,78 @@ describe(@"subscribing with a block", ^{
     });
 });
 
+describe(@"when you want to wait for user auth ", ^{
+    it(@"doesnt send a callback until it is agreed", ^{
+        __block NSInteger callbackCount = 0;
+        [subject requestLocationWithDesiredAccuracy:INTULocationAccuracyRoom timeout:0.1 delayUntilAuthorized:YES block:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
+            callbackCount++;
+        }];
+
+        id classMock = OCMClassMock(CLLocationManager.class);
+        OCMStub(ClassMethod([classMock authorizationStatus])).andReturn(kCLAuthorizationStatusNotDetermined);
+
+
+        [subject locationManager:subject.locationManager didUpdateLocations:@[location]];
+        expect(callbackCount).to.equal(0);
+
+        OCMStub(ClassMethod([classMock authorizationStatus])).andReturn (kCLAuthorizationStatusAuthorizedAlways);
+        [subject locationManager:subject.locationManager didChangeAuthorizationStatus:kCLAuthorizationStatusAuthorizedAlways];
+
+        expect(callbackCount).will.equal(1);
+    });
+});
+
+describe(@"authorisation status changes", ^{
+    it(@"clears out pending requests when it is denied", ^{
+        __block NSInteger callbackCount = 0;
+        [subject requestLocationWithDesiredAccuracy:INTULocationAccuracyRoom timeout:0.1 delayUntilAuthorized:YES block:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
+            callbackCount++;
+        }];
+
+        [subject locationManager:subject.locationManager didUpdateLocations:@[location]];
+        expect(callbackCount).to.equal(0);
+
+        [subject locationManager:subject.locationManager didChangeAuthorizationStatus:kCLAuthorizationStatusDenied];
+
+        expect(callbackCount).will.equal(1);
+    });
+
+    it(@"clears out pending requests when restricted", ^{
+        __block NSInteger callbackCount = 0;
+        [subject requestLocationWithDesiredAccuracy:INTULocationAccuracyRoom timeout:0.1 delayUntilAuthorized:YES block:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
+            callbackCount++;
+        }];
+
+        [subject locationManager:subject.locationManager didUpdateLocations:@[location]];
+        expect(callbackCount).to.equal(0);
+
+        [subject locationManager:subject.locationManager didChangeAuthorizationStatus:kCLAuthorizationStatusRestricted];
+
+        expect(callbackCount).will.equal(1);
+    });
+});
+
+describe(@"when the location manager fails", ^{
+    it(@"should complete all active requests", ^{
+        __block BOOL called = NO;
+        [subject requestLocationWithDesiredAccuracy:INTULocationAccuracyRoom timeout:0.1 delayUntilAuthorized:YES block:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
+            called = YES;
+        }];
+
+        NSError *error = [NSError errorWithDomain:@"domain" code:1337 userInfo:@{}];
+        [subject locationManager:subject.locationManager didFailWithError:error];
+
+        expect(called).will.beTruthy();
+    });
+});
+
+xdescribe(@"when determining whether a location update fulfills a request", ^{
+    // The logic comparing a request's desired accuracy to the CLLocation's properties
+    // (all the stuff regarding staleness + horizontal location accuracy threshold)
+    // should be tested, but it seems complex enough we figured we were better off letting
+    // someone with more domain knowledge of how it works handle it.
+    //
+    // You should write these tests!
+});
+
 SpecEnd
