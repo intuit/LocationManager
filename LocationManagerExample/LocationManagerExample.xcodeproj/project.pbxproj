@@ -21,7 +21,7 @@
 		B116686318E5CEDD00D1E022 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B116684218E5CEDD00D1E022 /* Foundation.framework */; };
 		B116686418E5CEDD00D1E022 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B116684618E5CEDD00D1E022 /* UIKit.framework */; };
 		B116686C18E5CEDD00D1E022 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B116686A18E5CEDD00D1E022 /* InfoPlist.strings */; };
-		B116686E18E5CEDD00D1E022 /* LocationManagerExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B116686D18E5CEDD00D1E022 /* LocationManagerExampleTests.m */; };
+		B116686E18E5CEDD00D1E022 /* INTULocationRequestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B116686D18E5CEDD00D1E022 /* INTULocationRequestTests.m */; };
 		B116687D18E5CFD100D1E022 /* INTULocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B116687918E5CFD100D1E022 /* INTULocationManager.m */; };
 		B116687E18E5CFD100D1E022 /* INTULocationRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B116687B18E5CFD100D1E022 /* INTULocationRequest.m */; };
 /* End PBXBuildFile section */
@@ -56,7 +56,7 @@
 		B116686118E5CEDD00D1E022 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		B116686918E5CEDD00D1E022 /* LocationManagerExampleTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LocationManagerExampleTests-Info.plist"; sourceTree = "<group>"; };
 		B116686B18E5CEDD00D1E022 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		B116686D18E5CEDD00D1E022 /* LocationManagerExampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocationManagerExampleTests.m; sourceTree = "<group>"; };
+		B116686D18E5CEDD00D1E022 /* INTULocationRequestTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = INTULocationRequestTests.m; sourceTree = "<group>"; };
 		B116687818E5CFD100D1E022 /* INTULocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INTULocationManager.h; path = ../../Source/INTULocationManager.h; sourceTree = "<group>"; };
 		B116687918E5CFD100D1E022 /* INTULocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INTULocationManager.m; path = ../../Source/INTULocationManager.m; sourceTree = "<group>"; };
 		B116687A18E5CFD100D1E022 /* INTULocationRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INTULocationRequest.h; path = ../../Source/INTULocationRequest.h; sourceTree = "<group>"; };
@@ -160,7 +160,7 @@
 		B116686718E5CEDD00D1E022 /* LocationManagerExampleTests */ = {
 			isa = PBXGroup;
 			children = (
-				B116686D18E5CEDD00D1E022 /* LocationManagerExampleTests.m */,
+				B116686D18E5CEDD00D1E022 /* INTULocationRequestTests.m */,
 				B116686818E5CEDD00D1E022 /* Supporting Files */,
 			);
 			path = LocationManagerExampleTests;
@@ -333,7 +333,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B116686E18E5CEDD00D1E022 /* LocationManagerExampleTests.m in Sources */,
+				B116686E18E5CEDD00D1E022 /* INTULocationRequestTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
