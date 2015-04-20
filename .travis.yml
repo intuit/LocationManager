@@ -8,3 +8,4 @@ script:
   - set -o pipefail && xcodebuild test -workspace LocationManagerExample/LocationManagerExample.xcworkspace -scheme LocationManagerExample -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO | xcpretty -c
 
 after_success: slather
+
