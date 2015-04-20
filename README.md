@@ -1,5 +1,5 @@
 # [![INTULocationManager](https://github.com/intuit/LocationManager/blob/master/Images/INTULocationManager.png?raw=true)](#)  
-[![Build Status](http://img.shields.io/travis/smileyborg/PureLayout.svg?style=flat)](https://travis-ci.org/intuit/LocationManager) [![Test Coverage](http://img.shields.io/coveralls/intuit/AnimationEngine.svg?style=flat)](https://coveralls.io/r/intuit/LocationManager)
+[![Build Status](http://img.shields.io/travis/smileyborg/PureLayout.svg?style=flat)](https://travis-ci.org/intuit/LocationManager) [![Test Coverage](http://img.shields.io/coveralls/intuit/LocationManager.svg?style=flat)](https://coveralls.io/r/intuit/LocationManager)
 
 INTULocationManager makes it easy to get the device's current location on iOS. It is an Objective-C library that also works great with Swift using a bridging header.
 
