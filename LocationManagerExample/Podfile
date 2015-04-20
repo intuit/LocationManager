@@ -6,8 +6,8 @@ target 'LocationManagerExample' do
 end
 
 target 'LocationManagerExampleTests' do
-  pod 'FBSnapshotTestCase'
-  pod 'Expecta+Snapshots'
+  # pod 'FBSnapshotTestCase'
+  # pod 'Expecta+Snapshots'
   pod 'Specta'
   pod 'Expecta'
   pod 'OCMock'
