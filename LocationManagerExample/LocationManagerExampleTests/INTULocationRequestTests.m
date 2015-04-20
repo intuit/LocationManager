@@ -49,15 +49,27 @@ describe(@"INTULocationRequest", ^{
         it(@"should return the appropriate horizontal accuracy", ^{
             request.desiredAccuracy = INTULocationAccuracyCity;
             expect(request.horizontalAccuracyThreshold).to.equal(kINTUHorizontalAccuracyThresholdCity);
-
-            // Given this is an enum - it didn't seem like it needed every case covered
+            request.desiredAccuracy = INTULocationAccuracyNeighborhood;
+            expect(request.horizontalAccuracyThreshold).to.equal(kINTUHorizontalAccuracyThresholdNeighborhood);
+            request.desiredAccuracy = INTULocationAccuracyBlock;
+            expect(request.horizontalAccuracyThreshold).to.equal(kINTUHorizontalAccuracyThresholdBlock);
+            request.desiredAccuracy = INTULocationAccuracyHouse;
+            expect(request.horizontalAccuracyThreshold).to.equal(kINTUHorizontalAccuracyThresholdHouse);
+            request.desiredAccuracy = INTULocationAccuracyRoom;
+            expect(request.horizontalAccuracyThreshold).to.equal(kINTUHorizontalAccuracyThresholdRoom);
         });
 
         it(@"should return the appropriate recency threshold", ^{
             request.desiredAccuracy = INTULocationAccuracyCity;
             expect(request.updateTimeStaleThreshold).to.equal(kINTUUpdateTimeStaleThresholdCity);
-
-            // Given this is an enum - it didn't seem like it needed every case covered
+            request.desiredAccuracy = INTULocationAccuracyNeighborhood;
+            expect(request.updateTimeStaleThreshold).to.equal(kINTUUpdateTimeStaleThresholdNeighborhood);
+            request.desiredAccuracy = INTULocationAccuracyBlock;
+            expect(request.updateTimeStaleThreshold).to.equal(kINTUUpdateTimeStaleThresholdBlock);
+            request.desiredAccuracy = INTULocationAccuracyHouse;
+            expect(request.updateTimeStaleThreshold).to.equal(kINTUUpdateTimeStaleThresholdHouse);
+            request.desiredAccuracy = INTULocationAccuracyRoom;
+            expect(request.updateTimeStaleThreshold).to.equal(kINTUUpdateTimeStaleThresholdRoom);
         });
 
         context(@"when the desired accuracy is none", ^{
