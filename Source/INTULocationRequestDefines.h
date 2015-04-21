@@ -65,7 +65,7 @@ typedef NS_ENUM(NSInteger, INTULocationAccuracy) {
     // 'None' is not valid as a desired accuracy.
     /** Inaccurate (>5000 meters, and/or received >10 minutes ago). */
     INTULocationAccuracyNone = 0,
-    
+
     // The below options are valid desired accuracies.
     /** 5000 meters or better, and received within the last 10 minutes. Lowest accuracy. */
     INTULocationAccuracyCity,
@@ -86,7 +86,7 @@ typedef NS_ENUM(NSInteger, INTULocationStatus) {
     INTULocationStatusSuccess = 0,
     /** Got a location, but the desired accuracy level was not reached before timeout. (Not applicable to subscriptions.) */
     INTULocationStatusTimedOut,
-    
+
     // These statuses indicate some sort of error, and will accompany a nil location.
     /** User has not yet responded to the dialog that grants this app permission to access location services. */
     INTULocationStatusServicesNotDetermined,
@@ -102,7 +102,7 @@ typedef NS_ENUM(NSInteger, INTULocationStatus) {
 
 /**
  A block type for a location request, which is executed when the request succeeds, fails, or times out.
- 
+
  @param currentLocation The most recent & accurate current location available when the block executes, or nil if no valid location is available.
  @param achievedAccuracy The accuracy level that was actually achieved (may be better than, equal to, or worse than the desired accuracy).
  @param status The status of the location request - whether it succeeded, timed out, or failed due to some sort of error. This can be used to
