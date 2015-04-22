@@ -2,8 +2,6 @@ sudo: false
 language: objective-c
 cache: cocoapods
 xcode_workspace: LocationManagerExample/LocationManagerExample.xcworkspace
-before_install:
-  - gem install slather --no-ri --no-rdoc
-  - pod install --project-directory=LocationManagerExample
-
+xcode_scheme: LocationManagerExample
+podfile: LocationManagerExample/Podfile
 after_success: slather
