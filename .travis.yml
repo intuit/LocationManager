@@ -5,4 +5,8 @@ xcode_workspace: LocationManagerExample/LocationManagerExample.xcworkspace
 xcode_scheme: LocationManagerExample
 xcode_sdk: iphonesimulator
 podfile: LocationManagerExample/Podfile
+
+before_install:
+  - gem install slather --no-ri --no-rdoc
+
 after_success: slather
