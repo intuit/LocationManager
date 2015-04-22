@@ -7,6 +7,7 @@ xcode_sdk: iphonesimulator
 podfile: LocationManagerExample/Podfile
 
 before_install:
+  - gem install cocoapods --no-ri --no-rdoc
   - gem install slather --no-ri --no-rdoc
 
 after_success: slather
