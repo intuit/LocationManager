@@ -3,5 +3,6 @@ language: objective-c
 cache: cocoapods
 xcode_workspace: LocationManagerExample/LocationManagerExample.xcworkspace
 xcode_scheme: LocationManagerExample
+xcode_sdk: iphonesimulator
 podfile: LocationManagerExample/Podfile
 after_success: slather
