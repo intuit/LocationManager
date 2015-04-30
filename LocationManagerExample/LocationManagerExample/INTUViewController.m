@@ -63,20 +63,21 @@
     self.statusLabel.text = @"Tap the button below to start a new location request.";
 }
 
-- (NSString *)getStatusDescription:(INTULocationStatus)status {
-  if (status == INTULocationStatusServicesNotDetermined) {
-    return @"Error: User has not responded to the permissions alert.";
-  }
-  if (status == INTULocationStatusServicesDenied) {
-    return @"Error: User has denied this app permissions to access device location.";
-  }
-  if (status == INTULocationStatusServicesRestricted) {
-    return @"Error: User is restricted from using location services by a usage policy.";
-  }
-  if (status == INTULocationStatusServicesDisabled) {
-    return @"Error: Location services are turned off for all apps on this device.";
-  }
-  return @"An unknown error occurred.\n(Are you using iOS Simulator with location set to 'None'?)";
+- (NSString *)getStatusDescription:(INTULocationStatus)status
+{
+    if (status == INTULocationStatusServicesNotDetermined) {
+        return @"Error: User has not responded to the permissions alert.";
+    }
+    if (status == INTULocationStatusServicesDenied) {
+        return @"Error: User has denied this app permissions to access device location.";
+    }
+    if (status == INTULocationStatusServicesRestricted) {
+        return @"Error: User is restricted from using location services by a usage policy.";
+    }
+    if (status == INTULocationStatusServicesDisabled) {
+        return @"Error: Location services are turned off for all apps on this device.";
+    }
+    return @"An unknown error occurred.\n(Are you using iOS Simulator with location set to 'None'?)";
 }
 
 /**
