@@ -63,7 +63,7 @@
     self.statusLabel.text = @"Tap the button below to start a new location request.";
 }
 
-- (NSString *)getStatusDescription:(INTULocationStatus)status
+- (NSString *)getErrorDescription:(INTULocationStatus)status
 {
     if (status == INTULocationStatusServicesNotDetermined) {
         return @"Error: User has not responded to the permissions alert.";
@@ -97,7 +97,7 @@
         else {
             // An error occurred, which causes the subscription to cancel automatically (this block will not execute again unless it is used to start a new subscription).
             strongSelf.locationRequestID = NSNotFound;
-            strongSelf.statusLabel.text = [strongSelf getStatusDescription:status];
+            strongSelf.statusLabel.text = [strongSelf getErrorDescription:status];
         }
     }];
 }
@@ -125,8 +125,8 @@
                                       strongSelf.statusLabel.text = [NSString stringWithFormat:@"Location request timed out. Current Location:\n%@", currentLocation];
                                   }
                                   else {
-                                      strongSelf.statusLabel.text = [strongSelf getStatusDescription:status];
-                                    
+                                      // An error occurred
+                                      strongSelf.statusLabel.text = [strongSelf getErrorDescription:status];
                                   }
                                   
                                   strongSelf.locationRequestID = NSNotFound;
