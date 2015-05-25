@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		600C00621AE2C08700EE2005 /* INTULocationManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 600C00611AE2C08700EE2005 /* INTULocationManagerTests.m */; };
 		6681CD2D1B1306C30080DBA9 /* LocationManagerFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 6681CD2C1B1306C30080DBA9 /* LocationManagerFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6681CD3F1B1306C40080DBA9 /* LocationManagerFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6681CD281B1306C30080DBA9 /* LocationManagerFramework.framework */; };
-		6681CD401B1306C40080DBA9 /* LocationManagerFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6681CD281B1306C30080DBA9 /* LocationManagerFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6681CD481B1306EB0080DBA9 /* INTULocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B116687918E5CFD100D1E022 /* INTULocationManager.m */; };
 		6681CD491B1306EB0080DBA9 /* INTULocationRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B116687B18E5CFD100D1E022 /* INTULocationRequest.m */; };
 		6681CD4A1B1306F50080DBA9 /* INTULocationManager.h in Headers */ = {isa = PBXBuildFile; fileRef = B116687818E5CFD100D1E022 /* INTULocationManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -37,13 +35,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		6681CD3D1B1306C40080DBA9 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B116683718E5CEDD00D1E022 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 6681CD271B1306C30080DBA9;
-			remoteInfo = LocationManagerFramework;
-		};
 		B116686518E5CEDD00D1E022 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B116683718E5CEDD00D1E022 /* Project object */;
@@ -52,20 +43,6 @@
 			remoteInfo = LocationManagerExample;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		6681CD461B1306C40080DBA9 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				6681CD401B1306C40080DBA9 /* LocationManagerFramework.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		1A675D0EF7DE456FF55FDBD8 /* Pods-LocationManagerExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LocationManagerExampleTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LocationManagerExampleTests/Pods-LocationManagerExampleTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -113,7 +90,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6681CD3F1B1306C40080DBA9 /* LocationManagerFramework.framework in Frameworks */,
 				B116684518E5CEDD00D1E022 /* CoreGraphics.framework in Frameworks */,
 				B116684718E5CEDD00D1E022 /* UIKit.framework in Frameworks */,
 				B116684318E5CEDD00D1E022 /* Foundation.framework in Frameworks */,
@@ -294,12 +270,10 @@
 				B116683B18E5CEDD00D1E022 /* Sources */,
 				B116683C18E5CEDD00D1E022 /* Frameworks */,
 				B116683D18E5CEDD00D1E022 /* Resources */,
-				6681CD461B1306C40080DBA9 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				6681CD3E1B1306C40080DBA9 /* PBXTargetDependency */,
 			);
 			name = LocationManagerExample;
 			productName = LocationManagerExample;
@@ -459,11 +433,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		6681CD3E1B1306C40080DBA9 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 6681CD271B1306C30080DBA9 /* LocationManagerFramework */;
-			targetProxy = 6681CD3D1B1306C40080DBA9 /* PBXContainerItemProxy */;
-		};
 		B116686618E5CEDD00D1E022 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = B116683E18E5CEDD00D1E022 /* LocationManagerExample */;
@@ -700,6 +669,7 @@
 				6681CD421B1306C40080DBA9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B116683A18E5CEDD00D1E022 /* Build configuration list for PBXProject "LocationManagerExample" */ = {
 			isa = XCConfigurationList;
