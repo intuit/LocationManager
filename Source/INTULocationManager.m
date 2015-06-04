@@ -53,6 +53,8 @@
 @property (nonatomic, assign) BOOL isUpdatingLocation;
 /** Whether an error occurred during the last location update. */
 @property (nonatomic, assign) BOOL updateFailed;
+/** The usage authorization choice. */
+@property (nonatomic, assign) INTULocationUsageAuthorizationChoice authorizationChoice;
 
 // An array of pending location requests in the form:
 // @[ INTULocationRequest *locationRequest1, INTULocationRequest *locationRequest2, ... ]
@@ -106,6 +108,7 @@ static id _sharedInstance;
         _locationManager = [[CLLocationManager alloc] init];
         _locationManager.delegate = self;
         _locationRequests = [NSMutableArray array];
+        _authorizationChoice = INTULocationUsageAuthorizationChoiceDefault;
     }
     return self;
 }
@@ -155,10 +158,45 @@ static id _sharedInstance;
                                        delayUntilAuthorized:(BOOL)delayUntilAuthorized
                                                       block:(INTULocationRequestBlock)block
 {
+    return [self requestLocationWithDesiredAccuracy:desiredAccuracy
+                                            timeout:timeout
+                               delayUntilAuthorized:delayUntilAuthorized
+                           usageAuthorizationChoice:INTULocationUsageAuthorizationChoiceDefault
+                                              block:block];
+}
+
+/**
+ Asynchronously requests the current location of the device using location services, optionally waiting until the user grants the app permission
+ to access location services before starting the timeout countdown.
+ 
+ @param desiredAccuracy             The accuracy level desired (refers to the accuracy and recency of the location).
+ @param timeout                     The maximum amount of time (in seconds) to wait for a location with the desired accuracy before completing. If
+                                    this value is 0.0, no timeout will be set (will wait indefinitely for success, unless request is force completed or canceled).
+ @param delayUntilAuthorized        A flag specifying whether the timeout should only take effect after the user responds to the system prompt
+                                    requesting permission for this app to access location services. If YES, the timeout countdown will not begin
+                                    until after the app receives location services permissions. If NO, the timeout countdown begins immediately when
+                                    calling this method.
+ @param usageAuthroizationChoice    The usage choice to use when requesting location authorization.
+ @param block                       The block to be executed when the request succeeds, fails, or times out. Three parameters are passed into the 
+                                    block:
+                                        - The current location (the most recent one acquired, regardless of accuracy level), or nil if no valid location was acquired
+                                        - The achieved accuracy for the current location (may be less than the desired accuracy if the request failed)
+                                        - The request status (if it succeeded, or if not, why it failed)
+ 
+ @return The location request ID, which can be used to force early completion or cancel the request while it is in progress.
+ */
+- (INTULocationRequestID)requestLocationWithDesiredAccuracy:(INTULocationAccuracy)desiredAccuracy
+                                                    timeout:(NSTimeInterval)timeout
+                                       delayUntilAuthorized:(BOOL)delayUntilAuthorized
+                                   usageAuthorizationChoice:(INTULocationUsageAuthorizationChoice)choice
+                                                      block:(INTULocationRequestBlock)block
+{
     if (desiredAccuracy == INTULocationAccuracyNone) {
         NSAssert(desiredAccuracy != INTULocationAccuracyNone, @"INTULocationAccuracyNone is not a valid desired accuracy.");
         desiredAccuracy = INTULocationAccuracyCity; // default to the lowest valid desired accuracy
     }
+    
+    self.authorizationChoice = choice;
     
     INTULocationRequest *locationRequest = [[INTULocationRequest alloc] init];
     locationRequest.delegate = self;
@@ -285,18 +323,35 @@ static id _sharedInstance;
 {
 #if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_7_1
     // As of iOS 8, apps must explicitly request location services permissions. INTULocationManager supports both levels, "Always" and "When In Use".
-    // INTULocationManager determines which level of permissions to request based on which description key is present in your app's Info.plist
-    // If you provide values for both description keys, the more permissive "Always" level is requested.
+    // INTULocationManager by default determines which level of permissions to request based on which description key is present in your app's Info.plist. If you provide values for both description keys, the more permissive "Always" level is requested.
+    // INTULocationManager also has support for the authorization choice to be supplied by the user. Use the usageAuthorizationChoice parameter of requestLocationWithDesiredAccuracy.
     if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1 && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined) {
         BOOL hasAlwaysKey = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"NSLocationAlwaysUsageDescription"] != nil;
         BOOL hasWhenInUseKey = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"NSLocationWhenInUseUsageDescription"] != nil;
-        if (hasAlwaysKey) {
-            [self.locationManager requestAlwaysAuthorization];
-        } else if (hasWhenInUseKey) {
-            [self.locationManager requestWhenInUseAuthorization];
-        } else {
-            // At least one of the keys NSLocationAlwaysUsageDescription or NSLocationWhenInUseUsageDescription MUST be present in the Info.plist file to use location services on iOS 8+.
-            NSAssert(hasAlwaysKey || hasWhenInUseKey, @"To use location services in iOS 8+, your Info.plist must provide a value for either NSLocationWhenInUseUsageDescription or NSLocationAlwaysUsageDescription.");
+        
+        if (self.authorizationChoice == INTULocationUsageAuthorizationChoiceDefault) {
+            if (hasAlwaysKey) {
+                [self.locationManager requestAlwaysAuthorization];
+            } else if (hasWhenInUseKey) {
+                [self.locationManager requestWhenInUseAuthorization];
+            } else {
+                // At least one of the keys NSLocationAlwaysUsageDescription or NSLocationWhenInUseUsageDescription MUST be present in the Info.plist file to use location services on iOS 8+.
+                NSAssert(hasAlwaysKey || hasWhenInUseKey, @"To use location services in iOS 8+, your Info.plist must provide a value for either NSLocationWhenInUseUsageDescription or NSLocationAlwaysUsageDescription.");
+            }
+        } else if (self.authorizationChoice == INTULocationUsageAuthorizationChoiceAlways) {
+            if (hasAlwaysKey) {
+                [self.locationManager requestAlwaysAuthorization];
+            } else {
+                // NSLocationAlwaysUsageDescription must be present in the Info.plist file to use this authorization choice.
+                NSAssert(hasAlwaysKey, @"To use location services in iOS 8+, your Info.plist must provide a value for NSLocationAlwaysUsageDescription.");
+            }
+        } else if (self.authorizationChoice == INTULocationUsageAuthorizationChoiceWhenInUse) {
+            if (hasWhenInUseKey) {
+                [self.locationManager requestWhenInUseAuthorization];
+            } else {
+                // NSLocationWhenInUseUsageDescription must be present in the Info.plist file to use this authorization choice.
+                NSAssert(hasAlwaysKey, @"To use location services in iOS 8+, your Info.plist must provide a value for NSLocationWhenInUseUsageDescription.");
+            }
         }
     }
 #endif /* __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_7_1 */
