@@ -56,6 +56,16 @@ typedef NS_ENUM(NSInteger, INTULocationServicesState) {
     INTULocationServicesStateDisabled
 };
 
+/* Location usage authorization choices */
+typedef NS_ENUM(NSInteger, INTULocationUsageAuthorizationChoice) {
+    /** INTULocationManager should use requestAlwaysAuthorization for authorization. */
+    INTULocationUsageAuthorizationChoiceAlways,
+    /** INTULocationManager should use requestWhenInUseAuthorization for authorization. */
+    INTULocationUsageAuthorizationChoiceWhenInUse,
+    /** INTULocationManager can pick either depending on the keys in Info.plist. (Default behavior) */
+    INTULocationUsageAuthorizationChoiceDefault
+};
+
 /** A unique ID that corresponds to one location request. */
 typedef NSInteger INTULocationRequestID;
 
