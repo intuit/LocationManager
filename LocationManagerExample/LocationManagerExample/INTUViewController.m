@@ -25,7 +25,7 @@
 //
 
 #import "INTUViewController.h"
-#import "INTULocationManager.h"
+#import <INTULocationManager/INTULocationManager.h>
 
 @interface INTUViewController ()
 

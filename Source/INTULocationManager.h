@@ -25,6 +25,13 @@
 
 #import "INTULocationRequestDefines.h"
 
+//! Project version number for INTULocationManager.
+FOUNDATION_EXPORT double INTULocationManagerVersionNumber;
+
+//! Project version string for INTULocationManager.
+FOUNDATION_EXPORT const unsigned char INTULocationManagerVersionString[];
+
+
 /**
  An abstraction around CLLocationManager that provides a block-based asynchronous API for obtaining the device's location.
  INTULocationManager automatically starts and stops system location services as needed to minimize battery drain.

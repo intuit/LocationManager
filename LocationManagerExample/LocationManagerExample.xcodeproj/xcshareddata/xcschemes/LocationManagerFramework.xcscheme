@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "6681CD271B1306C30080DBA9"
-               BuildableName = "LocationManagerFramework.framework"
-               BlueprintName = "LocationManagerFramework"
+               BuildableName = "INTULocationManager.framework"
+               BlueprintName = "INTULocationManager"
                ReferencedContainer = "container:LocationManagerExample.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -43,8 +43,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6681CD271B1306C30080DBA9"
-            BuildableName = "LocationManagerFramework.framework"
-            BlueprintName = "LocationManagerFramework"
+            BuildableName = "INTULocationManager.framework"
+            BlueprintName = "INTULocationManager"
             ReferencedContainer = "container:LocationManagerExample.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -61,8 +61,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6681CD271B1306C30080DBA9"
-            BuildableName = "LocationManagerFramework.framework"
-            BlueprintName = "LocationManagerFramework"
+            BuildableName = "INTULocationManager.framework"
+            BlueprintName = "INTULocationManager"
             ReferencedContainer = "container:LocationManagerExample.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
