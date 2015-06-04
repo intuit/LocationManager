@@ -13,7 +13,7 @@ INTULocationManager makes it easy to request the device's current location, eith
 ## Installation
 *INTULocationManager requires iOS 6.0 or later.*
 
-**Using [CocoaPods](http://cocoapods.org)**
+### Using [CocoaPods](http://cocoapods.org)
 
 1.	Add the pod `INTULocationManager` to your [Podfile](http://guides.cocoapods.org/using/the-podfile.html).
 
@@ -22,14 +22,16 @@ INTULocationManager makes it easy to request the device's current location, eith
 2.	Run `pod install` from Terminal, then open your app's `.xcworkspace` file to launch Xcode.
 3.	Import the `INTULocationManager.h` header. Typically, this should be written as `#import <INTULocationManager/INTULocationManager.h>`
 
-**Using [Cartfile](https://github.com/Carthage/Carthage)**
+### Using [Carthage](https://github.com/Carthage/Carthage)
 
-1.	Add the github `intuit/LocationManager` to you [Cartfile](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile)
+1.	Add the `intuit/LocationManager` project to your [Cartfile](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile).
 
         github "intuit/LocationManager"
 
-2.	Run `carthage update` from Terminal.
-3.	Follow the current instructions in [Carthage's README][carthage-installation] for up to date installation instructions.
+2.  Run `carthage update`, then follow the [additional steps required](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application) to add the iOS and/or Mac frameworks into your project.
+3.  Import the INTULocationManager framework/module.
+    *  Using Modules: `@import INTULocationManager`
+    *  Without Modules: `#import <INTULocationManager/INTULocationManager.h>`
 
 [carthage-installation]: https://github.com/Carthage/Carthage#adding-frameworks-to-an-application
 
