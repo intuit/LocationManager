@@ -70,9 +70,9 @@
 		B116685718E5CEDD00D1E022 /* INTUViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = INTUViewController.h; sourceTree = "<group>"; };
 		B116685818E5CEDD00D1E022 /* INTUViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = INTUViewController.m; sourceTree = "<group>"; };
 		B116685A18E5CEDD00D1E022 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		B116686018E5CEDD00D1E022 /* LocationManagerExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LocationManagerExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B116686018E5CEDD00D1E022 /* LocationManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LocationManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B116686118E5CEDD00D1E022 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		B116686918E5CEDD00D1E022 /* LocationManagerExampleTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LocationManagerExampleTests-Info.plist"; sourceTree = "<group>"; };
+		B116686918E5CEDD00D1E022 /* LocationManagerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LocationManagerTests-Info.plist"; sourceTree = "<group>"; };
 		B116686B18E5CEDD00D1E022 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B116686D18E5CEDD00D1E022 /* INTULocationRequestTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = INTULocationRequestTests.m; sourceTree = "<group>"; };
 		B116687818E5CFD100D1E022 /* INTULocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INTULocationManager.h; path = ../../Source/INTULocationManager.h; sourceTree = "<group>"; };
@@ -160,7 +160,7 @@
 			isa = PBXGroup;
 			children = (
 				B116683F18E5CEDD00D1E022 /* LocationManagerExample.app */,
-				B116686018E5CEDD00D1E022 /* LocationManagerExampleTests.xctest */,
+				B116686018E5CEDD00D1E022 /* LocationManagerTests.xctest */,
 				6681CD281B1306C30080DBA9 /* INTULocationManager.framework */,
 			);
 			name = Products;
@@ -216,7 +216,7 @@
 		B116686818E5CEDD00D1E022 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				B116686918E5CEDD00D1E022 /* LocationManagerExampleTests-Info.plist */,
+				B116686918E5CEDD00D1E022 /* LocationManagerTests-Info.plist */,
 				B116686A18E5CEDD00D1E022 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
@@ -306,7 +306,7 @@
 			);
 			name = LocationManagerTests;
 			productName = LocationManagerExampleTests;
-			productReference = B116686018E5CEDD00D1E022 /* LocationManagerExampleTests.xctest */;
+			productReference = B116686018E5CEDD00D1E022 /* LocationManagerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -327,7 +327,7 @@
 					};
 				};
 			};
-			buildConfigurationList = B116683A18E5CEDD00D1E022 /* Build configuration list for PBXProject "LocationManagerExample" */;
+			buildConfigurationList = B116683A18E5CEDD00D1E022 /* Build configuration list for PBXProject "LocationManager" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -643,7 +643,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "LocationManagerExampleTests/LocationManagerExampleTests-Info.plist";
+				INFOPLIST_FILE = "LocationManagerExampleTests/LocationManagerTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -660,7 +660,7 @@
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
-				INFOPLIST_FILE = "LocationManagerExampleTests/LocationManagerExampleTests-Info.plist";
+				INFOPLIST_FILE = "LocationManagerExampleTests/LocationManagerTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -679,7 +679,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B116683A18E5CEDD00D1E022 /* Build configuration list for PBXProject "LocationManagerExample" */ = {
+		B116683A18E5CEDD00D1E022 /* Build configuration list for PBXProject "LocationManager" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B116686F18E5CEDD00D1E022 /* Debug */,
