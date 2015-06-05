@@ -37,8 +37,8 @@ INTULocationManager makes it easy to request the device's current location, eith
 
 **Manually from GitHub**
 
-1.	Download all the files in the [Source directory](Source).
-2.	Add all the files to your Xcode project (drag and drop is easiest).
+1.	Download all the files in the [INTULocationManager subdirectory](LocationManager/INTULocationManager).
+2.	Add the source files to your Xcode project (drag and drop is easiest).
 3.	Import the `INTULocationManager.h` header.
 
 ## Usage
