@@ -149,7 +149,7 @@
 			children = (
 				6681CD291B1306C30080DBA9 /* INTULocationManager */,
 				B116684818E5CEDD00D1E022 /* LocationManagerExample */,
-				B116686718E5CEDD00D1E022 /* LocationManagerExampleTests */,
+				B116686718E5CEDD00D1E022 /* LocationManagerTests */,
 				B116684118E5CEDD00D1E022 /* Frameworks */,
 				B116684018E5CEDD00D1E022 /* Products */,
 				9FB879D03FCA643276E66129 /* Pods */,
@@ -202,13 +202,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		B116686718E5CEDD00D1E022 /* LocationManagerExampleTests */ = {
+		B116686718E5CEDD00D1E022 /* LocationManagerTests */ = {
 			isa = PBXGroup;
 			children = (
 				B116686D18E5CEDD00D1E022 /* INTULocationRequestTests.m */,
 				600C00611AE2C08700EE2005 /* INTULocationManagerTests.m */,
 				B116686818E5CEDD00D1E022 /* Supporting Files */,
 			);
+			name = LocationManagerTests;
 			path = LocationManagerExampleTests;
 			sourceTree = "<group>";
 		};
@@ -288,9 +289,9 @@
 			productReference = B116683F18E5CEDD00D1E022 /* LocationManagerExample.app */;
 			productType = "com.apple.product-type.application";
 		};
-		B116685F18E5CEDD00D1E022 /* LocationManagerExampleTests */ = {
+		B116685F18E5CEDD00D1E022 /* LocationManagerTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B116687418E5CEDD00D1E022 /* Build configuration list for PBXNativeTarget "LocationManagerExampleTests" */;
+			buildConfigurationList = B116687418E5CEDD00D1E022 /* Build configuration list for PBXNativeTarget "LocationManagerTests" */;
 			buildPhases = (
 				0E55BCFC3541C8D339E421DE /* Check Pods Manifest.lock */,
 				B116685C18E5CEDD00D1E022 /* Sources */,
@@ -303,7 +304,7 @@
 			dependencies = (
 				B116686618E5CEDD00D1E022 /* PBXTargetDependency */,
 			);
-			name = LocationManagerExampleTests;
+			name = LocationManagerTests;
 			productName = LocationManagerExampleTests;
 			productReference = B116686018E5CEDD00D1E022 /* LocationManagerExampleTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -341,7 +342,7 @@
 			targets = (
 				6681CD271B1306C30080DBA9 /* INTULocationManager */,
 				B116683E18E5CEDD00D1E022 /* LocationManagerExample */,
-				B116685F18E5CEDD00D1E022 /* LocationManagerExampleTests */,
+				B116685F18E5CEDD00D1E022 /* LocationManagerTests */,
 			);
 		};
 /* End PBXProject section */
@@ -696,7 +697,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B116687418E5CEDD00D1E022 /* Build configuration list for PBXNativeTarget "LocationManagerExampleTests" */ = {
+		B116687418E5CEDD00D1E022 /* Build configuration list for PBXNativeTarget "LocationManagerTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B116687518E5CEDD00D1E022 /* Debug */,

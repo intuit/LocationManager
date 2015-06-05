@@ -29,8 +29,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "B116685F18E5CEDD00D1E022"
-               BuildableName = "LocationManagerExampleTests.xctest"
-               BlueprintName = "LocationManagerExampleTests"
+               BuildableName = "LocationManagerTests.xctest"
+               BlueprintName = "LocationManagerTests"
                ReferencedContainer = "container:LocationManagerExample.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -47,8 +47,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "B116685F18E5CEDD00D1E022"
-               BuildableName = "LocationManagerExampleTests.xctest"
-               BlueprintName = "LocationManagerExampleTests"
+               BuildableName = "LocationManagerTests.xctest"
+               BlueprintName = "LocationManagerTests"
                ReferencedContainer = "container:LocationManagerExample.xcodeproj">
             </BuildableReference>
          </TestableReference>
