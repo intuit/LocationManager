@@ -1,6 +1,6 @@
 //
 //  INTULocationRequestTests.m
-//  LocationManagerExampleTests
+//  LocationManagerTests
 //
 //  Copyright (c) 2014-2015 Intuit Inc.
 //

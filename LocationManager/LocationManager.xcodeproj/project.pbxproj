@@ -7,8 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		600C00621AE2C08700EE2005 /* INTULocationManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 600C00611AE2C08700EE2005 /* INTULocationManagerTests.m */; };
-		66D37CF4C48EB1E0EDBC8C63 /* libPods-LocationManagerExampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B12713A3FA178CDE0773800A /* libPods-LocationManagerExampleTests.a */; };
+		68D330E9A7D2C70696EAE91E /* libPods-LocationManagerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 33F6B5D26A2A908D7FE4E66C /* libPods-LocationManagerTests.a */; };
 		B116684318E5CEDD00D1E022 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B116684218E5CEDD00D1E022 /* Foundation.framework */; };
 		B116684518E5CEDD00D1E022 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B116684418E5CEDD00D1E022 /* CoreGraphics.framework */; };
 		B116684718E5CEDD00D1E022 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B116684618E5CEDD00D1E022 /* UIKit.framework */; };
@@ -21,8 +20,6 @@
 		B116686218E5CEDD00D1E022 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B116686118E5CEDD00D1E022 /* XCTest.framework */; };
 		B116686318E5CEDD00D1E022 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B116684218E5CEDD00D1E022 /* Foundation.framework */; };
 		B116686418E5CEDD00D1E022 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B116684618E5CEDD00D1E022 /* UIKit.framework */; };
-		B116686C18E5CEDD00D1E022 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B116686A18E5CEDD00D1E022 /* InfoPlist.strings */; };
-		B116686E18E5CEDD00D1E022 /* INTULocationRequestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B116686D18E5CEDD00D1E022 /* INTULocationRequestTests.m */; };
 		B19756011B21199500313073 /* INTULocationManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6681CD281B1306C30080DBA9 /* INTULocationManager.framework */; };
 		B197560A1B21202700313073 /* INTULocationManager.h in Headers */ = {isa = PBXBuildFile; fileRef = B19756041B21202700313073 /* INTULocationManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B197560B1B21202700313073 /* INTULocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B19756051B21202700313073 /* INTULocationManager.m */; };
@@ -30,6 +27,10 @@
 		B197560D1B21202700313073 /* INTULocationRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = B19756071B21202700313073 /* INTULocationRequest.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		B197560E1B21202700313073 /* INTULocationRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B19756081B21202700313073 /* INTULocationRequest.m */; };
 		B197560F1B21202700313073 /* INTULocationRequestDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = B19756091B21202700313073 /* INTULocationRequestDefines.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B19756131B2124CE00313073 /* INTULocationManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B19756111B2124CE00313073 /* INTULocationManagerTests.m */; };
+		B19756141B2124CE00313073 /* INTULocationRequestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B19756121B2124CE00313073 /* INTULocationRequestTests.m */; };
+		B19756161B2124DD00313073 /* LocationManagerTests-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B19756151B2124DD00313073 /* LocationManagerTests-Info.plist */; };
+		B197561D1B2124F300313073 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B197561B1B2124F300313073 /* InfoPlist.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,9 +52,10 @@
 
 /* Begin PBXFileReference section */
 		1A675D0EF7DE456FF55FDBD8 /* Pods-LocationManagerExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LocationManagerExampleTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LocationManagerExampleTests/Pods-LocationManagerExampleTests.release.xcconfig"; sourceTree = "<group>"; };
-		600C00611AE2C08700EE2005 /* INTULocationManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = INTULocationManagerTests.m; sourceTree = "<group>"; };
+		33F6B5D26A2A908D7FE4E66C /* libPods-LocationManagerTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LocationManagerTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6681CD281B1306C30080DBA9 /* INTULocationManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = INTULocationManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6681CD2B1B1306C30080DBA9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7E50D50636467BE8F94DC954 /* Pods-LocationManagerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LocationManagerTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LocationManagerTests/Pods-LocationManagerTests.release.xcconfig"; sourceTree = "<group>"; };
 		9775B8FFF4C5D422EB3489E6 /* Pods-LocationManagerExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LocationManagerExampleTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LocationManagerExampleTests/Pods-LocationManagerExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B116683F18E5CEDD00D1E022 /* LocationManagerExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LocationManagerExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B116684218E5CEDD00D1E022 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -70,9 +72,6 @@
 		B116685A18E5CEDD00D1E022 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		B116686018E5CEDD00D1E022 /* LocationManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LocationManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B116686118E5CEDD00D1E022 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		B116686918E5CEDD00D1E022 /* LocationManagerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LocationManagerTests-Info.plist"; sourceTree = "<group>"; };
-		B116686B18E5CEDD00D1E022 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		B116686D18E5CEDD00D1E022 /* INTULocationRequestTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = INTULocationRequestTests.m; sourceTree = "<group>"; };
 		B12713A3FA178CDE0773800A /* libPods-LocationManagerExampleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LocationManagerExampleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B19756041B21202700313073 /* INTULocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INTULocationManager.h; path = INTULocationManager/INTULocationManager.h; sourceTree = SOURCE_ROOT; };
 		B19756051B21202700313073 /* INTULocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INTULocationManager.m; path = INTULocationManager/INTULocationManager.m; sourceTree = SOURCE_ROOT; };
@@ -80,6 +79,11 @@
 		B19756071B21202700313073 /* INTULocationRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INTULocationRequest.h; path = INTULocationManager/INTULocationRequest.h; sourceTree = SOURCE_ROOT; };
 		B19756081B21202700313073 /* INTULocationRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INTULocationRequest.m; path = INTULocationManager/INTULocationRequest.m; sourceTree = SOURCE_ROOT; };
 		B19756091B21202700313073 /* INTULocationRequestDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INTULocationRequestDefines.h; path = INTULocationManager/INTULocationRequestDefines.h; sourceTree = SOURCE_ROOT; };
+		B19756111B2124CE00313073 /* INTULocationManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INTULocationManagerTests.m; path = LocationManagerTests/INTULocationManagerTests.m; sourceTree = SOURCE_ROOT; };
+		B19756121B2124CE00313073 /* INTULocationRequestTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INTULocationRequestTests.m; path = LocationManagerTests/INTULocationRequestTests.m; sourceTree = SOURCE_ROOT; };
+		B19756151B2124DD00313073 /* LocationManagerTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "LocationManagerTests-Info.plist"; path = "LocationManagerTests/LocationManagerTests-Info.plist"; sourceTree = SOURCE_ROOT; };
+		B197561C1B2124F300313073 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = LocationManagerTests/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
+		BDAF7260555E9E55ADE601BE /* Pods-LocationManagerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LocationManagerTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LocationManagerTests/Pods-LocationManagerTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,7 +112,7 @@
 				B116686218E5CEDD00D1E022 /* XCTest.framework in Frameworks */,
 				B116686418E5CEDD00D1E022 /* UIKit.framework in Frameworks */,
 				B116686318E5CEDD00D1E022 /* Foundation.framework in Frameworks */,
-				66D37CF4C48EB1E0EDBC8C63 /* libPods-LocationManagerExampleTests.a in Frameworks */,
+				68D330E9A7D2C70696EAE91E /* libPods-LocationManagerTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -143,6 +147,8 @@
 			children = (
 				9775B8FFF4C5D422EB3489E6 /* Pods-LocationManagerExampleTests.debug.xcconfig */,
 				1A675D0EF7DE456FF55FDBD8 /* Pods-LocationManagerExampleTests.release.xcconfig */,
+				BDAF7260555E9E55ADE601BE /* Pods-LocationManagerTests.debug.xcconfig */,
+				7E50D50636467BE8F94DC954 /* Pods-LocationManagerTests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -177,6 +183,7 @@
 				B116684618E5CEDD00D1E022 /* UIKit.framework */,
 				B116686118E5CEDD00D1E022 /* XCTest.framework */,
 				B12713A3FA178CDE0773800A /* libPods-LocationManagerExampleTests.a */,
+				33F6B5D26A2A908D7FE4E66C /* libPods-LocationManagerTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -208,8 +215,8 @@
 		B116686718E5CEDD00D1E022 /* LocationManagerTests */ = {
 			isa = PBXGroup;
 			children = (
-				B116686D18E5CEDD00D1E022 /* INTULocationRequestTests.m */,
-				600C00611AE2C08700EE2005 /* INTULocationManagerTests.m */,
+				B19756111B2124CE00313073 /* INTULocationManagerTests.m */,
+				B19756121B2124CE00313073 /* INTULocationRequestTests.m */,
 				B116686818E5CEDD00D1E022 /* Supporting Files */,
 			);
 			name = LocationManagerTests;
@@ -219,8 +226,8 @@
 		B116686818E5CEDD00D1E022 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				B116686918E5CEDD00D1E022 /* LocationManagerTests-Info.plist */,
-				B116686A18E5CEDD00D1E022 /* InfoPlist.strings */,
+				B19756151B2124DD00313073 /* LocationManagerTests-Info.plist */,
+				B197561B1B2124F300313073 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -358,7 +365,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B116686C18E5CEDD00D1E022 /* InfoPlist.strings in Resources */,
+				B19756161B2124DD00313073 /* LocationManagerTests-Info.plist in Resources */,
+				B197561D1B2124F300313073 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -377,7 +385,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LocationManagerExampleTests/Pods-LocationManagerExampleTests-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LocationManagerTests/Pods-LocationManagerTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		0E55BCFC3541C8D339E421DE /* Check Pods Manifest.lock */ = {
@@ -421,8 +429,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				600C00621AE2C08700EE2005 /* INTULocationManagerTests.m in Sources */,
-				B116686E18E5CEDD00D1E022 /* INTULocationRequestTests.m in Sources */,
+				B19756141B2124CE00313073 /* INTULocationRequestTests.m in Sources */,
+				B19756131B2124CE00313073 /* INTULocationManagerTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -458,10 +466,10 @@
 			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
-		B116686A18E5CEDD00D1E022 /* InfoPlist.strings */ = {
+		B197561B1B2124F300313073 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				B116686B18E5CEDD00D1E022 /* en */,
+				B197561C1B2124F300313073 /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -618,7 +626,7 @@
 		};
 		B116687518E5CEDD00D1E022 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9775B8FFF4C5D422EB3489E6 /* Pods-LocationManagerExampleTests.debug.xcconfig */;
+			baseConfigurationReference = BDAF7260555E9E55ADE601BE /* Pods-LocationManagerTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/LocationManagerExample.app/LocationManagerExample";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -630,7 +638,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "LocationManagerExampleTests/LocationManagerTests-Info.plist";
+				INFOPLIST_FILE = "LocationManagerTests/LocationManagerTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -639,7 +647,7 @@
 		};
 		B116687618E5CEDD00D1E022 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1A675D0EF7DE456FF55FDBD8 /* Pods-LocationManagerExampleTests.release.xcconfig */;
+			baseConfigurationReference = 7E50D50636467BE8F94DC954 /* Pods-LocationManagerTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/LocationManagerExample.app/LocationManagerExample";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -647,7 +655,7 @@
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
-				INFOPLIST_FILE = "LocationManagerExampleTests/LocationManagerTests-Info.plist";
+				INFOPLIST_FILE = "LocationManagerTests/LocationManagerTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
