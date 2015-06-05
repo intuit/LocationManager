@@ -126,7 +126,7 @@ INTULocationRequestID requestID = [locMgr requestLocationWithDesiredAccuracy:INT
 Note that subscriptions never timeout; calling `forceCompleteLocationRequest:` on a subscription will simply cancel it.
 
 ## Example Project
-An [example project](LocationManagerExample) is provided. It requires Xcode 5 and iOS 7.0 or later. Please note that it can run in the iOS Simulator, but you need to go to the iOS Simulator's **Debug > Location** menu once running the app to simulate a location (the default is **None**).
+Open the [project](LocationManager) included in the repository (requires Xcode 6 and iOS 8.0 or later). It contains a `LocationManagerExample` scheme that will run a simple demo app. Please note that it can run in the iOS Simulator, but you need to go to the iOS Simulator's **Debug > Location** menu once running the app to simulate a location (the default is **None**).
 
 ## Issues & Contributions
 Please [open an issue here on GitHub](https://github.com/intuit/LocationManager/issues/new) if you have a problem, suggestion, or other comment.
