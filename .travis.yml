@@ -1,10 +1,10 @@
 sudo: false
 language: objective-c
 cache: cocoapods
-xcode_workspace: LocationManagerExample/LocationManagerExample.xcworkspace
+xcode_workspace: LocationManager/LocationManager.xcworkspace
 xcode_scheme: LocationManagerExample
 xcode_sdk: iphonesimulator
-podfile: LocationManagerExample/Podfile
+podfile: LocationManager/Podfile
 
 before_install:
   - gem install cocoapods --no-ri --no-rdoc
