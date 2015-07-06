@@ -29,7 +29,6 @@
 		B197560F1B21202700313073 /* INTULocationRequestDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = B19756091B21202700313073 /* INTULocationRequestDefines.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B19756131B2124CE00313073 /* INTULocationManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B19756111B2124CE00313073 /* INTULocationManagerTests.m */; };
 		B19756141B2124CE00313073 /* INTULocationRequestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B19756121B2124CE00313073 /* INTULocationRequestTests.m */; };
-		B19756161B2124DD00313073 /* LocationManagerTests-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B19756151B2124DD00313073 /* LocationManagerTests-Info.plist */; };
 		B197561D1B2124F300313073 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B197561B1B2124F300313073 /* InfoPlist.strings */; };
 /* End PBXBuildFile section */
 
@@ -312,7 +311,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = INTU;
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0640;
 				ORGANIZATIONNAME = "Intuit Inc.";
 				TargetAttributes = {
 					6681CD271B1306C30080DBA9 = {
@@ -365,7 +364,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B19756161B2124DD00313073 /* LocationManagerTests-Info.plist in Resources */,
 				B197561D1B2124F300313073 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
