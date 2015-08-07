@@ -559,27 +559,5 @@ static id _sharedInstance;
         }
     }
 }
-    
-#pragma mark Deprecated methods
-    
-/**
- DEPRECATED, will be removed in a future release. Please use +[INTULocationManager locationServicesState] instead.
- Returns YES if location services are enabled in the system settings, and the app has NOT been denied/restricted access. Returns NO otherwise.
- Note that this method will return YES even if the authorization status has not yet been determined.
- */
-- (BOOL)locationServicesAvailable
-{
-    if ([CLLocationManager locationServicesEnabled] == NO) {
-        return NO;
-    }
-    else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied) {
-        return NO;
-    }
-    else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusRestricted) {
-        return NO;
-    }
-    
-    return YES;
-}
 
 @end

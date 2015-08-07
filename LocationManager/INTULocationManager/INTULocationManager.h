@@ -98,14 +98,3 @@ FOUNDATION_EXPORT const unsigned char INTULocationManagerVersionString[];
 
 @end
 
-
-/**
- A category on INTULocationManager that exposes deprecated legacy APIs. These should no longer be used, and will be removed in a future release.
- */
-@interface INTULocationManager (Deprecated)
-
-/** DEPRECATED, will be removed in a future release. Please use +[INTULocationManager locationServicesState] instead.
-    Returns YES if location services are enabled in the system settings, and the app has NOT been denied/restricted access. Returns NO otherwise. */
-@property (nonatomic, readonly) BOOL locationServicesAvailable __attribute__((deprecated));
-
-@end
