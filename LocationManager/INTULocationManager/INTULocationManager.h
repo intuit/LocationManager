@@ -32,6 +32,8 @@ FOUNDATION_EXPORT double INTULocationManagerVersionNumber;
 FOUNDATION_EXPORT const unsigned char INTULocationManagerVersionString[];
 
 
+__INTU_ASSUME_NONNULL_BEGIN
+
 /**
  An abstraction around CLLocationManager that provides a block-based asynchronous API for obtaining the device's location.
  INTULocationManager automatically starts and stops system location services as needed to minimize battery drain.
@@ -98,3 +100,4 @@ FOUNDATION_EXPORT const unsigned char INTULocationManagerVersionString[];
 
 @end
 
+__INTU_ASSUME_NONNULL_END

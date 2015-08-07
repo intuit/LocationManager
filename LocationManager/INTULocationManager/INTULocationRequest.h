@@ -25,6 +25,8 @@
 
 #import "INTULocationRequestDefines.h"
 
+__INTU_ASSUME_NONNULL_BEGIN
+
 @class INTULocationRequest;
 
 /**
@@ -48,7 +50,7 @@
 @interface INTULocationRequest : NSObject
 
 /** The delegate for this location request. */
-@property (nonatomic, weak) id<INTULocationRequestDelegate> delegate;
+@property (nonatomic, weak, __INTU_NULLABLE) id<INTULocationRequestDelegate> delegate;
 /** The request ID for this location request (set during initialization). */
 @property (nonatomic, readonly) INTULocationRequestID requestID;
 /** Whether this is a subscription request (desired accuracy is INTULocationAccuracyNone). */
@@ -64,7 +66,7 @@
 /** Whether this location request has timed out (will also be YES if it has been completed). */
 @property (nonatomic, readonly) BOOL hasTimedOut;
 /** The block to execute when the location request completes. */
-@property (nonatomic, copy) INTULocationRequestBlock block;
+@property (nonatomic, copy, __INTU_NULLABLE) INTULocationRequestBlock block;
 
 /** Completes the location request. */
 - (void)complete;
@@ -83,3 +85,5 @@
 - (CLLocationAccuracy)horizontalAccuracyThreshold;
 
 @end
+
+__INTU_ASSUME_NONNULL_END

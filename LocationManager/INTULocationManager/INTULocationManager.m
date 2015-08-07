@@ -56,7 +56,7 @@
 
 // An array of pending location requests in the form:
 // @[ INTULocationRequest *locationRequest1, INTULocationRequest *locationRequest2, ... ]
-@property (nonatomic, strong) NSMutableArray *locationRequests;
+@property (nonatomic, strong) __INTU_GENERICS(NSMutableArray, INTULocationRequest *) *locationRequests;
 
 @end
 
@@ -338,7 +338,7 @@ static id _sharedInstance;
     CLLocation *mostRecentLocation = self.currentLocation;
     
     // Keep a separate array of location requests to complete to avoid modifying the locationRequests property while iterating over it
-    NSMutableArray *locationRequestsToComplete = [NSMutableArray array];
+    __INTU_GENERICS(NSMutableArray, INTULocationRequest *) *locationRequestsToComplete = [NSMutableArray array];
     
     for (INTULocationRequest *locationRequest in self.locationRequests) {
         if (locationRequest.hasTimedOut) {
@@ -380,7 +380,7 @@ static id _sharedInstance;
 - (void)completeAllLocationRequests
 {
     // Iterate through a copy of the locationRequests array to avoid modifying the same array we are removing elements from
-    NSArray *locationRequests = [self.locationRequests copy];
+    __INTU_GENERICS(NSArray, INTULocationRequest *) *locationRequests = [self.locationRequests copy];
     for (INTULocationRequest *locationRequest in locationRequests) {
         [self completeLocationRequest:locationRequest];
     }
