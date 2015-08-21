@@ -96,6 +96,18 @@ describe(@"After requesting a location", ^{
     });
 });
 
+describe(@"After subscribing for significant location changes", ^{
+    it(@"can be cancelled", ^{
+        INTULocationRequestID requestID = [subject subscribeToSignificantLocationChangesWithBlock:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
+            failure(@"was not cancelled");
+        }];
+        
+        [subject cancelLocationRequest:requestID];
+        
+        [subject locationManager:subject.locationManager didUpdateLocations:@[location]];
+    });
+});
+
 describe(@"Timeouts", ^{
     it(@"calls the request callback on location update after a timeout", ^{
         __block NSInteger callbackCount = 0;
