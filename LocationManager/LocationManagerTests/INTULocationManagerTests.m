@@ -121,7 +121,7 @@ describe(@"Timeouts", ^{
 
 });
 
-describe(@"subscribing with a block", ^{
+describe(@"subscribing for location updates with a block", ^{
     it(@"calls the block on location update", ^{
         __block BOOL called = NO;
         [subject subscribeToLocationUpdatesWithBlock:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
@@ -142,6 +142,30 @@ describe(@"subscribing with a block", ^{
             [subject locationManager:subject.locationManager didUpdateLocations:@[location]];
         });
 
+    });
+});
+
+describe(@"subscribing for significant location changes with a block", ^{
+    it(@"calls the block on location change", ^{
+        __block BOOL called = NO;
+        [subject subscribeToSignificantLocationChangesWithBlock:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
+            called = YES;
+        }];
+        
+        [subject locationManager:subject.locationManager didUpdateLocations:@[location]];
+        
+        expect(called).to.beTruthy();
+    });
+    
+    it(@"passes the location", ^{
+        waitUntil(^(DoneCallback done) {
+            [subject subscribeToSignificantLocationChangesWithBlock:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
+                expect(currentLocation).to.equal(location);
+                done();
+            }];
+            [subject locationManager:subject.locationManager didUpdateLocations:@[location]];
+        });
+        
     });
 });
 
