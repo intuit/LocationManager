@@ -30,7 +30,8 @@
 @interface INTUViewController ()
 
 @property (weak, nonatomic) IBOutlet UILabel *statusLabel;
-@property (weak, nonatomic) IBOutlet UISwitch *subscriptionSwitch;
+@property (weak, nonatomic) IBOutlet UISwitch *subscriptionForAllChangesSwitch;
+@property (weak, nonatomic) IBOutlet UISwitch *subscriptionForSignificantChangesSwitch;
 @property (weak, nonatomic) IBOutlet UILabel *timeoutLabel;
 @property (weak, nonatomic) IBOutlet UILabel *desiredAccuracyLabel;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *desiredAccuracyControl;
@@ -53,7 +54,8 @@
 {
     [super viewDidLoad];
 	
-    self.subscriptionSwitch.on = NO;
+    self.subscriptionForAllChangesSwitch.on = NO;
+    self.subscriptionForSignificantChangesSwitch.on = NO;
     self.desiredAccuracyControl.selectedSegmentIndex = 0;
     self.desiredAccuracy = INTULocationAccuracyCity;
     self.timeoutSlider.value = 10.0;
@@ -92,7 +94,29 @@
         
         if (status == INTULocationStatusSuccess) {
             // A new updated location is available in currentLocation, and achievedAccuracy indicates how accurate this particular location is
-            strongSelf.statusLabel.text = [NSString stringWithFormat:@"Subscription block called with Current Location:\n%@", currentLocation];
+            strongSelf.statusLabel.text = [NSString stringWithFormat:@"'Location updates' subscription block called with Current Location:\n%@", currentLocation];
+        }
+        else {
+            // An error occurred, which causes the subscription to cancel automatically (this block will not execute again unless it is used to start a new subscription).
+            strongSelf.locationRequestID = NSNotFound;
+            strongSelf.statusLabel.text = [strongSelf getErrorDescription:status];
+        }
+    }];
+}
+
+/**
+ Starts a new subscription for significant location changes.
+ */
+- (void)startMonitoringSignificantLocationChanges
+{
+    __weak __typeof(self) weakSelf = self;
+    INTULocationManager *locMgr = [INTULocationManager sharedInstance];
+    self.locationRequestID = [locMgr subscribeToSignificantLocationChangesWithBlock:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
+        __typeof(weakSelf) strongSelf = weakSelf;
+        
+        if (status == INTULocationStatusSuccess) {
+            // A new updated location is available in currentLocation, and achievedAccuracy indicates how accurate this particular location is
+            strongSelf.statusLabel.text = [NSString stringWithFormat:@"'Significant changes' subscription block called with Current Location:\n%@", currentLocation];
         }
         else {
             // An error occurred, which causes the subscription to cancel automatically (this block will not execute again unless it is used to start a new subscription).
@@ -138,8 +162,10 @@
  */
 - (IBAction)startButtonTapped:(id)sender
 {
-    if (self.subscriptionSwitch.on) {
+    if (self.subscriptionForAllChangesSwitch.on) {
         [self startLocationUpdateSubscription];
+    } else if (self.subscriptionForSignificantChangesSwitch.on) {
+        [self startMonitoringSignificantLocationChanges];
     } else {
         [self startSingleLocationRequest];
     }
@@ -151,7 +177,7 @@
 - (IBAction)forceCompleteRequest:(id)sender
 {
     [[INTULocationManager sharedInstance] forceCompleteLocationRequest:self.locationRequestID];
-    if (self.subscriptionSwitch.on) {
+    if (self.subscriptionForAllChangesSwitch.on || self.subscriptionForSignificantChangesSwitch.on) {
         // Clear the location request ID, since this will not be handled inside the subscription block
         // (This is not necessary for regular one-time location requests, since they will handle this inside the completion block.)
         self.locationRequestID = NSNotFound;
@@ -166,11 +192,19 @@
 {
     [[INTULocationManager sharedInstance] cancelLocationRequest:self.locationRequestID];
     self.locationRequestID = NSNotFound;
-    self.statusLabel.text = self.subscriptionSwitch.on ? @"Subscription canceled." : @"Location request canceled.";
+    self.statusLabel.text = self.subscriptionForAllChangesSwitch.on || self.subscriptionForSignificantChangesSwitch.on ? @"Subscription canceled." : @"Location request canceled.";
 }
 
 - (IBAction)subscriptionSwitchChanged:(UISwitch *)sender
 {
+    if (sender.on) {
+        if ([sender isEqual:self.subscriptionForAllChangesSwitch]) {
+            [self.subscriptionForSignificantChangesSwitch setOn:NO animated:YES];
+        } else if ([sender isEqual:self.subscriptionForSignificantChangesSwitch]) {
+            [self.subscriptionForAllChangesSwitch setOn:NO animated:YES];
+        }
+    }
+    
     self.desiredAccuracyControl.userInteractionEnabled = !sender.on;
     self.timeoutSlider.userInteractionEnabled = !sender.on;
     
@@ -230,11 +264,12 @@
     
     BOOL isProcessingLocationRequest = (locationRequestID != NSNotFound);
     
-    self.subscriptionSwitch.enabled = !isProcessingLocationRequest;
+    self.subscriptionForAllChangesSwitch.enabled = !isProcessingLocationRequest;
+    self.subscriptionForSignificantChangesSwitch.enabled = !isProcessingLocationRequest;
     self.desiredAccuracyControl.enabled = !isProcessingLocationRequest;
     self.timeoutSlider.enabled = !isProcessingLocationRequest;
     self.requestCurrentLocationButton.enabled = !isProcessingLocationRequest;
-    self.forceCompleteRequestButton.enabled = isProcessingLocationRequest && !self.subscriptionSwitch.on;
+    self.forceCompleteRequestButton.enabled = isProcessingLocationRequest && !self.subscriptionForAllChangesSwitch.on && !self.subscriptionForSignificantChangesSwitch.on;
     self.cancelRequestButton.enabled = isProcessingLocationRequest;
     
     if (isProcessingLocationRequest) {

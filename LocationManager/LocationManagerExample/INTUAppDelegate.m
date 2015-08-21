@@ -25,12 +25,18 @@
 //
 
 #import "INTUAppDelegate.h"
+#import "INTUViewController.h"
 
 @implementation INTUAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
+    // If you start monitoring significant location changes and your app is subsequently terminated, the system automatically relaunches the app into the background if a new event arrives.
+    // Upon relaunch, you must still subscribe to significant location changes to continue receiving location events. 
+    if ([launchOptions objectForKey:UIApplicationLaunchOptionsLocationKey]) {
+        INTUViewController *rootViewController = (INTUViewController *)self.window.rootViewController;
+        [rootViewController startMonitoringSignificantLocationChanges];
+    }
     return YES;
 }
 							

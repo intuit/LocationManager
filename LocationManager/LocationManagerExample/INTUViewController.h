@@ -28,4 +28,9 @@
 
 @interface INTUViewController : UIViewController
 
+/**
+ Starts a new subscription for significant location changes.
+ */
+- (void)startMonitoringSignificantLocationChanges;
+
 @end

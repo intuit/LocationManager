@@ -38,5 +38,7 @@
 	<string>This string is required to gain permission to access location services on iOS 8+ and should describe how your app uses location services. Set this string in the Info.plist</string>
 	<key>NSLocationUsageDescription</key>
 	<string>This string is optional but recommended on iOS 6 &amp; 7 and should describe how your app uses location services. Set this string in the Info.plist</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>This string is required to gain permission to access location services on iOS 8+ when the app in the background and should describe how your app uses location services. Set this string in the Info.plist</string>
 </dict>
 </plist>
