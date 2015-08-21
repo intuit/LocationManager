@@ -53,7 +53,9 @@ __INTU_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak, __INTU_NULLABLE) id<INTULocationRequestDelegate> delegate;
 /** The request ID for this location request (set during initialization). */
 @property (nonatomic, readonly) INTULocationRequestID requestID;
-/** Whether this is a subscription request (desired accuracy is INTULocationAccuracyNone). */
+/** The type of this location request (set during initialization). */
+@property (nonatomic, readonly, assign) INTULocationRequestType type;
+/** Whether this is a subscription request. */
 @property (nonatomic, readonly) BOOL isSubscription;
 /** The desired accuracy for this location request.
     If set to INTULocationAccuracyNone, this will be a subscription request (executes block on each location update indefinitely until canceled). */
@@ -67,6 +69,15 @@ __INTU_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) BOOL hasTimedOut;
 /** The block to execute when the location request completes. */
 @property (nonatomic, copy, __INTU_NULLABLE) INTULocationRequestBlock block;
+
+/**
+ Designated initializer. Initializes and returns a newly allocated location request object with the specified type.
+ 
+ @param type The type of the location request.
+ 
+ @return An initialized location request, or nil if a location request could not be created for some reason that would not result in an exception.
+ */
+- (instancetype)initWithType:(INTULocationRequestType)type;
 
 /** Completes the location request. */
 - (void)complete;

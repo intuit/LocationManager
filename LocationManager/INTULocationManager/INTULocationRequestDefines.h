@@ -75,6 +75,13 @@ typedef NS_ENUM(NSInteger, INTULocationServicesState) {
 /** A unique ID that corresponds to one location request. */
 typedef NSInteger INTULocationRequestID;
 
+/** The available types of location requests. */
+typedef NS_ENUM(NSInteger, INTULocationRequestType) {
+    INTULocationRequestTypeSingleChange,
+    INTULocationRequestTypeSubscriptionForAllChanges,
+    INTULocationRequestTypeSubscriptionForSignificantChanges
+};
+
 /** An abstraction of both the horizontal accuracy and recency of location data.
     Room is the highest level of accuracy/recency; City is the lowest level. */
 typedef NS_ENUM(NSInteger, INTULocationAccuracy) {

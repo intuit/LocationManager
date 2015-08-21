@@ -90,6 +90,17 @@ __INTU_ASSUME_NONNULL_BEGIN
  */
 - (INTULocationRequestID)subscribeToLocationUpdatesWithBlock:(INTULocationRequestBlock)block;
 
+/**
+ Creates a subscription for significant location changes that will execute the block once per change indefinitely (until canceled).
+ If an error occurs, the block will execute with a status other than INTULocationStatusSuccess, and the subscription will be canceled automatically.
+ 
+ @param block The block to execute every time an updated location is available.
+ The status will be INTULocationStatusSuccess unless an error occurred; it will never be INTULocationStatusTimedOut.
+ 
+ @return The location request ID, which can be used to cancel the subscription of significant location changes to this block.
+ */
+- (INTULocationRequestID)subscribeToSignificantLocationChangesWithBlock:(INTULocationRequestBlock)block;
+
 /** Immediately forces completion of the location request with the given requestID (if it exists), and executes the original request block with the results.
     For one-time location requests, this is effectively a manual timeout, and will result in the request completing with status INTULocationStatusTimedOut.
     If the requestID corresponds to a subscription, then the subscription will simply be canceled. */
