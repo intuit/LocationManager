@@ -36,13 +36,37 @@ describe(@"INTULocationRequest", ^{
     __block INTULocationRequest *request;
 
     before(^{
-        request = [[INTULocationRequest alloc] init];
+        request = [[INTULocationRequest alloc] initWithType:INTULocationRequestTypeSingleChange];
     });
 
     it(@"generates a unique request id for each request", ^{
-        INTULocationRequest *request1 = [[INTULocationRequest alloc] init];
-        INTULocationRequest *request2 = [[INTULocationRequest alloc] init];
+        INTULocationRequest *request1 = [[INTULocationRequest alloc] initWithType:INTULocationRequestTypeSingleChange];
+        INTULocationRequest *request2 = [[INTULocationRequest alloc] initWithType:INTULocationRequestTypeSingleChange];
         expect(request1.requestID).notTo.equal(request2.requestID);
+        
+        INTULocationRequest *request3 = [[INTULocationRequest alloc] initWithType:INTULocationRequestTypeSubscriptionForAllChanges];
+        expect(request2.requestID).notTo.equal(request3.requestID);
+        
+        INTULocationRequest *request4 = [[INTULocationRequest alloc] initWithType:INTULocationRequestTypeSubscriptionForSignificantChanges];
+        expect(request3.requestID).notTo.equal(request4.requestID);
+    });
+    
+    describe(@"is a subscription", ^{
+        context(@"when the type is INTULocationRequestTypeSingleChange", ^{
+            it(@"should not be a subscription", ^{
+                expect(request.isSubscription).to.beFalsy();
+            });
+        });
+        
+        context(@"when the type is INTULocationRequestTypeSubscriptionForAllChanges or INTULocationRequestTypeSubscriptionForSignificantChanges", ^{
+            it(@"should be a subscription", ^{
+                INTULocationRequest *locationRequestWithSubscriptionForAllChangesType = [[INTULocationRequest alloc] initWithType:INTULocationRequestTypeSubscriptionForAllChanges];
+                expect(locationRequestWithSubscriptionForAllChangesType.isSubscription).to.beTruthy();
+                
+                INTULocationRequest *locationRequestWithSubscriptionForSignificantChangesType = [[INTULocationRequest alloc] initWithType:INTULocationRequestTypeSubscriptionForSignificantChanges];
+                expect(locationRequestWithSubscriptionForSignificantChangesType.isSubscription).to.beTruthy();
+            });
+        });
     });
 
     describe(@"setting accuracy", ^{
@@ -71,21 +95,6 @@ describe(@"INTULocationRequest", ^{
             request.desiredAccuracy = INTULocationAccuracyRoom;
             expect(request.updateTimeStaleThreshold).to.equal(kINTUUpdateTimeStaleThresholdRoom);
         });
-
-        context(@"when the desired accuracy is none", ^{
-            it(@"should be a subscription", ^{
-                request.desiredAccuracy = INTULocationAccuracyNone;
-                expect(request.isSubscription).to.beTruthy();
-            });
-        });
-
-        context(@"when the desired accuracy is not none", ^{
-            it(@"should not be a subscription", ^{
-                request.desiredAccuracy = INTULocationAccuracyRoom;
-                expect(request.isSubscription).to.beFalsy();
-            });
-        });
-
     });
 
     describe(@"timing out a request", ^{
