@@ -95,7 +95,7 @@ __INTU_ASSUME_NONNULL_BEGIN
  If an error occurs, the block will execute with a status other than INTULocationStatusSuccess, and the subscription will be canceled automatically.
  
  @param block The block to execute every time an updated location is available.
- The status will be INTULocationStatusSuccess unless an error occurred; it will never be INTULocationStatusTimedOut.
+              The status will be INTULocationStatusSuccess unless an error occurred; it will never be INTULocationStatusTimedOut.
  
  @return The location request ID, which can be used to cancel the subscription of significant location changes to this block.
  */

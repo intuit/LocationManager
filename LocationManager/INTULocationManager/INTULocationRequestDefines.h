@@ -45,6 +45,12 @@
 #   define __INTU_GENERICS(type, ...)       type
 #endif
 
+#ifdef NS_DESIGNATED_INITIALIZER
+#   define __INTU_DESIGNATED_INITIALIZER    NS_DESIGNATED_INITIALIZER
+#else
+#   define __INTU_DESIGNATED_INITIALIZER
+#endif
+
 static const CLLocationAccuracy kINTUHorizontalAccuracyThresholdCity =         5000.0;  // in meters
 static const CLLocationAccuracy kINTUHorizontalAccuracyThresholdNeighborhood = 1000.0;  // in meters
 static const CLLocationAccuracy kINTUHorizontalAccuracyThresholdBlock =         100.0;  // in meters
@@ -60,7 +66,7 @@ static const NSTimeInterval kINTUUpdateTimeStaleThresholdRoom =               5.
 /** The possible states that location services can be in. */
 typedef NS_ENUM(NSInteger, INTULocationServicesState) {
     /** User has already granted this app permissions to access location services, and they are enabled and ready for use by this app.
-     Note: this state will be returned for both the "When In Use" and "Always" permission levels. */
+        Note: this state will be returned for both the "When In Use" and "Always" permission levels. */
     INTULocationServicesStateAvailable,
     /** User has not yet responded to the dialog that grants this app permission to access location services. */
     INTULocationServicesStateNotDetermined,
@@ -74,13 +80,6 @@ typedef NS_ENUM(NSInteger, INTULocationServicesState) {
 
 /** A unique ID that corresponds to one location request. */
 typedef NSInteger INTULocationRequestID;
-
-/** The available types of location requests. */
-typedef NS_ENUM(NSInteger, INTULocationRequestType) {
-    INTULocationRequestTypeSingleChange,
-    INTULocationRequestTypeSubscriptionForAllChanges,
-    INTULocationRequestTypeSubscriptionForSignificantChanges
-};
 
 /** An abstraction of both the horizontal accuracy and recency of location data.
     Room is the highest level of accuracy/recency; City is the lowest level. */

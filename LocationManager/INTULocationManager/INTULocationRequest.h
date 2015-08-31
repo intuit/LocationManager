@@ -27,6 +27,16 @@
 
 __INTU_ASSUME_NONNULL_BEGIN
 
+/** The available types of location requests. */
+typedef NS_ENUM(NSInteger, INTULocationRequestType) {
+    /** A one-time location request with a specific desired accuracy and optional timeout. */
+    INTULocationRequestTypeSingle,
+    /** A subscription to location updates. */
+    INTULocationRequestTypeSubscription,
+    /** A subscription to significant location changes. */
+    INTULocationRequestTypeSignificantChanges
+};
+
 @class INTULocationRequest;
 
 /**
@@ -54,11 +64,10 @@ __INTU_ASSUME_NONNULL_BEGIN
 /** The request ID for this location request (set during initialization). */
 @property (nonatomic, readonly) INTULocationRequestID requestID;
 /** The type of this location request (set during initialization). */
-@property (nonatomic, readonly, assign) INTULocationRequestType type;
-/** Whether this is a subscription request. */
-@property (nonatomic, readonly) BOOL isSubscription;
-/** The desired accuracy for this location request.
-    If set to INTULocationAccuracyNone, this will be a subscription request (executes block on each location update indefinitely until canceled). */
+@property (nonatomic, readonly) INTULocationRequestType type;
+/** Whether this is a recurring location request (type is either Subscription or SignificantChanges). */
+@property (nonatomic, readonly) BOOL isRecurring;
+/** The desired accuracy for this location request. For recurring request types (e.g. Subscription or SignificantChanges), this is not used. */
 @property (nonatomic, assign) INTULocationAccuracy desiredAccuracy;
 /** The maximum amount of time the location request should be allowed to live before completing.
     If this value is exactly 0.0, it will be ignored (the request will never timeout by itself). */
@@ -70,14 +79,8 @@ __INTU_ASSUME_NONNULL_BEGIN
 /** The block to execute when the location request completes. */
 @property (nonatomic, copy, __INTU_NULLABLE) INTULocationRequestBlock block;
 
-/**
- Designated initializer. Initializes and returns a newly allocated location request object with the specified type.
- 
- @param type The type of the location request.
- 
- @return An initialized location request, or nil if a location request could not be created for some reason that would not result in an exception.
- */
-- (instancetype)initWithType:(INTULocationRequestType)type;
+/** Designated initializer. Initializes and returns a newly allocated location request object with the specified type. */
+- (instancetype)initWithType:(INTULocationRequestType)type __INTU_DESIGNATED_INITIALIZER;
 
 /** Completes the location request. */
 - (void)complete;

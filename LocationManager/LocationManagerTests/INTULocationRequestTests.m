@@ -36,35 +36,35 @@ describe(@"INTULocationRequest", ^{
     __block INTULocationRequest *request;
 
     before(^{
-        request = [[INTULocationRequest alloc] initWithType:INTULocationRequestTypeSingleChange];
+        request = [[INTULocationRequest alloc] initWithType:INTULocationRequestTypeSingle];
     });
 
     it(@"generates a unique request id for each request", ^{
-        INTULocationRequest *request1 = [[INTULocationRequest alloc] initWithType:INTULocationRequestTypeSingleChange];
-        INTULocationRequest *request2 = [[INTULocationRequest alloc] initWithType:INTULocationRequestTypeSingleChange];
+        INTULocationRequest *request1 = [[INTULocationRequest alloc] initWithType:INTULocationRequestTypeSingle];
+        INTULocationRequest *request2 = [[INTULocationRequest alloc] initWithType:INTULocationRequestTypeSingle];
         expect(request1.requestID).notTo.equal(request2.requestID);
         
-        INTULocationRequest *request3 = [[INTULocationRequest alloc] initWithType:INTULocationRequestTypeSubscriptionForAllChanges];
+        INTULocationRequest *request3 = [[INTULocationRequest alloc] initWithType:INTULocationRequestTypeSubscription];
         expect(request2.requestID).notTo.equal(request3.requestID);
         
-        INTULocationRequest *request4 = [[INTULocationRequest alloc] initWithType:INTULocationRequestTypeSubscriptionForSignificantChanges];
+        INTULocationRequest *request4 = [[INTULocationRequest alloc] initWithType:INTULocationRequestTypeSignificantChanges];
         expect(request3.requestID).notTo.equal(request4.requestID);
     });
     
     describe(@"is a subscription", ^{
-        context(@"when the type is INTULocationRequestTypeSingleChange", ^{
-            it(@"should not be a subscription", ^{
-                expect(request.isSubscription).to.beFalsy();
+        context(@"when the type is INTULocationRequestTypeSingle", ^{
+            it(@"should not be recurring", ^{
+                expect(request.isRecurring).to.beFalsy();
             });
         });
         
-        context(@"when the type is INTULocationRequestTypeSubscriptionForAllChanges or INTULocationRequestTypeSubscriptionForSignificantChanges", ^{
-            it(@"should be a subscription", ^{
-                INTULocationRequest *locationRequestWithSubscriptionForAllChangesType = [[INTULocationRequest alloc] initWithType:INTULocationRequestTypeSubscriptionForAllChanges];
-                expect(locationRequestWithSubscriptionForAllChangesType.isSubscription).to.beTruthy();
+        context(@"when the type is INTULocationRequestTypeSubscription or INTULocationRequestTypeSignificantChanges", ^{
+            it(@"should be recurring", ^{
+                INTULocationRequest *locationRequestWithSubscriptionForAllChangesType = [[INTULocationRequest alloc] initWithType:INTULocationRequestTypeSubscription];
+                expect(locationRequestWithSubscriptionForAllChangesType.isRecurring).to.beTruthy();
                 
-                INTULocationRequest *locationRequestWithSubscriptionForSignificantChangesType = [[INTULocationRequest alloc] initWithType:INTULocationRequestTypeSubscriptionForSignificantChanges];
-                expect(locationRequestWithSubscriptionForSignificantChangesType.isSubscription).to.beTruthy();
+                INTULocationRequest *locationRequestWithSubscriptionForSignificantChangesType = [[INTULocationRequest alloc] initWithType:INTULocationRequestTypeSignificantChanges];
+                expect(locationRequestWithSubscriptionForSignificantChangesType.isRecurring).to.beTruthy();
             });
         });
     });

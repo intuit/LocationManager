@@ -162,7 +162,7 @@ static id _sharedInstance;
         desiredAccuracy = INTULocationAccuracyCity; // default to the lowest valid desired accuracy
     }
     
-    INTULocationRequest *locationRequest = [[INTULocationRequest alloc] initWithType:INTULocationRequestTypeSingleChange];
+    INTULocationRequest *locationRequest = [[INTULocationRequest alloc] initWithType:INTULocationRequestTypeSingle];
     locationRequest.delegate = self;
     locationRequest.desiredAccuracy = desiredAccuracy;
     locationRequest.timeout = timeout;
@@ -189,8 +189,7 @@ static id _sharedInstance;
  */
 - (INTULocationRequestID)subscribeToLocationUpdatesWithBlock:(INTULocationRequestBlock)block
 {
-    INTULocationRequest *locationRequest = [[INTULocationRequest alloc] initWithType:INTULocationRequestTypeSubscriptionForAllChanges];
-    locationRequest.desiredAccuracy = INTULocationAccuracyNone;
+    INTULocationRequest *locationRequest = [[INTULocationRequest alloc] initWithType:INTULocationRequestTypeSubscription];
     locationRequest.block = block;
     
     [self addLocationRequest:locationRequest];
@@ -203,14 +202,13 @@ static id _sharedInstance;
  If an error occurs, the block will execute with a status other than INTULocationStatusSuccess, and the subscription will be canceled automatically.
  
  @param block The block to execute every time an updated location is available.
- The status will be INTULocationStatusSuccess unless an error occurred; it will never be INTULocationStatusTimedOut.
+              The status will be INTULocationStatusSuccess unless an error occurred; it will never be INTULocationStatusTimedOut.
  
  @return The location request ID, which can be used to cancel the subscription of significant location changes to this block.
  */
 - (INTULocationRequestID)subscribeToSignificantLocationChangesWithBlock:(INTULocationRequestBlock)block
 {
-    INTULocationRequest *locationRequest = [[INTULocationRequest alloc] initWithType:INTULocationRequestTypeSubscriptionForSignificantChanges];
-    locationRequest.desiredAccuracy = INTULocationAccuracyNone;
+    INTULocationRequest *locationRequest = [[INTULocationRequest alloc] initWithType:INTULocationRequestTypeSignificantChanges];
     locationRequest.block = block;
     
     [self addLocationRequest:locationRequest];
@@ -232,8 +230,8 @@ static id _sharedInstance;
         }
     }
     if (locationRequestToComplete) {
-        if (locationRequestToComplete.isSubscription) {
-            // Subscription requests can only be canceled
+        if (locationRequestToComplete.isRecurring) {
+            // Recurring requests can only be canceled
             [self cancelLocationRequest:requestID];
         } else {
             [locationRequestToComplete forceTimeout];
@@ -258,10 +256,14 @@ static id _sharedInstance;
         [self.locationRequests removeObject:locationRequestToCancel];
         [locationRequestToCancel cancel];
         INTULMLog(@"Location Request canceled with ID: %ld", (long)locationRequestToCancel.requestID);
-        if (locationRequestToCancel.type == INTULocationRequestTypeSubscriptionForSignificantChanges) {
-            [self stopMonitoringSignificantLocationChangesIfPossible];
-        } else {
-            [self stopUpdatingLocationIfPossible];
+        switch (locationRequestToCancel.type) {
+            case INTULocationRequestTypeSingle:
+            case INTULocationRequestTypeSubscription:
+                [self stopUpdatingLocationIfPossible];
+                break;
+            case INTULocationRequestTypeSignificantChanges:
+                [self stopMonitoringSignificantLocationChangesIfPossible];
+                break;
         }
     }
 }
@@ -282,10 +284,14 @@ static id _sharedInstance;
         return;
     }
     
-    if (locationRequest.type == INTULocationRequestTypeSubscriptionForSignificantChanges) {
-        [self startMonitoringSignificantLocationChangesIfNeeded];
-    } else {
-        [self startUpdatingLocationIfNeeded];
+    switch (locationRequest.type) {
+        case INTULocationRequestTypeSingle:
+        case INTULocationRequestTypeSubscription:
+            [self startUpdatingLocationIfNeeded];
+            break;
+        case INTULocationRequestTypeSignificantChanges:
+            [self startMonitoringSignificantLocationChangesIfNeeded];
+            break;
     }
     [self.locationRequests addObject:locationRequest];
     INTULMLog(@"Location Request added with ID: %ld", (long)locationRequest.requestID);
@@ -313,6 +319,7 @@ static id _sharedInstance;
  */
 - (void)requestAuthorizationIfNeeded
 {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_7_1
     // As of iOS 8, apps must explicitly request location services permissions. INTULocationManager supports both levels, "Always" and "When In Use".
     // INTULocationManager determines which level of permissions to request based on which description key is present in your app's Info.plist
     // If you provide values for both description keys, the more permissive "Always" level is requested.
@@ -328,6 +335,7 @@ static id _sharedInstance;
             NSAssert(hasAlwaysKey || hasWhenInUseKey, @"To use location services in iOS 8+, your Info.plist must provide a value for either NSLocationWhenInUseUsageDescription or NSLocationAlwaysUsageDescription.");
         }
     }
+#endif /* __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_7_1 */
 }
 
 /**
@@ -335,15 +343,13 @@ static id _sharedInstance;
  */
 - (void)startMonitoringSignificantLocationChangesIfNeeded
 {
-#if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_7_1
     [self requestAuthorizationIfNeeded];
-#endif /* __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_7_1 */
     
-    NSArray *locationRequests = [self pendingLocationRequestsWithType:INTULocationRequestTypeSubscriptionForSignificantChanges];
+    NSArray *locationRequests = [self pendingLocationRequestsWithType:INTULocationRequestTypeSignificantChanges];
     if (locationRequests.count == 0) {
         [self.locationManager startMonitoringSignificantLocationChanges];
         if (self.isMonitoringSignificantLocationChanges == NO) {
-            INTULMLog(@"Monitoring significant location changes is started.")
+            INTULMLog(@"Significant location change monitoring has started.")
         }
         self.isMonitoringSignificantLocationChanges = YES;
     }
@@ -354,19 +360,17 @@ static id _sharedInstance;
  */
 - (void)startUpdatingLocationIfNeeded
 {
-#if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_7_1
     [self requestAuthorizationIfNeeded];
-#endif /* __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_7_1 */
     
     // We only enable location updates while there are open location requests, so power usage isn't a concern.
     // As a result, we use the Best accuracy on CLLocationManager so that we can quickly get a fix on the location,
     // clear out the pending location requests, and then power down the location services.
-    NSArray *locationRequests = [self pendingLocationRequestsExcludingRequestsWithType:INTULocationRequestTypeSubscriptionForSignificantChanges];
+    NSArray *locationRequests = [self pendingLocationRequestsExcludingRequestsWithType:INTULocationRequestTypeSignificantChanges];
     if (locationRequests.count == 0) {
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
         [self.locationManager startUpdatingLocation];
         if (self.isUpdatingLocation == NO) {
-            INTULMLog(@"Location services is started.");
+            INTULMLog(@"Location services updates have started.");
         }
         self.isUpdatingLocation = YES;
     }
@@ -374,11 +378,11 @@ static id _sharedInstance;
 
 - (void)stopMonitoringSignificantLocationChangesIfPossible
 {
-    NSArray *locationRequests = [self pendingLocationRequestsWithType:INTULocationRequestTypeSubscriptionForSignificantChanges];
+    NSArray *locationRequests = [self pendingLocationRequestsWithType:INTULocationRequestTypeSignificantChanges];
     if (locationRequests.count == 0) {
         [self.locationManager stopMonitoringSignificantLocationChanges];
         if (self.isMonitoringSignificantLocationChanges) {
-            INTULMLog(@"Monitoring significant location changes is stopped.");
+            INTULMLog(@"Significant location change monitoring has stopped.");
         }
         self.isMonitoringSignificantLocationChanges = NO;
     }
@@ -390,11 +394,11 @@ static id _sharedInstance;
  */
 - (void)stopUpdatingLocationIfPossible
 {
-    NSArray *locationRequests = [self pendingLocationRequestsExcludingRequestsWithType:INTULocationRequestTypeSubscriptionForSignificantChanges];
+    NSArray *locationRequests = [self pendingLocationRequestsExcludingRequestsWithType:INTULocationRequestTypeSignificantChanges];
     if (locationRequests.count == 0) {
         [self.locationManager stopUpdatingLocation];
         if (self.isUpdatingLocation) {
-            INTULMLog(@"Location services is stopped.");
+            INTULMLog(@"Location services updates have stopped.");
         }
         self.isUpdatingLocation = NO;
     }
@@ -419,9 +423,9 @@ static id _sharedInstance;
         }
         
         if (mostRecentLocation != nil) {
-            if (locationRequest.isSubscription) {
+            if (locationRequest.isRecurring) {
                 // This is a subscription request, which lives indefinitely (unless manually canceled) and receives every location update we get
-                [self processSubscriptionRequest:locationRequest];
+                [self processRecurringRequest:locationRequest];
                 continue;
             } else {
                 // This is a regular one-time location request
@@ -470,10 +474,14 @@ static id _sharedInstance;
     
     [locationRequest complete];
     [self.locationRequests removeObject:locationRequest];
-    if (locationRequest.type == INTULocationRequestTypeSubscriptionForSignificantChanges) {
-        [self stopMonitoringSignificantLocationChangesIfPossible];
-    } else {
-        [self stopUpdatingLocationIfPossible];
+    switch (locationRequest.type) {
+        case INTULocationRequestTypeSingle:
+        case INTULocationRequestTypeSubscription:
+            [self stopUpdatingLocationIfPossible];
+            break;
+        case INTULocationRequestTypeSignificantChanges:
+            [self stopMonitoringSignificantLocationChangesIfPossible];
+            break;
     }
     
     INTULocationStatus status = [self statusForLocationRequest:locationRequest];
@@ -493,11 +501,11 @@ static id _sharedInstance;
 }
 
 /**
- Handles calling a subscription location request's block with the current location.
+ Handles calling a recurring location request's block with the current location.
  */
-- (void)processSubscriptionRequest:(INTULocationRequest *)locationRequest
+- (void)processRecurringRequest:(INTULocationRequest *)locationRequest
 {
-    NSAssert(locationRequest.isSubscription, @"This method should only be called for subscription location requests.");
+    NSAssert(locationRequest.isRecurring, @"This method should only be called for recurring location requests.");
     
     INTULocationStatus status = [self statusForLocationRequest:locationRequest];
     CLLocation *currentLocation = self.currentLocation;
@@ -514,8 +522,9 @@ static id _sharedInstance;
  */
 - (NSArray *)pendingLocationRequestsWithType:(INTULocationRequestType)locationRequestType
 {
-    NSPredicate *locationChangeRequestPredicate = [NSPredicate predicateWithFormat:@"type == %d", locationRequestType];
-    return [self.locationRequests filteredArrayUsingPredicate:locationChangeRequestPredicate];
+    return [self.locationRequests filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(INTULocationRequest *evaluatedObject, NSDictionary *bindings) {
+        return evaluatedObject.type == locationRequestType;
+    }]];
 }
 
 /**
@@ -523,8 +532,9 @@ static id _sharedInstance;
  */
 - (NSArray *)pendingLocationRequestsExcludingRequestsWithType:(INTULocationRequestType)locationRequestType
 {
-    NSPredicate *locationChangeRequestPredicate = [NSPredicate predicateWithFormat:@"type != %d", locationRequestType];
-    return [self.locationRequests filteredArrayUsingPredicate:locationChangeRequestPredicate];
+    return [self.locationRequests filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(INTULocationRequest *evaluatedObject, NSDictionary *bindings) {
+        return evaluatedObject.type != locationRequestType;
+    }]];
 }
 
 /**
@@ -622,13 +632,13 @@ static id _sharedInstance;
     CLLocation *mostRecentLocation = [locations lastObject];
     self.currentLocation = mostRecentLocation;
     
-    // The updated location may have just satisfied one of the pending location requests, so process them now to check
+    // Process the location requests using the updated location
     [self processLocationRequests];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
 {
-    INTULMLog(@"Location update error: %@", [error localizedDescription]);
+    INTULMLog(@"Location services error: %@", [error localizedDescription]);
     self.updateFailed = YES;
     
     [self completeAllLocationRequests];

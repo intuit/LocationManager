@@ -63,9 +63,7 @@ static INTULocationRequestID _nextRequestID = 0;
 /**
  Designated initializer. Initializes and returns a newly allocated location request object with the specified type.
  
- @param type The type of the location request.
- 
- @return An initialized location request, or nil if a location request could not be created for some reason that would not result in an exception.
+ @param type The type of the location request. 
  */
 - (instancetype)initWithType:(INTULocationRequestType)type
 {
@@ -149,9 +147,10 @@ static INTULocationRequestID _nextRequestID = 0;
  */
 - (void)forceTimeout
 {
-    if (self.isSubscription == NO) {
-        // Only one-off location requests (not subscription requests) should ever be considered timed out
+    if (self.isRecurring == NO) {
         self.hasTimedOut = YES;
+    } else {
+        NSAssert(self.isRecurring == NO, @"Only single location requests (not recurring requests) should ever be considered timed out.");
     }
 }
 
@@ -177,15 +176,15 @@ static INTULocationRequestID _nextRequestID = 0;
 }
 
 /**
- Dynamic property that returns whether this is a subscription request.
+ Computed property that returns whether this is a subscription request.
  */
-- (BOOL)isSubscription
+- (BOOL)isRecurring
 {
-    return (self.type == INTULocationRequestTypeSubscriptionForAllChanges) || (self.type == INTULocationRequestTypeSubscriptionForSignificantChanges);
+    return (self.type == INTULocationRequestTypeSubscription) || (self.type == INTULocationRequestTypeSignificantChanges);
 }
 
 /**
- Dynamic property that returns how long the request has been alive (since the timeout value was set).
+ Computed property that returns how long the request has been alive (since the timeout value was set).
  */
 - (NSTimeInterval)timeAlive
 {
@@ -238,7 +237,7 @@ static INTULocationRequestID _nextRequestID = 0;
  */
 - (NSUInteger)hash
 {
-    return [[NSString stringWithFormat:@"%ld", (long) self.requestID] hash];
+    return [[NSString stringWithFormat:@"%ld", (long)self.requestID] hash];
 }
 
 - (void)dealloc

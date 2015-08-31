@@ -20,6 +20,20 @@
                ReferencedContainer = "container:LocationManager.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "B116685F18E5CEDD00D1E022"
+               BuildableName = "LocationManagerTests.xctest"
+               BlueprintName = "LocationManagerTests"
+               ReferencedContainer = "container:LocationManager.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -28,7 +42,26 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "B116685F18E5CEDD00D1E022"
+               BuildableName = "LocationManagerTests.xctest"
+               BlueprintName = "LocationManagerTests"
+               ReferencedContainer = "container:LocationManager.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "6681CD271B1306C30080DBA9"
+            BuildableName = "INTULocationManager.framework"
+            BlueprintName = "INTULocationManager"
+            ReferencedContainer = "container:LocationManager.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </TestAction>
    <LaunchAction
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
