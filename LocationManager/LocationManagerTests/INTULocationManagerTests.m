@@ -292,7 +292,11 @@ describe(@"multiple simultaneous location requests", ^{
         expect(subscriptionCallbackCount).will.equal(1);
         expect(significantChangesCallbackCount).will.equal(1);
         
-        sleep(1.0);
+        waitUntil(^(DoneCallback done) {
+           dispatch_after(1.0, dispatch_get_main_queue(), ^{
+               done();
+           });
+        });
         
         CLLocation *somewhatAccurateLocation = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(1, 1)
                                                                              altitude:CLLocationDistanceMax
@@ -307,7 +311,11 @@ describe(@"multiple simultaneous location requests", ^{
         expect(subscriptionCallbackCount).will.equal(2);
         expect(significantChangesCallbackCount).will.equal(2);
         
-        sleep(1.0);
+        waitUntil(^(DoneCallback done) {
+            dispatch_after(1.0, dispatch_get_main_queue(), ^{
+                done();
+            });
+        });
         
         CLLocation *veryAccurateLocation = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(1, 1)
                                                                          altitude:CLLocationDistanceMax
@@ -322,7 +330,11 @@ describe(@"multiple simultaneous location requests", ^{
         expect(subscriptionCallbackCount).will.equal(3);
         expect(significantChangesCallbackCount).will.equal(3);
         
-        sleep(1.0);
+        waitUntil(^(DoneCallback done) {
+            dispatch_after(1.0, dispatch_get_main_queue(), ^{
+                done();
+            });
+        });
         
         CLLocation *anotherVeryAccurateLocation = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(1, 1)
                                                                                 altitude:CLLocationDistanceMax
