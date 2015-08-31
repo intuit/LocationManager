@@ -58,7 +58,7 @@
 
 // An array of pending location requests in the form:
 // @[ INTULocationRequest *locationRequest1, INTULocationRequest *locationRequest2, ... ]
-@property (nonatomic, strong) __INTU_GENERICS(NSMutableArray, INTULocationRequest *) *locationRequests;
+@property (nonatomic, strong) __INTU_GENERICS(NSArray, INTULocationRequest *) *locationRequests;
 
 @end
 
@@ -107,7 +107,7 @@ static id _sharedInstance;
     if (self) {
         _locationManager = [[CLLocationManager alloc] init];
         _locationManager.delegate = self;
-        _locationRequests = [NSMutableArray array];
+        _locationRequests = @[];
     }
     return self;
 }
@@ -222,20 +222,16 @@ static id _sharedInstance;
  */
 - (void)forceCompleteLocationRequest:(INTULocationRequestID)requestID
 {
-    INTULocationRequest *locationRequestToComplete = nil;
     for (INTULocationRequest *locationRequest in self.locationRequests) {
         if (locationRequest.requestID == requestID) {
-            locationRequestToComplete = locationRequest;
+            if (locationRequest.isRecurring) {
+                // Recurring requests can only be canceled
+                [self cancelLocationRequest:requestID];
+            } else {
+                [locationRequest forceTimeout];
+                [self completeLocationRequest:locationRequest];
+            }
             break;
-        }
-    }
-    if (locationRequestToComplete) {
-        if (locationRequestToComplete.isRecurring) {
-            // Recurring requests can only be canceled
-            [self cancelLocationRequest:requestID];
-        } else {
-            [locationRequestToComplete forceTimeout];
-            [self completeLocationRequest:locationRequestToComplete];
         }
     }
 }
@@ -245,25 +241,23 @@ static id _sharedInstance;
  */
 - (void)cancelLocationRequest:(INTULocationRequestID)requestID
 {
-    INTULocationRequest *locationRequestToCancel = nil;
     for (INTULocationRequest *locationRequest in self.locationRequests) {
         if (locationRequest.requestID == requestID) {
-            locationRequestToCancel = locationRequest;
+            __INTU_GENERICS(NSMutableArray, INTULocationRequest *) *newLocationRequests = [NSMutableArray arrayWithArray:self.locationRequests];
+            [newLocationRequests removeObject:locationRequest];
+            self.locationRequests = newLocationRequests;
+            [locationRequest cancel];
+            INTULMLog(@"Location Request canceled with ID: %ld", (long)locationRequest.requestID);
+            switch (locationRequest.type) {
+                case INTULocationRequestTypeSingle:
+                case INTULocationRequestTypeSubscription:
+                    [self stopUpdatingLocationIfPossible];
+                    break;
+                case INTULocationRequestTypeSignificantChanges:
+                    [self stopMonitoringSignificantLocationChangesIfPossible];
+                    break;
+            }
             break;
-        }
-    }
-    if (locationRequestToCancel) {
-        [self.locationRequests removeObject:locationRequestToCancel];
-        [locationRequestToCancel cancel];
-        INTULMLog(@"Location Request canceled with ID: %ld", (long)locationRequestToCancel.requestID);
-        switch (locationRequestToCancel.type) {
-            case INTULocationRequestTypeSingle:
-            case INTULocationRequestTypeSubscription:
-                [self stopUpdatingLocationIfPossible];
-                break;
-            case INTULocationRequestTypeSignificantChanges:
-                [self stopMonitoringSignificantLocationChangesIfPossible];
-                break;
         }
     }
 }
@@ -293,7 +287,9 @@ static id _sharedInstance;
             [self startMonitoringSignificantLocationChangesIfNeeded];
             break;
     }
-    [self.locationRequests addObject:locationRequest];
+    __INTU_GENERICS(NSMutableArray, INTULocationRequest *) *newLocationRequests = [NSMutableArray arrayWithArray:self.locationRequests];
+    [newLocationRequests addObject:locationRequest];
+    self.locationRequests = newLocationRequests;
     INTULMLog(@"Location Request added with ID: %ld", (long)locationRequest.requestID);
 }
 
@@ -412,13 +408,10 @@ static id _sharedInstance;
 {
     CLLocation *mostRecentLocation = self.currentLocation;
     
-    // Keep a separate array of location requests to complete to avoid modifying the locationRequests property while iterating over it
-    __INTU_GENERICS(NSMutableArray, INTULocationRequest *) *locationRequestsToComplete = [NSMutableArray array];
-    
     for (INTULocationRequest *locationRequest in self.locationRequests) {
         if (locationRequest.hasTimedOut) {
             // Request has timed out, complete it
-            [locationRequestsToComplete addObject:locationRequest];
+            [self completeLocationRequest:locationRequest];
             continue;
         }
         
@@ -436,15 +429,11 @@ static id _sharedInstance;
                 if (currentLocationTimeSinceUpdate <= staleThreshold &&
                     currentLocationHorizontalAccuracy <= horizontalAccuracyThreshold) {
                     // The request's desired accuracy has been reached, complete it
-                    [locationRequestsToComplete addObject:locationRequest];
+                    [self completeLocationRequest:locationRequest];
                     continue;
                 }
             }
         }
-    }
-    
-    for (INTULocationRequest *locationRequest in locationRequestsToComplete) {
-        [self completeLocationRequest:locationRequest];
     }
 }
 
@@ -473,7 +462,9 @@ static id _sharedInstance;
     }
     
     [locationRequest complete];
-    [self.locationRequests removeObject:locationRequest];
+    __INTU_GENERICS(NSMutableArray, INTULocationRequest *) *newLocationRequests = [NSMutableArray arrayWithArray:self.locationRequests];
+    [newLocationRequests removeObject:locationRequest];
+    self.locationRequests = newLocationRequests;
     switch (locationRequest.type) {
         case INTULocationRequestTypeSingle:
         case INTULocationRequestTypeSubscription:
@@ -609,16 +600,11 @@ static id _sharedInstance;
 - (void)locationRequestDidTimeout:(INTULocationRequest *)locationRequest
 {
     // For robustness, only complete the location request if it is still pending (by checking to see that it hasn't been removed from the locationRequests array).
-    // Wait to complete it until after exiting the for loop, so we don't modify the array while iterating over it.
-    BOOL isRequestStillPending = NO;
     for (INTULocationRequest *pendingLocationRequest in self.locationRequests) {
         if (pendingLocationRequest.requestID == locationRequest.requestID) {
-            isRequestStillPending = YES;
+            [self completeLocationRequest:locationRequest];
             break;
         }
-    }
-    if (isRequestStillPending) {
-        [self completeLocationRequest:locationRequest];
     }
 }
 
