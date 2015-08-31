@@ -292,6 +292,8 @@ describe(@"multiple simultaneous location requests", ^{
         expect(subscriptionCallbackCount).will.equal(1);
         expect(significantChangesCallbackCount).will.equal(1);
         
+        sleep(1.0);
+        
         CLLocation *somewhatAccurateLocation = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(1, 1)
                                                                              altitude:CLLocationDistanceMax
                                                                    horizontalAccuracy:50.0
@@ -305,6 +307,8 @@ describe(@"multiple simultaneous location requests", ^{
         expect(subscriptionCallbackCount).will.equal(2);
         expect(significantChangesCallbackCount).will.equal(2);
         
+        sleep(1.0);
+        
         CLLocation *veryAccurateLocation = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(1, 1)
                                                                          altitude:CLLocationDistanceMax
                                                                horizontalAccuracy:5.0
@@ -317,6 +321,8 @@ describe(@"multiple simultaneous location requests", ^{
         expect(singleCallbackBSuccessCount).will.equal(1);
         expect(subscriptionCallbackCount).will.equal(3);
         expect(significantChangesCallbackCount).will.equal(3);
+        
+        sleep(1.0);
         
         CLLocation *anotherVeryAccurateLocation = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(1, 1)
                                                                                 altitude:CLLocationDistanceMax
