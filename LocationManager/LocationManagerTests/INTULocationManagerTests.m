@@ -248,8 +248,6 @@ describe(@"when the location manager fails", ^{
 
 describe(@"multiple simultaneous location requests", ^{
     it(@"calls each request block correctly", ^{
-        [Expecta setAsynchronousTestTimeout:0.5];
-        
         __block NSInteger singleCallbackACount = 0;
         __block NSInteger singleCallbackASuccessCount = 0;
         [subject requestLocationWithDesiredAccuracy:INTULocationAccuracyRoom timeout:0.0 block:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
@@ -285,18 +283,19 @@ describe(@"multiple simultaneous location requests", ^{
                                                                verticalAccuracy:2000.0
                                                                       timestamp:[[NSDate date] dateByAddingTimeInterval:-3600]];
         [subject locationManager:subject.locationManager didUpdateLocations:@[inaccurateLocation]];
-        expect(singleCallbackACount).will.equal(0);
-        expect(singleCallbackASuccessCount).will.equal(0);
-        expect(singleCallbackBCount).will.equal(0);
-        expect(singleCallbackBSuccessCount).will.equal(0);
-        expect(subscriptionCallbackCount).will.equal(1);
-        expect(significantChangesCallbackCount).will.equal(1);
         
         waitUntil(^(DoneCallback done) {
-           dispatch_after(1.0, dispatch_get_main_queue(), ^{
+           dispatch_after(0.5, dispatch_get_main_queue(), ^{
                done();
            });
         });
+        
+        expect(singleCallbackACount).to.equal(0);
+        expect(singleCallbackASuccessCount).to.equal(0);
+        expect(singleCallbackBCount).to.equal(0);
+        expect(singleCallbackBSuccessCount).to.equal(0);
+        expect(subscriptionCallbackCount).to.equal(1);
+        expect(significantChangesCallbackCount).to.equal(1);
         
         CLLocation *somewhatAccurateLocation = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(1, 1)
                                                                              altitude:CLLocationDistanceMax
@@ -304,18 +303,19 @@ describe(@"multiple simultaneous location requests", ^{
                                                                      verticalAccuracy:5.0
                                                                             timestamp:[NSDate date]];
         [subject locationManager:subject.locationManager didUpdateLocations:@[somewhatAccurateLocation]];
-        expect(singleCallbackACount).will.equal(0);
-        expect(singleCallbackASuccessCount).will.equal(0);
-        expect(singleCallbackBCount).will.equal(1);
-        expect(singleCallbackBSuccessCount).will.equal(1);
-        expect(subscriptionCallbackCount).will.equal(2);
-        expect(significantChangesCallbackCount).will.equal(2);
         
         waitUntil(^(DoneCallback done) {
-            dispatch_after(1.0, dispatch_get_main_queue(), ^{
+            dispatch_after(0.5, dispatch_get_main_queue(), ^{
                 done();
             });
         });
+        
+        expect(singleCallbackACount).to.equal(0);
+        expect(singleCallbackASuccessCount).to.equal(0);
+        expect(singleCallbackBCount).to.equal(1);
+        expect(singleCallbackBSuccessCount).to.equal(1);
+        expect(subscriptionCallbackCount).to.equal(2);
+        expect(significantChangesCallbackCount).to.equal(2);
         
         CLLocation *veryAccurateLocation = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(1, 1)
                                                                          altitude:CLLocationDistanceMax
@@ -323,18 +323,19 @@ describe(@"multiple simultaneous location requests", ^{
                                                                  verticalAccuracy:5.0
                                                                         timestamp:[NSDate date]];
         [subject locationManager:subject.locationManager didUpdateLocations:@[veryAccurateLocation]];
-        expect(singleCallbackACount).will.equal(1);
-        expect(singleCallbackASuccessCount).will.equal(1);
-        expect(singleCallbackBCount).will.equal(1);
-        expect(singleCallbackBSuccessCount).will.equal(1);
-        expect(subscriptionCallbackCount).will.equal(3);
-        expect(significantChangesCallbackCount).will.equal(3);
         
         waitUntil(^(DoneCallback done) {
-            dispatch_after(1.0, dispatch_get_main_queue(), ^{
+            dispatch_after(0.5, dispatch_get_main_queue(), ^{
                 done();
             });
         });
+        
+        expect(singleCallbackACount).to.equal(1);
+        expect(singleCallbackASuccessCount).to.equal(1);
+        expect(singleCallbackBCount).to.equal(1);
+        expect(singleCallbackBSuccessCount).to.equal(1);
+        expect(subscriptionCallbackCount).to.equal(3);
+        expect(significantChangesCallbackCount).to.equal(3);
         
         CLLocation *anotherVeryAccurateLocation = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(1, 1)
                                                                                 altitude:CLLocationDistanceMax
@@ -342,12 +343,19 @@ describe(@"multiple simultaneous location requests", ^{
                                                                         verticalAccuracy:5.0
                                                                                timestamp:[NSDate date]];
         [subject locationManager:subject.locationManager didUpdateLocations:@[anotherVeryAccurateLocation]];
-        expect(singleCallbackACount).will.equal(1);
-        expect(singleCallbackASuccessCount).will.equal(1);
-        expect(singleCallbackBCount).will.equal(1);
-        expect(singleCallbackBSuccessCount).will.equal(1);
-        expect(subscriptionCallbackCount).will.equal(4);
-        expect(significantChangesCallbackCount).will.equal(4);
+        
+        waitUntil(^(DoneCallback done) {
+            dispatch_after(0.5, dispatch_get_main_queue(), ^{
+                done();
+            });
+        });
+        
+        expect(singleCallbackACount).to.equal(1);
+        expect(singleCallbackASuccessCount).to.equal(1);
+        expect(singleCallbackBCount).to.equal(1);
+        expect(singleCallbackBSuccessCount).to.equal(1);
+        expect(subscriptionCallbackCount).to.equal(4);
+        expect(significantChangesCallbackCount).to.equal(4);
     });
 });
 
