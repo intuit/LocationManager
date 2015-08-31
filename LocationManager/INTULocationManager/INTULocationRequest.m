@@ -58,6 +58,7 @@ static INTULocationRequestID _nextRequestID = 0;
 - (instancetype)init
 {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"Must use initWithType: instead." userInfo:nil];
+    return [self initWithType:INTULocationRequestTypeSingle];
 }
 
 /**
