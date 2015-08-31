@@ -181,7 +181,7 @@ describe(@"subscribing for significant location changes with a block", ^{
     });
 });
 
-describe(@"when you want to wait for user auth ", ^{
+describe(@"when you want to wait for user auth", ^{
     it(@"doesnt send a callback until it is agreed", ^{
         __block NSInteger callbackCount = 0;
         [subject requestLocationWithDesiredAccuracy:INTULocationAccuracyRoom timeout:0.1 delayUntilAuthorized:YES block:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
@@ -202,7 +202,7 @@ describe(@"when you want to wait for user auth ", ^{
     });
 });
 
-describe(@"authorisation status changes", ^{
+describe(@"authorization status changes", ^{
     it(@"clears out pending requests when it is denied", ^{
         __block NSInteger callbackCount = 0;
         [subject requestLocationWithDesiredAccuracy:INTULocationAccuracyRoom timeout:0.1 delayUntilAuthorized:YES block:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
@@ -243,6 +243,93 @@ describe(@"when the location manager fails", ^{
         [subject locationManager:subject.locationManager didFailWithError:error];
 
         expect(called).will.beTruthy();
+    });
+});
+
+describe(@"multiple simultaneous location requests", ^{
+    it(@"calls each request block correctly", ^{
+        [Expecta setAsynchronousTestTimeout:0.5];
+        
+        __block NSInteger singleCallbackACount = 0;
+        __block NSInteger singleCallbackASuccessCount = 0;
+        [subject requestLocationWithDesiredAccuracy:INTULocationAccuracyRoom timeout:0.0 block:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
+            singleCallbackACount++;
+            if (status == INTULocationStatusSuccess) {
+                singleCallbackASuccessCount++;
+            }
+        }];
+        
+        __block NSInteger singleCallbackBCount = 0;
+        __block NSInteger singleCallbackBSuccessCount = 0;
+        [subject requestLocationWithDesiredAccuracy:INTULocationAccuracyBlock timeout:0.0 block:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
+            singleCallbackBCount++;
+            if (status == INTULocationStatusSuccess) {
+                singleCallbackBSuccessCount++;
+            }
+        }];
+        
+        __block NSInteger subscriptionCallbackCount = 0;
+        [subject subscribeToLocationUpdatesWithBlock:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
+            subscriptionCallbackCount++;
+        }];
+        
+        __block NSInteger significantChangesCallbackCount = 0;
+        [subject subscribeToSignificantLocationChangesWithBlock:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
+            significantChangesCallbackCount++;
+        }];
+        
+        
+        CLLocation *inaccurateLocation = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(1, 1)
+                                                                       altitude:CLLocationDistanceMax
+                                                             horizontalAccuracy:2000.0
+                                                               verticalAccuracy:2000.0
+                                                                      timestamp:[[NSDate date] dateByAddingTimeInterval:-3600]];
+        [subject locationManager:subject.locationManager didUpdateLocations:@[inaccurateLocation]];
+        expect(singleCallbackACount).will.equal(0);
+        expect(singleCallbackASuccessCount).will.equal(0);
+        expect(singleCallbackBCount).will.equal(0);
+        expect(singleCallbackBSuccessCount).will.equal(0);
+        expect(subscriptionCallbackCount).will.equal(1);
+        expect(significantChangesCallbackCount).will.equal(1);
+        
+        CLLocation *somewhatAccurateLocation = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(1, 1)
+                                                                             altitude:CLLocationDistanceMax
+                                                                   horizontalAccuracy:50.0
+                                                                     verticalAccuracy:5.0
+                                                                            timestamp:[NSDate date]];
+        [subject locationManager:subject.locationManager didUpdateLocations:@[somewhatAccurateLocation]];
+        expect(singleCallbackACount).will.equal(0);
+        expect(singleCallbackASuccessCount).will.equal(0);
+        expect(singleCallbackBCount).will.equal(1);
+        expect(singleCallbackBSuccessCount).will.equal(1);
+        expect(subscriptionCallbackCount).will.equal(2);
+        expect(significantChangesCallbackCount).will.equal(2);
+        
+        CLLocation *veryAccurateLocation = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(1, 1)
+                                                                         altitude:CLLocationDistanceMax
+                                                               horizontalAccuracy:5.0
+                                                                 verticalAccuracy:5.0
+                                                                        timestamp:[NSDate date]];
+        [subject locationManager:subject.locationManager didUpdateLocations:@[veryAccurateLocation]];
+        expect(singleCallbackACount).will.equal(1);
+        expect(singleCallbackASuccessCount).will.equal(1);
+        expect(singleCallbackBCount).will.equal(1);
+        expect(singleCallbackBSuccessCount).will.equal(1);
+        expect(subscriptionCallbackCount).will.equal(3);
+        expect(significantChangesCallbackCount).will.equal(3);
+        
+        CLLocation *anotherVeryAccurateLocation = [[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake(1, 1)
+                                                                                altitude:CLLocationDistanceMax
+                                                                      horizontalAccuracy:5.0
+                                                                        verticalAccuracy:5.0
+                                                                               timestamp:[NSDate date]];
+        [subject locationManager:subject.locationManager didUpdateLocations:@[anotherVeryAccurateLocation]];
+        expect(singleCallbackACount).will.equal(1);
+        expect(singleCallbackASuccessCount).will.equal(1);
+        expect(singleCallbackBCount).will.equal(1);
+        expect(singleCallbackBSuccessCount).will.equal(1);
+        expect(subscriptionCallbackCount).will.equal(4);
+        expect(significantChangesCallbackCount).will.equal(4);
     });
 });
 
