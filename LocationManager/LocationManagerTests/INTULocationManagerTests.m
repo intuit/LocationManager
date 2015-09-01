@@ -248,6 +248,10 @@ describe(@"when the location manager fails", ^{
 
 describe(@"multiple simultaneous location requests", ^{
     it(@"calls each request block correctly", ^{
+        id classMock = OCMClassMock(CLLocationManager.class);
+        OCMStub(ClassMethod([classMock locationServicesEnabled])).andReturn(YES);
+        OCMStub(ClassMethod([classMock authorizationStatus])).andReturn(kCLAuthorizationStatusAuthorizedWhenInUse);
+        
         __block NSInteger singleCallbackACount = 0;
         __block NSInteger singleCallbackASuccessCount = 0;
         [subject requestLocationWithDesiredAccuracy:INTULocationAccuracyRoom timeout:0.0 block:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
@@ -356,6 +360,8 @@ describe(@"multiple simultaneous location requests", ^{
         expect(singleCallbackBSuccessCount).to.equal(1);
         expect(subscriptionCallbackCount).to.equal(4);
         expect(significantChangesCallbackCount).to.equal(4);
+        
+        [classMock stopMocking];
     });
 });
 
