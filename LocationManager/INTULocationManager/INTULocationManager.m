@@ -56,7 +56,7 @@
 /** Whether an error occurred during the last location update. */
 @property (nonatomic, assign) BOOL updateFailed;
 
-// An array of pending location requests in the form:
+// An array of active location requests in the form:
 // @[ INTULocationRequest *locationRequest1, INTULocationRequest *locationRequest2, ... ]
 @property (nonatomic, strong) __INTU_GENERICS(NSArray, INTULocationRequest *) *locationRequests;
 
@@ -456,9 +456,6 @@ static id _sharedInstance;
 {
     [self requestAuthorizationIfNeeded];
     
-    // We only enable location updates while there are open location requests, so power usage isn't a concern.
-    // As a result, we use the Best accuracy on CLLocationManager so that we can quickly get a fix on the location,
-    // clear out the pending location requests, and then power down the location services.
     NSArray *locationRequests = [self activeLocationRequestsExcludingType:INTULocationRequestTypeSignificantChanges];
     if (locationRequests.count == 0) {
         [self.locationManager startUpdatingLocation];
@@ -498,7 +495,7 @@ static id _sharedInstance;
 }
 
 /**
- Iterates over the array of pending location requests to check and see if the most recent current location
+ Iterates over the array of active location requests to check and see if the most recent current location
  successfully satisfies any of their criteria.
  */
 - (void)processLocationRequests
@@ -535,7 +532,7 @@ static id _sharedInstance;
 }
 
 /**
- Immediately completes all pending location requests.
+ Immediately completes all active location requests.
  Used in cases such as when the location services authorization status changes to Denied or Restricted.
  */
 - (void)completeAllLocationRequests
@@ -550,7 +547,6 @@ static id _sharedInstance;
 
 /**
  Completes the given location request by removing it from the array of locationRequests and executing its completion block.
- If this was the last pending location request, this method also turns off location updating.
  */
 - (void)completeLocationRequest:(INTULocationRequest *)locationRequest
 {
@@ -595,7 +591,7 @@ static id _sharedInstance;
 }
 
 /**
- Returns all pending location requests with the given type.
+ Returns all active location requests with the given type.
  */
 - (NSArray *)activeLocationRequestsWithType:(INTULocationRequestType)locationRequestType
 {
@@ -605,7 +601,7 @@ static id _sharedInstance;
 }
 
 /**
- Returns all pending location requests excluding requests with the given type.
+ Returns all active location requests excluding requests with the given type.
  */
 - (NSArray *)activeLocationRequestsExcludingType:(INTULocationRequestType)locationRequestType
 {
@@ -685,9 +681,9 @@ static id _sharedInstance;
 
 - (void)locationRequestDidTimeout:(INTULocationRequest *)locationRequest
 {
-    // For robustness, only complete the location request if it is still pending (by checking to see that it hasn't been removed from the locationRequests array).
-    for (INTULocationRequest *pendingLocationRequest in self.locationRequests) {
-        if (pendingLocationRequest.requestID == locationRequest.requestID) {
+    // For robustness, only complete the location request if it is still active (by checking to see that it hasn't been removed from the locationRequests array).
+    for (INTULocationRequest *activeLocationRequest in self.locationRequests) {
+        if (activeLocationRequest.requestID == locationRequest.requestID) {
             [self completeLocationRequest:locationRequest];
             break;
         }
@@ -719,7 +715,7 @@ static id _sharedInstance;
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 {
     if (status == kCLAuthorizationStatusDenied || status == kCLAuthorizationStatusRestricted) {
-        // Clear out any pending location requests (which will execute the blocks with a status that reflects
+        // Clear out any active location requests (which will execute the blocks with a status that reflects
         // the unavailability of location services) since we now no longer have location services permissions
         [self completeAllLocationRequests];
     }
