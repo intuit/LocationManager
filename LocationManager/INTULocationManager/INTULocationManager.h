@@ -81,6 +81,7 @@ __INTU_ASSUME_NONNULL_BEGIN
 
 /**
  Creates a subscription for location updates that will execute the block once per update indefinitely (until canceled), regardless of the accuracy of each location.
+ This method instructs location services to use the highest accuracy available (which also requires the most power).
  If an error occurs, the block will execute with a status other than INTULocationStatusSuccess, and the subscription will be canceled automatically.
  
  @param block The block to execute every time an updated location is available. 
@@ -89,6 +90,21 @@ __INTU_ASSUME_NONNULL_BEGIN
  @return The location request ID, which can be used to cancel the subscription of location updates to this block.
  */
 - (INTULocationRequestID)subscribeToLocationUpdatesWithBlock:(INTULocationRequestBlock)block;
+
+/**
+ Creates a subscription for location updates that will execute the block once per update indefinitely (until canceled), regardless of the accuracy of each location.
+ The specified desired accuracy is passed along to location services, and controls how much power is used, with higher accuracies using more power.
+ If an error occurs, the block will execute with a status other than INTULocationStatusSuccess, and the subscription will be canceled automatically.
+ 
+ @param desiredAccuracy The accuracy level desired, which controls how much power is used by the device's location services.
+ @param block           The block to execute every time an updated location is available. Note that this block runs for every update, regardless of
+                        whether the achievedAccuracy is at least the desiredAccuracy.
+                        The status will be INTULocationStatusSuccess unless an error occurred; it will never be INTULocationStatusTimedOut.
+ 
+ @return The location request ID, which can be used to cancel the subscription of location updates to this block.
+ */
+- (INTULocationRequestID)subscribeToLocationUpdatesWithDesiredAccuracy:(INTULocationAccuracy)desiredAccuracy
+                                                                 block:(INTULocationRequestBlock)block;
 
 /**
  Creates a subscription for significant location changes that will execute the block once per change indefinitely (until canceled).

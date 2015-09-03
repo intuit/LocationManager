@@ -26,7 +26,7 @@
 #import "INTULocationManager.h"
 
 /**
- A category that exposes the internal (private) helper methods of INTULocationManager.
+ A category that exposes the internal (private) methods of INTULocationManager.
  */
 @interface INTULocationManager (Internal) <CLLocationManagerDelegate>
 

@@ -67,7 +67,7 @@ typedef NS_ENUM(NSInteger, INTULocationRequestType) {
 @property (nonatomic, readonly) INTULocationRequestType type;
 /** Whether this is a recurring location request (type is either Subscription or SignificantChanges). */
 @property (nonatomic, readonly) BOOL isRecurring;
-/** The desired accuracy for this location request. For recurring request types (e.g. Subscription or SignificantChanges), this is not used. */
+/** The desired accuracy for this location request. */
 @property (nonatomic, assign) INTULocationAccuracy desiredAccuracy;
 /** The maximum amount of time the location request should be allowed to live before completing.
     If this value is exactly 0.0, it will be ignored (the request will never timeout by itself). */
