@@ -294,7 +294,7 @@ static id _sharedInstance;
         {
             INTULocationAccuracy maximumDesiredAccuracy = INTULocationAccuracyNone;
             // Determine the maximum desired accuracy for all existing location requests (does not include the new request we're currently adding)
-            for (INTULocationRequest *locationRequest in self.locationRequests) {
+            for (INTULocationRequest *locationRequest in [self activeLocationRequestsExcludingType:INTULocationRequestTypeSignificantChanges]) {
                 if (locationRequest.desiredAccuracy > maximumDesiredAccuracy) {
                     maximumDesiredAccuracy = locationRequest.desiredAccuracy;
                 }
@@ -331,7 +331,7 @@ static id _sharedInstance;
         {
             // Determine the maximum desired accuracy for all remaining location requests
             INTULocationAccuracy maximumDesiredAccuracy = INTULocationAccuracyNone;
-            for (INTULocationRequest *locationRequest in self.locationRequests) {
+            for (INTULocationRequest *locationRequest in [self activeLocationRequestsExcludingType:INTULocationRequestTypeSignificantChanges]) {
                 if (locationRequest.desiredAccuracy > maximumDesiredAccuracy) {
                     maximumDesiredAccuracy = locationRequest.desiredAccuracy;
                 }
@@ -439,7 +439,7 @@ static id _sharedInstance;
 {
     [self requestAuthorizationIfNeeded];
     
-    NSArray *locationRequests = [self pendingLocationRequestsWithType:INTULocationRequestTypeSignificantChanges];
+    NSArray *locationRequests = [self activeLocationRequestsWithType:INTULocationRequestTypeSignificantChanges];
     if (locationRequests.count == 0) {
         [self.locationManager startMonitoringSignificantLocationChanges];
         if (self.isMonitoringSignificantLocationChanges == NO) {
@@ -459,7 +459,7 @@ static id _sharedInstance;
     // We only enable location updates while there are open location requests, so power usage isn't a concern.
     // As a result, we use the Best accuracy on CLLocationManager so that we can quickly get a fix on the location,
     // clear out the pending location requests, and then power down the location services.
-    NSArray *locationRequests = [self pendingLocationRequestsExcludingRequestsWithType:INTULocationRequestTypeSignificantChanges];
+    NSArray *locationRequests = [self activeLocationRequestsExcludingType:INTULocationRequestTypeSignificantChanges];
     if (locationRequests.count == 0) {
         [self.locationManager startUpdatingLocation];
         if (self.isUpdatingLocation == NO) {
@@ -471,7 +471,7 @@ static id _sharedInstance;
 
 - (void)stopMonitoringSignificantLocationChangesIfPossible
 {
-    NSArray *locationRequests = [self pendingLocationRequestsWithType:INTULocationRequestTypeSignificantChanges];
+    NSArray *locationRequests = [self activeLocationRequestsWithType:INTULocationRequestTypeSignificantChanges];
     if (locationRequests.count == 0) {
         [self.locationManager stopMonitoringSignificantLocationChanges];
         if (self.isMonitoringSignificantLocationChanges) {
@@ -487,7 +487,7 @@ static id _sharedInstance;
  */
 - (void)stopUpdatingLocationIfPossible
 {
-    NSArray *locationRequests = [self pendingLocationRequestsExcludingRequestsWithType:INTULocationRequestTypeSignificantChanges];
+    NSArray *locationRequests = [self activeLocationRequestsExcludingType:INTULocationRequestTypeSignificantChanges];
     if (locationRequests.count == 0) {
         [self.locationManager stopUpdatingLocation];
         if (self.isUpdatingLocation) {
@@ -597,7 +597,7 @@ static id _sharedInstance;
 /**
  Returns all pending location requests with the given type.
  */
-- (NSArray *)pendingLocationRequestsWithType:(INTULocationRequestType)locationRequestType
+- (NSArray *)activeLocationRequestsWithType:(INTULocationRequestType)locationRequestType
 {
     return [self.locationRequests filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(INTULocationRequest *evaluatedObject, NSDictionary *bindings) {
         return evaluatedObject.type == locationRequestType;
@@ -607,7 +607,7 @@ static id _sharedInstance;
 /**
  Returns all pending location requests excluding requests with the given type.
  */
-- (NSArray *)pendingLocationRequestsExcludingRequestsWithType:(INTULocationRequestType)locationRequestType
+- (NSArray *)activeLocationRequestsExcludingType:(INTULocationRequestType)locationRequestType
 {
     return [self.locationRequests filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(INTULocationRequest *evaluatedObject, NSDictionary *bindings) {
         return evaluatedObject.type != locationRequestType;
