@@ -17,29 +17,39 @@ INTULocationManager makes it easy to request the device's current location, eith
 
 1.	Add the pod `INTULocationManager` to your [Podfile](http://guides.cocoapods.org/using/the-podfile.html).
 
-    	pod 'INTULocationManager'
+  ```ruby
+  pod 'INTULocationManager'
+  ```
 
-2.	Run `pod install` from Terminal, then open your app's `.xcworkspace` file to launch Xcode.
-3.	Import the `INTULocationManager.h` header. Typically, this should be written as `#import <INTULocationManager/INTULocationManager.h>`
+1.	Run `pod install` from Terminal, then open your app's `.xcworkspace` file to launch Xcode.
+1.	Import the `INTULocationManager.h` header.
+  * With `use_frameworks!` in your Podfile
+    * Swift: `import INTULocationManager`
+    * Objective-C: `#import <INTULocationManager/INTULocationManager.h>` (or with Modules enabled: `@import INTULocationManager;`)
+  * Without `use_frameworks!` in your Podfile
+    * Swift: Add `#import "INTULocationManager.h"` to your bridging header.
+    * Objective-C: `#import "INTULocationManager.h"`
 
 ### Using [Carthage](https://github.com/Carthage/Carthage)
 
-1.	Add the `intuit/LocationManager` project to your [Cartfile](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile).
+1. Add the `intuit/LocationManager` project to your [Cartfile](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile).
 
-        github "intuit/LocationManager"
+  ```ogdl
+  github "intuit/LocationManager"
+  ```
 
-2.  Run `carthage update`, then follow the [additional steps required](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application) to add the iOS and/or Mac frameworks into your project.
-3.  Import the INTULocationManager framework/module.
-    *  Using Modules: `@import INTULocationManager`
-    *  Without Modules: `#import <INTULocationManager/INTULocationManager.h>`
+1. Run `carthage update`, then follow the [additional steps required](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application) to add the iOS and/or Mac frameworks into your project.
+1. Import the INTULocationManager framework/module.
+  * Swift: `import INTULocationManager`
+  * Objective-C: `#import <INTULocationManager/INTULocationManager.h>` (or with Modules enabled: `@import INTULocationManager;`)
 
-[carthage-installation]: https://github.com/Carthage/Carthage#adding-frameworks-to-an-application
+### Manually from GitHub
 
-**Manually from GitHub**
-
-1.	Download all the files in the [INTULocationManager subdirectory](LocationManager/INTULocationManager).
-2.	Add the source files to your Xcode project (drag and drop is easiest).
-3.	Import the `INTULocationManager.h` header.
+1. Download all the files in the [INTULocationManager subdirectory](LocationManager/INTULocationManager).
+1. Add the source files to your Xcode project (drag and drop is easiest).
+1. Import the `INTULocationManager.h` header.
+  * Swift: Add `#import "INTULocationManager.h"` to your bridging header.
+  * Objective-C: `#import "INTULocationManager.h"`
 
 ## Usage
 
