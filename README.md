@@ -1,7 +1,7 @@
 # [![INTULocationManager](https://github.com/intuit/LocationManager/blob/master/Images/INTULocationManager.png?raw=true)](#)  
 [![Build Status](http://img.shields.io/travis/intuit/LocationManager.svg?style=flat)](https://travis-ci.org/intuit/LocationManager) [![Test Coverage](http://img.shields.io/coveralls/intuit/LocationManager.svg?style=flat)](https://coveralls.io/r/intuit/LocationManager) [![Version](http://img.shields.io/cocoapods/v/INTULocationManager.svg?style=flat)](http://cocoapods.org/pods/INTULocationManager) [![Platform](http://img.shields.io/cocoapods/p/INTULocationManager.svg?style=flat)](http://cocoapods.org/pods/INTULocationManager) [![License](http://img.shields.io/cocoapods/l/INTULocationManager.svg?style=flat)](LICENSE)
 
-INTULocationManager makes it easy to get the device's current location on iOS. It is an Objective-C library that also works great with Swift using a bridging header.
+INTULocationManager makes it easy to get the device's current location on iOS. It is an Objective-C library that also works great in Swift.
 
 INTULocationManager provides a block-based asynchronous API to request the current location, either once or continuously. It internally manages multiple simultaneous location requests, and each one-time request can specify its own desired accuracy level and timeout duration. INTULocationManager automatically starts location services when the first request comes in and stops location services as soon as all requests have been completed, all the while dynamically managing the power consumed by location services to reduce impact on battery life.
 
@@ -158,7 +158,7 @@ Here is an example of how to handle being launched in the background due to a si
 }
 ```
 
-### Managing In-Progress Requests or Subscriptions
+### Managing Active Requests or Subscriptions
 When issuing a location request, you can optionally store the request ID, which allows you to force complete or cancel the request at any time:
 ```objective-c
 INTULocationManager *locMgr = [INTULocationManager sharedInstance];
