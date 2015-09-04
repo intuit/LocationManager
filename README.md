@@ -139,7 +139,7 @@ INTULocationManager *locMgr = [INTULocationManager sharedInstance];
 }];
 ```
 
-If your app has acquired the *Always* location services authorization and your app is terminated with at least one active significant location change subscription, your app may be launched in the background when the system detects a significant location change. Note that when the app terminates, all of your active location requests & subscriptions with INTULocationManager are canceled. Therefore, when the app launches due to a significant location change, you should immediately use INTULocationManager to set up a new subscription for significant location changes in order to receive the location information.
+If your app has acquired the "Always" location services authorization and your app is terminated with at least one active significant location change subscription, your app may be launched in the background when the system detects a significant location change. Note that when the app terminates, all of your active location requests & subscriptions with INTULocationManager are canceled. Therefore, when the app launches due to a significant location change, you should immediately use INTULocationManager to set up a new subscription for significant location changes in order to receive the location information.
 
 Here is an example of how to handle being launched in the background due to a significant location change:
 ```objective-c
