@@ -46,6 +46,8 @@ __INTU_ASSUME_NONNULL_BEGIN
 /** Returns the singleton instance of this class. */
 + (instancetype)sharedInstance;
 
+#pragma mark Location Requests
+
 /**
  Asynchronously requests the current location of the device using location services.
  
@@ -124,6 +126,28 @@ __INTU_ASSUME_NONNULL_BEGIN
 
 /** Immediately cancels the location request (or subscription) with the given requestID (if it exists), without executing the original request block. */
 - (void)cancelLocationRequest:(INTULocationRequestID)requestID;
+
+#pragma mark Heading Requests
+
+/**
+ * Specifies the minimum amount of change in degrees needed for a heading service update. Observers will not be notified of updates less than the stated filter value.
+ *
+ * @discussion The default value for this is 1.
+ */
+@property (nonatomic) INTUHeadingFilterAccuracy headingFilter;
+
+/**
+ Creates a subscription for heading updates that will execute the block once per update indefinitely (until canceled), assuming the heading update exceeded the heading filter threshold.
+ If an error occurs, the block will execute with a status other than INTUHeadingStatusSuccess, and the subscription will be canceled automatically.
+
+ @param block           The block to execute every time an updated heading is available. The status will be INTUHeadingStatusSuccess unless an error occurred.
+
+ @return The heading request ID, which can be used to cancel the subscription of heading updates to this block.
+ */
+- (INTUHeadingRequestID)subscribeToHeadingUpdatesWithBlock:(INTUHeadingRequestBlock)block;
+
+/** Immediately cancels the heading subscription request with the given requestID (if it exists), without executing the original request block. */
+- (void)cancelHeadingRequest:(INTUHeadingRequestID)requestID;
 
 @end
 

@@ -31,6 +31,8 @@
 		B19756131B2124CE00313073 /* INTULocationManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B19756111B2124CE00313073 /* INTULocationManagerTests.m */; };
 		B19756141B2124CE00313073 /* INTULocationRequestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B19756121B2124CE00313073 /* INTULocationRequestTests.m */; };
 		B197561D1B2124F300313073 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B197561B1B2124F300313073 /* InfoPlist.strings */; };
+		D4198ABE1BB1A6AA007E5A0C /* INTUHeadingRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = D4198ABC1BB1A6AA007E5A0C /* INTUHeadingRequest.h */; };
+		D4198ABF1BB1A6AA007E5A0C /* INTUHeadingRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = D4198ABD1BB1A6AA007E5A0C /* INTUHeadingRequest.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -98,6 +100,8 @@
 		B19756151B2124DD00313073 /* LocationManagerTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "LocationManagerTests-Info.plist"; path = "LocationManagerTests/LocationManagerTests-Info.plist"; sourceTree = SOURCE_ROOT; };
 		B197561C1B2124F300313073 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = LocationManagerTests/en.lproj/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
 		BDAF7260555E9E55ADE601BE /* Pods-LocationManagerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LocationManagerTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LocationManagerTests/Pods-LocationManagerTests.debug.xcconfig"; sourceTree = "<group>"; };
+		D4198ABC1BB1A6AA007E5A0C /* INTUHeadingRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INTUHeadingRequest.h; path = INTULocationManager/INTUHeadingRequest.h; sourceTree = SOURCE_ROOT; };
+		D4198ABD1BB1A6AA007E5A0C /* INTUHeadingRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INTUHeadingRequest.m; path = INTULocationManager/INTUHeadingRequest.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +142,8 @@
 			children = (
 				B19756041B21202700313073 /* INTULocationManager.h */,
 				B19756051B21202700313073 /* INTULocationManager.m */,
+				D4198ABC1BB1A6AA007E5A0C /* INTUHeadingRequest.h */,
+				D4198ABD1BB1A6AA007E5A0C /* INTUHeadingRequest.m */,
 				B19756071B21202700313073 /* INTULocationRequest.h */,
 				B19756081B21202700313073 /* INTULocationRequest.m */,
 				B19756091B21202700313073 /* INTULocationRequestDefines.h */,
@@ -254,6 +260,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B197560D1B21202700313073 /* INTULocationRequest.h in Headers */,
+				D4198ABE1BB1A6AA007E5A0C /* INTUHeadingRequest.h in Headers */,
 				B197560C1B21202700313073 /* INTULocationManager+Internal.h in Headers */,
 				B197560F1B21202700313073 /* INTULocationRequestDefines.h in Headers */,
 				B197560A1B21202700313073 /* INTULocationManager.h in Headers */,
@@ -447,6 +454,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4198ABF1BB1A6AA007E5A0C /* INTUHeadingRequest.m in Sources */,
 				B197560E1B21202700313073 /* INTULocationRequest.m in Sources */,
 				B197560B1B21202700313073 /* INTULocationManager.m in Sources */,
 			);

@@ -26,6 +26,7 @@
 #import "INTULocationManager.h"
 #import "INTULocationManager+Internal.h"
 #import "INTULocationRequest.h"
+#import "INTUHeadingRequest.h"
 
 
 #ifndef INTU_ENABLE_LOGGING
@@ -49,16 +50,24 @@
 @property (nonatomic, strong) CLLocationManager *locationManager;
 /** The most recent current location, or nil if the current location is unknown, invalid, or stale. */
 @property (nonatomic, strong) CLLocation *currentLocation;
+/** The most recent current heading, or nil if the current heading is unknown, invalid, or stale. */
+@property (nonatomic, strong) CLHeading *currentHeading;
 /** Whether or not the CLLocationManager is currently monitoring significant location changes. */
 @property (nonatomic, assign) BOOL isMonitoringSignificantLocationChanges;
 /** Whether or not the CLLocationManager is currently sending location updates. */
 @property (nonatomic, assign) BOOL isUpdatingLocation;
+/** Whether or not the CLLocationManager is currently sending heading updates. */
+@property (nonatomic, assign) BOOL isUpdatingHeading;
 /** Whether an error occurred during the last location update. */
 @property (nonatomic, assign) BOOL updateFailed;
 
 // An array of active location requests in the form:
 // @[ INTULocationRequest *locationRequest1, INTULocationRequest *locationRequest2, ... ]
 @property (nonatomic, strong) __INTU_GENERICS(NSArray, INTULocationRequest *) *locationRequests;
+
+// An array of active heading requests in the form:
+// @[ INTUHeadingRequest *headingRequest1, INTUHeadingRequest *headingRequest2, ... ]
+@property (nonatomic, strong) __INTU_GENERICS(NSArray, INTUHeadingRequest *) *headingRequests;
 
 @end
 
@@ -126,6 +135,8 @@ static id _sharedInstance;
     }
     return self;
 }
+
+#pragma mark Public location methods
 
 /**
  Asynchronously requests the current location of the device using location services.
@@ -290,14 +301,57 @@ static id _sharedInstance;
     for (INTULocationRequest *locationRequest in self.locationRequests) {
         if (locationRequest.requestID == requestID) {
             [locationRequest cancel];
-            INTULMLog(@"Location Request canceled with ID: %ld", (long)locationRequest.requestID);
             [self removeLocationRequest:locationRequest];
+            INTULMLog(@"Location Request canceled with ID: %ld", (long)locationRequest.requestID);
             break;
         }
     }
 }
 
-#pragma mark Internal methods
+#pragma mark Public heading methods
+
+/**
+ * Specifies the minimum amount of change in degrees needed for a heading service update. Observers will not be notified of updates less than the stated filter value.
+ */
+- (void)setHeadingFilter:(INTUHeadingFilterAccuracy)headingFilter
+{
+    // Note: This updates the heading filter for all requests
+    self.locationManager.headingFilter = headingFilter;
+}
+
+/**
+ Asynchronously requests the current heading of the device using location services.
+
+ @param block The block to be executed when the request succeeds. One parameter is passed into the block:
+ - The current heading (the most recent one acquired, regardless of accuracy level), or nil if no valid heading was acquired
+ 
+ @return The heading request ID, which can be used remove the request from being called in the future.
+ */
+- (INTUHeadingRequestID)subscribeToHeadingUpdatesWithBlock:(INTUHeadingRequestBlock)block
+{
+    INTUHeadingRequest *headingRequest = [[INTUHeadingRequest alloc] init];
+    headingRequest.block = block;
+
+    [self addHeadingRequest:headingRequest];
+
+    return headingRequest.requestID;
+}
+
+/**
+ Immediately cancels the heading request with the given requestID (if it exists), without executing the original request block.
+ */
+- (void)cancelHeadingRequest:(INTUHeadingRequestID)requestID
+{
+    for (INTUHeadingRequest *headingRequest in self.headingRequests) {
+        if (headingRequest.requestID == requestID) {
+            [self removeHeadingRequest:headingRequest];
+            INTULMLog(@"Heading Request canceled with ID: %ld", (long)headingRequest.requestID);
+            break;
+        }
+    }
+}
+
+#pragma mark Internal location methods
 
 /**
  Adds the given location request to the array of requests, updates the maximum desired accuracy, and starts location updates if needed.
@@ -383,7 +437,7 @@ static id _sharedInstance;
 {    
     if (_currentLocation) {
         // Location isn't nil, so test to see if it is valid
-        if (_currentLocation.coordinate.latitude == 0.0 && _currentLocation.coordinate.longitude == 0.0) {
+        if (!CLLocationCoordinate2DIsValid(_currentLocation.coordinate) || (_currentLocation.coordinate.latitude == 0.0 && _currentLocation.coordinate.longitude == 0.0)) {
             // The current location is invalid; discard it and return nil
             _currentLocation = nil;
         }
@@ -709,6 +763,102 @@ static id _sharedInstance;
     }
 }
 
+#pragma mark Internal heading methods
+
+/**
+ Adds the given heading request to the array of requests and starts heading updates.
+ */
+- (void)addHeadingRequest:(INTUHeadingRequest *)headingRequest
+{
+    NSAssert(headingRequest, @"Must pass in a non-nil heading request.");
+
+    // If heading services are not available, just return
+    if ([CLLocationManager headingAvailable] == NO) {
+        INTULMLog(@"Heading Request (ID %ld) NOT added since device heading is unavailable.", (long)headingRequest.requestID);
+        return;
+    }
+
+    __INTU_GENERICS(NSMutableArray, INTUHeadingRequest *) *newHeadingRequests = [NSMutableArray arrayWithArray:self.headingRequests];
+    [newHeadingRequests addObject:headingRequest];
+    self.headingRequests = newHeadingRequests;
+    INTULMLog(@"Heading Request added with ID: %ld", (long)headingRequest.requestID);
+
+    if (!self.isUpdatingHeading) {
+        self.isUpdatingHeading = YES;
+
+        [self.locationManager startUpdatingHeading];
+    }
+}
+
+/**
+ Removes a given heading request from the array of requests and stops heading updates if needed.
+ */
+- (void)removeHeadingRequest:(INTUHeadingRequest *)headingRequest
+{
+    __INTU_GENERICS(NSMutableArray, INTUHeadingRequest *) *newHeadingRequests = [NSMutableArray arrayWithArray:self.headingRequests];
+    [newHeadingRequests removeObject:headingRequest];
+    self.headingRequests = newHeadingRequests;
+
+    [self stopUpdatingHeadingIfPossible];
+}
+
+/**
+ Checks to see if there are any outstanding headingRequests, and if there are none, informs CLLocationManager to stop sending
+ heading updates. This is done as soon as heading updates are no longer needed in order to conserve the device's battery.
+ */
+- (void)stopUpdatingHeadingIfPossible
+{
+    if (self.headingRequests.count == 0) {
+        [self.locationManager stopUpdatingHeading];
+        if (self.isUpdatingHeading) {
+            INTULMLog(@"Location services heading updates have stopped.");
+        }
+        self.isUpdatingHeading = NO;
+    }
+}
+
+/**
+ Iterates over the array of active heading requests and processes each
+ */
+- (void)processRecurringHeadingRequests
+{
+    for (INTUHeadingRequest *headingRequest in self.headingRequests) {
+        [self processRecurringHeadingRequest:headingRequest];
+    }
+}
+
+/**
+ Handles calling a recurring heading request's block with the current heading.
+ */
+- (void)processRecurringHeadingRequest:(INTUHeadingRequest *)headingRequest
+{
+    NSAssert(headingRequest.isRecurring, @"This method should only be called for recurring heading requests.");
+
+    INTUHeadingStatus status = [self statusForHeadingRequest:headingRequest];
+
+    // Check if the request had a fatal error and should be canceled
+    if (status == INTUHeadingStatusUnavailable) {
+        [self cancelHeadingRequest:headingRequest.requestID];
+        return;
+    }
+
+    // No need for dispatch_async when calling this block, since this method is only called from a CLLocationManager callback
+    if (headingRequest.block) {
+        headingRequest.block(self.currentHeading, status);
+    }
+}
+
+/**
+ Returns the location manager status for the given heading request.
+ */
+- (INTUHeadingStatus)statusForHeadingRequest:(INTUHeadingRequest *)headingRequest
+{
+    if ([CLLocationManager headingAvailable] == NO) {
+        return INTUHeadingStatusUnavailable;
+    }
+    return INTUHeadingStatusSuccess;
+}
+
 #pragma mark INTULocationRequestDelegate method
 
 - (void)locationRequestDidTimeout:(INTULocationRequest *)locationRequest
@@ -734,6 +884,14 @@ static id _sharedInstance;
     
     // Process the location requests using the updated location
     [self processLocationRequests];
+}
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading
+{
+    self.currentHeading = newHeading;
+
+    // Process the heading requests using the updated heading
+    [self processRecurringHeadingRequests];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
