@@ -309,6 +309,7 @@
 				B116685D18E5CEDD00D1E022 /* Frameworks */,
 				B116685E18E5CEDD00D1E022 /* Resources */,
 				06F91033007B343DFBF00295 /* Copy Pods Resources */,
+				8A674B8F17922925CBFB0C42 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -332,6 +333,13 @@
 				TargetAttributes = {
 					6681CD271B1306C30080DBA9 = {
 						CreatedOnToolsVersion = 6.3.2;
+					};
+					B116683E18E5CEDD00D1E022 = {
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					B116685F18E5CEDD00D1E022 = {
 						TestTargetID = B116683E18E5CEDD00D1E022;
@@ -415,6 +423,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		8A674B8F17922925CBFB0C42 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LocationManagerTests/Pods-LocationManagerTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */

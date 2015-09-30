@@ -107,6 +107,19 @@ static id _sharedInstance;
     if (self) {
         _locationManager = [[CLLocationManager alloc] init];
         _locationManager.delegate = self;
+        
+#if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_7_1 && __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_8_4
+        /* iOS 9 requires setting allowsBackgroundLocationUpdates to YES in order to receive background location updates.
+         We only set it to YES if the location background mode is enabled for this app, as the documentation suggests it is a
+         fatal programmer error otherwise. */
+        NSArray *backgroundModes = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"UIBackgroundModes"];
+        if ([backgroundModes containsObject:@"location"]) {
+            if ([_locationManager respondsToSelector:@selector(setAllowsBackgroundLocationUpdates:)]) {
+                [_locationManager setAllowsBackgroundLocationUpdates:YES];
+            }
+        }
+#endif /* __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_7_1 && __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_8_4 */
+
         _locationRequests = @[];
     }
     return self;
@@ -732,6 +745,7 @@ static id _sharedInstance;
 #else
     else if (status == kCLAuthorizationStatusAuthorized) {
 #endif /* __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_7_1 */
+
         // Start the timeout timer for location requests that were waiting for authorization
         for (INTULocationRequest *locationRequest in self.locationRequests) {
             [locationRequest startTimeoutTimerIfNeeded];
