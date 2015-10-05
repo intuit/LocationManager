@@ -101,11 +101,11 @@ INTULocationManager *locMgr = [INTULocationManager sharedInstance];
 ```
 
 ### Subscribing to Continuous Location Updates
-To subscribe to continuous location updates, use the method `subscribeToLocationUpdatesWithBlock:`. This method instructs location services to use the highest accuracy available (which also requires the most power). The block will execute indefinitely (until canceled), once for every new updated location regardless of its accuracy.
+To subscribe to continuous location updates, use the method `subscribeToLocationUpdatesWithBlock:`. This method instructs location services to use the highest accuracy available (which also requires the most power). The block will execute indefinitely (even across errors, until canceled), once for every new updated location regardless of its accuracy.
 
 If you do not need the highest possible accuracy level, you should instead use `subscribeToLocationUpdatesWithDesiredAccuracy:block:`. This method takes the desired accuracy level and uses it to control how much power is used by location services, with lower accuracy levels like Neighborhood and City requiring less power. Note that INTULocationManager will automatically manage the system location services accuracy level, including when there are multiple active location requests/subscriptions with different desired accuracies.
 
-If an error occurs, the block will execute with a status other than `INTULocationStatusSuccess`, and the subscription will be canceled automatically.
+If an error occurs, the block will execute with a status other than `INTULocationStatusSuccess`, and the subscription will be kept alive.
 
 Here's an example:
 ```objective-c
@@ -116,7 +116,7 @@ INTULocationManager *locMgr = [INTULocationManager sharedInstance];
                                                         // A new updated location is available in currentLocation, and achievedAccuracy indicates how accurate this particular location is.
                                                     }
                                                     else {
-                                                        // An error occurred, more info is available by looking at the specific status returned. The subscription has been automatically canceled.
+                                                        // An error occurred, more info is available by looking at the specific status returned. The subscription has been kept alive.
                                                     }
                                                 }];
 ```
@@ -124,7 +124,7 @@ INTULocationManager *locMgr = [INTULocationManager sharedInstance];
 ### Subscribing to Significant Location Changes
 To subscribe to significant location changes, use the method `subscribeToSignificantLocationChangesWithBlock:`. This instructs location services to begin monitoring for significant location changes, which is very power efficient. The block will execute indefinitely (until canceled), once for every new updated location regardless of its accuracy. Note that if there are other simultaneously active location requests or subscriptions, the block will execute for every location update (not just for significant location changes). If you intend to take action only when the location has changed significantly, you should implement custom filtering based on the distance & time from the last received location.
 
-If an error occurs, the block will execute with a status other than `INTULocationStatusSuccess`, and the subscription will be canceled automatically.
+If an error occurs, the block will execute with a status other than `INTULocationStatusSuccess`, and the subscription will be kept alive.
 
 Here's an example:
 ```objective-c
@@ -134,7 +134,7 @@ INTULocationManager *locMgr = [INTULocationManager sharedInstance];
 		// A new updated location is available in currentLocation, and achievedAccuracy indicates how accurate this particular location is.
     }
     else {
-        // An error occurred, more info is available by looking at the specific status returned. The subscription has been automatically canceled.
+        // An error occurred, more info is available by looking at the specific status returned. The subscription has been kept alive.
     }
 }];
 ```
