@@ -135,7 +135,7 @@ typedef NS_ENUM(NSInteger, INTUHeadingStatus) {
     /** Got a heading successfully. */
     INTUHeadingStatusSuccess = 0,
 
-    // These statuses indicate some sort of error, and will accompany a nil location.
+    // These statuses indicate some sort of error, and will accompany a nil heading.
     /** Heading services are not available on the device */
     INTUHeadingStatusUnavailable
 };

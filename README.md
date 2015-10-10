@@ -1,14 +1,14 @@
 # [![INTULocationManager](https://github.com/intuit/LocationManager/blob/master/Images/INTULocationManager.png?raw=true)](#)  
 [![Build Status](http://img.shields.io/travis/intuit/LocationManager.svg?style=flat)](https://travis-ci.org/intuit/LocationManager) [![Test Coverage](http://img.shields.io/coveralls/intuit/LocationManager.svg?style=flat)](https://coveralls.io/r/intuit/LocationManager) [![Version](http://img.shields.io/cocoapods/v/INTULocationManager.svg?style=flat)](http://cocoapods.org/pods/INTULocationManager) [![Platform](http://img.shields.io/cocoapods/p/INTULocationManager.svg?style=flat)](http://cocoapods.org/pods/INTULocationManager) [![License](http://img.shields.io/cocoapods/l/INTULocationManager.svg?style=flat)](LICENSE)
 
-INTULocationManager makes it easy to get the device's current location on iOS. It is an Objective-C library that also works great in Swift.
+INTULocationManager makes it easy to get the device's current location and heading on iOS. It is an Objective-C library that also works great in Swift.
 
-INTULocationManager provides a block-based asynchronous API to request the current location, either once or continuously. It internally manages multiple simultaneous location requests, and each one-time request can specify its own desired accuracy level and timeout duration. INTULocationManager automatically starts location services when the first request comes in and stops location services as soon as all requests have been completed, all the while dynamically managing the power consumed by location services to reduce impact on battery life.
+INTULocationManager provides a block-based asynchronous API to request the current location, either once or continuously. It internally manages multiple simultaneous location and heading requests, and each one-time location request can specify its own desired accuracy level and timeout duration. INTULocationManager automatically starts location services when the first request comes in and stops location services as soon as all requests have been completed, all the while dynamically managing the power consumed by location services to reduce impact on battery life.
 
 ## What's wrong with CLLocationManager?
 CLLocationManager requires you to manually detect and handle things like permissions, stale/inaccurate locations, errors, and more. CLLocationManager uses a more traditional delegate pattern instead of the modern block-based callback pattern. And while it works fine to track changes in the user's location over time (such as for turn-by-turn navigation), it is extremely cumbersome to correctly request a single location update (such as to determine the user's current city to get a weather forecast, or to autofill an address from the current location).
 
-INTULocationManager makes it easy to request the device's current location, either once or continuously. The API is extremely simple for both one-time location requests and recurring subscriptions to location updates. For one-time location requests, you can specify how accurate of a location you need, and how long you're willing to wait to get it. Significant location change monitoring is also supported. INTULocationManager is power efficient and conserves the device's battery by automatically determining and using the most efficient Core Location accuracy settings, and by automatically powering down location services (e.g. GPS) as soon as they are no longer needed.
+INTULocationManager makes it easy to request both the device's current location, either once or continuously, as well as the device's continuous heading. The API is extremely simple for both one-time location requests and recurring subscriptions to location updates. For one-time location requests, you can specify how accurate of a location you need, and how long you're willing to wait to get it. Significant location change monitoring is also supported. INTULocationManager is power efficient and conserves the device's battery by automatically determining and using the most efficient Core Location accuracy settings, and by automatically powering down location services (e.g. GPS or compass) as soon as they are no longer needed.
 
 ## Installation
 *INTULocationManager requires iOS 6.0 or later.*
@@ -174,6 +174,26 @@ INTULocationRequestID requestID = [locMgr requestLocationWithDesiredAccuracy:INT
 ```
 
 Note that subscriptions never timeout; calling `forceCompleteLocationRequest:` on a subscription will simply cancel it.
+
+### Subscribing to Continuous Heading Updates
+To subscribe to continuous heading updates, use the method `subscribeToHeadingUpdatesWithBlock:`. This method does not set any default heading filter value, but you can do so using the `headingFilter` property on the manager instance. It also does not filter based on accuracy of the result, but rather leaves it up to you to check the returned `CLHeading` object's `headingAccuracy` property to determine whether or not it is acceptable. 
+
+The block will execute indefinitely (until canceled), once for every new updated heading regardless of its accuracy. Note that if heading requests are removed or canceled, the manager will automatically stop updating the device heading in order to preserve battery life.
+
+If an error occurs, the block will execute with a status other than `INTUHeadingStatusSuccess`, and the subscription will only be automatically canceled if the device doesn't have heading support (i.e. for status `INTUHeadingStatusUnavailable`).
+
+Here's an example:
+```objective-c
+INTULocationManager *locMgr = [INTULocationManager sharedInstance];
+[locMgr subscribeToHeadingUpdatesWithBlock:^(CLHeading *heading, INTUHeadingStatus status) {
+    if (status == INTUHeadingStatusSuccess) {
+        // An updated heading is available
+        NSLog(@"'Heading updates' subscription block called with Current Heading:\n%@", heading);
+    } else {
+        // An error occurred, more info is available by looking at the specific status returned. The subscription will be canceled only if the device doesn't have heading support.
+    }
+}];
+```
 
 ## Example Project
 Open the [project](LocationManager) included in the repository (requires Xcode 6 and iOS 8.0 or later). It contains a `LocationManagerExample` scheme that will run a simple demo app. Please note that it can run in the iOS Simulator, but you need to go to the iOS Simulator's **Debug > Location** menu once running the app to simulate a location (the default is **None**).
