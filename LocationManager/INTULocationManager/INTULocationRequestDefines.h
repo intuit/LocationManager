@@ -78,6 +78,14 @@ typedef NS_ENUM(NSInteger, INTULocationServicesState) {
     INTULocationServicesStateDisabled
 };
 
+/** The possible states that heading services can be in. */
+typedef NS_ENUM(NSInteger, INTUHeadingServicesState) {
+    /** Heading services are available on the device */
+    INTUHeadingServicesStateAvailable,
+    /** Heading services are available on the device */
+    INTUHeadingServicesStateUnavailable,
+};
+
 /** A unique ID that corresponds to one location request. */
 typedef NSInteger INTULocationRequestID;
 
@@ -136,6 +144,9 @@ typedef NS_ENUM(NSInteger, INTUHeadingStatus) {
     INTUHeadingStatusSuccess = 0,
 
     // These statuses indicate some sort of error, and will accompany a nil heading.
+    /** Heading was invalid. */
+    INTUHeadingStatusInvalid,
+
     /** Heading services are not available on the device */
     INTUHeadingStatusUnavailable
 };

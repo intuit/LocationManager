@@ -43,6 +43,9 @@ __INTU_ASSUME_NONNULL_BEGIN
 /** Returns the current state of location services for this app, based on the system settings and user authorization status. */
 + (INTULocationServicesState)locationServicesState;
 
+/** Returns the current state of heading services for this device. */
++ (INTUHeadingServicesState)headingServicesState;
+
 /** Returns the singleton instance of this class. */
 + (instancetype)sharedInstance;
 
@@ -128,13 +131,6 @@ __INTU_ASSUME_NONNULL_BEGIN
 - (void)cancelLocationRequest:(INTULocationRequestID)requestID;
 
 #pragma mark Heading Requests
-
-/**
- * Specifies the minimum amount of change in degrees needed for a heading service update. Observers will not be notified of updates less than the stated filter value.
- *
- * @discussion The default value for this is 1.
- */
-@property (nonatomic) INTUHeadingFilterAccuracy headingFilter;
 
 /**
  Creates a subscription for heading updates that will execute the block once per update indefinitely (until canceled), assuming the heading update exceeded the heading filter threshold.

@@ -97,6 +97,18 @@ static id _sharedInstance;
     return INTULocationServicesStateAvailable;
 }
 
+/** 
+ Returns the current state of heading services for this device. 
+ */
++ (INTUHeadingServicesState)headingServicesState
+{
+    if ([CLLocationManager headingAvailable]) {
+        return INTUHeadingServicesStateAvailable;
+    } else {
+        return INTUHeadingServicesStateUnavailable;
+    }
+}
+
 /**
  Returns the singleton instance of this class.
  */
@@ -301,23 +313,14 @@ static id _sharedInstance;
     for (INTULocationRequest *locationRequest in self.locationRequests) {
         if (locationRequest.requestID == requestID) {
             [locationRequest cancel];
-            [self removeLocationRequest:locationRequest];
             INTULMLog(@"Location Request canceled with ID: %ld", (long)locationRequest.requestID);
+            [self removeLocationRequest:locationRequest];
             break;
         }
     }
 }
 
 #pragma mark Public heading methods
-
-/**
- * Specifies the minimum amount of change in degrees needed for a heading service update. Observers will not be notified of updates less than the stated filter value.
- */
-- (void)setHeadingFilter:(INTUHeadingFilterAccuracy)headingFilter
-{
-    // Note: This updates the heading filter for all requests
-    self.locationManager.headingFilter = headingFilter;
-}
 
 /**
  Asynchronously requests the current heading of the device using location services.
@@ -766,6 +769,30 @@ static id _sharedInstance;
 #pragma mark Internal heading methods
 
 /**
+ Returns the most recent heading, or nil if the current heading is unknown or invalid.
+ */
+- (CLHeading *)currentHeading
+{
+    // Heading isn't nil, so test to see if it is valid
+    if (!INTUCLHeadingIsIsValid(_currentHeading)) {
+        // The current heading is invalid; discard it and return nil
+        _currentHeading = nil;
+    }
+
+    // Heading is either nil or valid at this point, return it
+    return _currentHeading;
+}
+
+/**
+ Checks whether the given @c CLHeading has valid properties.
+ */
+BOOL INTUCLHeadingIsIsValid(CLHeading *heading)
+{
+    return heading.trueHeading > 0 &&
+           heading.headingAccuracy > 0;
+}
+
+/**
  Adds the given heading request to the array of requests and starts heading updates.
  */
 - (void)addHeadingRequest:(INTUHeadingRequest *)headingRequest
@@ -773,7 +800,13 @@ static id _sharedInstance;
     NSAssert(headingRequest, @"Must pass in a non-nil heading request.");
 
     // If heading services are not available, just return
-    if ([CLLocationManager headingAvailable] == NO) {
+    if ([INTULocationManager headingServicesState] == INTUHeadingServicesStateUnavailable) {
+        // dispatch_async is used to ensure that the completion block for a request is not executed before the request ID is returned.
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (headingRequest.block) {
+                headingRequest.block(nil, INTUHeadingStatusUnavailable);
+            }
+        });
         INTULMLog(@"Heading Request (ID %ld) NOT added since device heading is unavailable.", (long)headingRequest.requestID);
         return;
     }
@@ -783,10 +816,20 @@ static id _sharedInstance;
     self.headingRequests = newHeadingRequests;
     INTULMLog(@"Heading Request added with ID: %ld", (long)headingRequest.requestID);
 
-    if (!self.isUpdatingHeading) {
-        self.isUpdatingHeading = YES;
+    [self startUpdatingHeadingIfNeeded];
+}
 
+/**
+ Inform CLLocationManager to start sending us updates to our heading.
+ */
+- (void)startUpdatingHeadingIfNeeded
+{
+    if (self.headingRequests.count != 0) {
         [self.locationManager startUpdatingHeading];
+        if (self.isUpdatingHeading == NO) {
+            INTULMLog(@"Heading services updates have started.");
+        }
+        self.isUpdatingHeading = YES;
     }
 }
 
@@ -838,24 +881,39 @@ static id _sharedInstance;
 
     // Check if the request had a fatal error and should be canceled
     if (status == INTUHeadingStatusUnavailable) {
+        // dispatch_async is used to ensure that the completion block for a request is not executed before the request ID is returned.
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (headingRequest.block) {
+                headingRequest.block(nil, status);
+            }
+        });
+
         [self cancelHeadingRequest:headingRequest.requestID];
         return;
     }
 
-    // No need for dispatch_async when calling this block, since this method is only called from a CLLocationManager callback
-    if (headingRequest.block) {
-        headingRequest.block(self.currentHeading, status);
-    }
+    // dispatch_async is used to ensure that the completion block for a request is not executed before the request ID is returned.
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (headingRequest.block) {
+            headingRequest.block(self.currentHeading, status);
+        }
+    });
 }
 
 /**
- Returns the location manager status for the given heading request.
+ Returns the status for the given heading request.
  */
 - (INTUHeadingStatus)statusForHeadingRequest:(INTUHeadingRequest *)headingRequest
 {
-    if ([CLLocationManager headingAvailable] == NO) {
+    if ([INTULocationManager headingServicesState] == INTUHeadingServicesStateUnavailable) {
         return INTUHeadingStatusUnavailable;
     }
+
+    // The accessor will return nil for an invalid heading results
+    if (!self.currentHeading) {
+        return INTUHeadingStatusInvalid;
+    }
+
     return INTUHeadingStatusSuccess;
 }
 

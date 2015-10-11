@@ -104,7 +104,7 @@
         }
         else {
             // An error occurred
-            strongSelf.statusLabel.text = [strongSelf getErrorDescription:status];
+            strongSelf.statusLabel.text = [strongSelf getLocationErrorDescription:status];
         }
     }];
 }
@@ -125,7 +125,7 @@
         }
         else {
             // An error occurred
-            strongSelf.statusLabel.text = [strongSelf getErrorDescription:status];
+            strongSelf.statusLabel.text = [strongSelf getLocationErrorDescription:status];
         }
     }];
 }
@@ -296,6 +296,8 @@
 
 - (void)startHeadingRequest
 {
+    self.statusLabel.text = @"Heading subscription in progress...";
+
     __weak __typeof(self) weakSelf = self;
     self.headingRequestID = [[INTULocationManager sharedInstance] subscribeToHeadingUpdatesWithBlock:^(CLHeading *heading, INTUHeadingStatus status) {
         __typeof(weakSelf) strongSelf = weakSelf;
@@ -303,7 +305,7 @@
             // An updated heading is available
             strongSelf.statusLabel.text = [NSString stringWithFormat:@"'Heading updates' subscription block called with Current Heading:\n%@", heading];
         } else {
-
+            strongSelf.statusLabel.text = [self getHeadingErrorDescription:status];
         }
     }];
 }
@@ -321,19 +323,6 @@
         [self startHeadingRequest];
     } else {
         [self cancelHeadingRequest];
-    }
-}
-
-/**
- Implement the setter for headingRequestID in order to update the UI as needed.
- */
-- (void)setHeadingRequestID:(INTUHeadingRequestID)headingRequestID
-{
-    _headingRequestID = headingRequestID;
-
-    BOOL isProcessingHeadingRequest = (headingRequestID != NSNotFound);
-    if (isProcessingHeadingRequest) {
-        self.statusLabel.text = @"Heading subscription in progress...";
     }
 }
 

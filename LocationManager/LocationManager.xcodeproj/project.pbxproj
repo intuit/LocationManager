@@ -33,6 +33,7 @@
 		B197561D1B2124F300313073 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B197561B1B2124F300313073 /* InfoPlist.strings */; };
 		D4198ABE1BB1A6AA007E5A0C /* INTUHeadingRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = D4198ABC1BB1A6AA007E5A0C /* INTUHeadingRequest.h */; };
 		D4198ABF1BB1A6AA007E5A0C /* INTUHeadingRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = D4198ABD1BB1A6AA007E5A0C /* INTUHeadingRequest.m */; };
+		D4818E031BC9E20600226586 /* INTUHeadingRequestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D4818E011BC9E20600226586 /* INTUHeadingRequestTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,6 +103,7 @@
 		BDAF7260555E9E55ADE601BE /* Pods-LocationManagerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LocationManagerTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LocationManagerTests/Pods-LocationManagerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		D4198ABC1BB1A6AA007E5A0C /* INTUHeadingRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INTUHeadingRequest.h; path = INTULocationManager/INTUHeadingRequest.h; sourceTree = SOURCE_ROOT; };
 		D4198ABD1BB1A6AA007E5A0C /* INTUHeadingRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INTUHeadingRequest.m; path = INTULocationManager/INTUHeadingRequest.m; sourceTree = SOURCE_ROOT; };
+		D4818E011BC9E20600226586 /* INTUHeadingRequestTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INTUHeadingRequestTests.m; path = LocationManagerTests/INTUHeadingRequestTests.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -237,6 +239,7 @@
 			children = (
 				B19756111B2124CE00313073 /* INTULocationManagerTests.m */,
 				B19756121B2124CE00313073 /* INTULocationRequestTests.m */,
+				D4818E011BC9E20600226586 /* INTUHeadingRequestTests.m */,
 				B116686818E5CEDD00D1E022 /* Supporting Files */,
 			);
 			name = LocationManagerTests;
@@ -316,7 +319,7 @@
 				B116685D18E5CEDD00D1E022 /* Frameworks */,
 				B116685E18E5CEDD00D1E022 /* Resources */,
 				06F91033007B343DFBF00295 /* Copy Pods Resources */,
-				8A674B8F17922925CBFB0C42 /* Embed Pods Frameworks */,
+				35645EA9EB8BCFEAF5FF5D9C /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -432,7 +435,7 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		8A674B8F17922925CBFB0C42 /* Embed Pods Frameworks */ = {
+		35645EA9EB8BCFEAF5FF5D9C /* Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -474,6 +477,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4818E031BC9E20600226586 /* INTUHeadingRequestTests.m in Sources */,
 				B19756141B2124CE00313073 /* INTULocationRequestTests.m in Sources */,
 				B19756131B2124CE00313073 /* INTULocationManagerTests.m in Sources */,
 			);

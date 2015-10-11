@@ -32,12 +32,14 @@
 
 @interface INTULocationManager (Spec) <CLLocationManagerDelegate>
 @property (nonatomic, strong) CLLocationManager *locationManager;
+@property (nonatomic, assign) BOOL isUpdatingHeading;
 @end
 
 SpecBegin(LocationManager)
 
 __block INTULocationManager *subject;
 __block CLLocation *location;
+__block CLHeading *mockHeading;
 
 before(^{
     subject = [[INTULocationManager alloc] init];
@@ -48,8 +50,13 @@ before(^{
                                                horizontalAccuracy:kCLLocationAccuracyBest
                                                  verticalAccuracy:kCLLocationAccuracyBest
                                                         timestamp:[NSDate date]];
-});
 
+    mockHeading = OCMClassMock(CLHeading.class);
+    OCMStub([mockHeading magneticHeading]).andReturn(180.0);
+    OCMStub([mockHeading trueHeading]).andReturn(180.0);
+    OCMStub([mockHeading headingAccuracy]).andReturn(1.0);
+    OCMStub([mockHeading timestamp]).andReturn([NSDate date]);
+});
 
 describe(@"location services state", ^{
     it(@"should indicate if location services are disabled", ^{
@@ -72,6 +79,25 @@ describe(@"location services state", ^{
     });
 });
 
+describe(@"heading services state", ^{
+    it(@"should indicate if heading services are available", ^{
+        id classMock = OCMClassMock(CLLocationManager.class);
+        OCMStub(ClassMethod([classMock headingAvailable])).andReturn(YES);
+
+        expect([INTULocationManager headingServicesState]).to.equal(INTUHeadingServicesStateAvailable);
+
+        [classMock stopMocking];
+    });
+    it(@"should indicate if heading services are unavailable", ^{
+        id classMock = OCMClassMock(CLLocationManager.class);
+        OCMStub(ClassMethod([classMock headingAvailable])).andReturn(NO);
+
+        expect([INTULocationManager headingServicesState]).to.equal(INTUHeadingServicesStateUnavailable);
+
+        [classMock stopMocking];
+    });
+});
+
 describe(@"forcing a request to complete", ^{
     it(@"should immediately call the request's completion block", ^{
         __block BOOL called = NO;
@@ -85,9 +111,9 @@ describe(@"forcing a request to complete", ^{
 });
 
 describe(@"After requesting a location", ^{
-    it(@"can be cancelled", ^{
+    it(@"can be canceled", ^{
         INTULocationRequestID requestID = [subject requestLocationWithDesiredAccuracy:INTULocationAccuracyRoom timeout:10 block:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
-            failure(@"was not cancelled");
+            failure(@"was not canceled");
         }];
 
         [subject cancelLocationRequest:requestID];
@@ -97,14 +123,49 @@ describe(@"After requesting a location", ^{
 });
 
 describe(@"After subscribing for significant location changes", ^{
-    it(@"can be cancelled", ^{
+    it(@"can be canceled", ^{
         INTULocationRequestID requestID = [subject subscribeToSignificantLocationChangesWithBlock:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
-            failure(@"was not cancelled");
+            failure(@"was not canceled");
         }];
         
         [subject cancelLocationRequest:requestID];
         
         [subject locationManager:subject.locationManager didUpdateLocations:@[location]];
+    });
+});
+
+describe(@"After subscribing to heading changes", ^{
+    it(@"can be canceled", ^{
+        id classMock = OCMClassMock(CLLocationManager.class);
+        OCMStub(ClassMethod([classMock headingAvailable])).andReturn(YES);
+
+        INTUHeadingRequestID requestID = [subject subscribeToHeadingUpdatesWithBlock:^(CLHeading *heading, INTUHeadingStatus status) {
+            failure(@"was not canceled");
+        }];
+
+        [subject cancelHeadingRequest:requestID];
+
+        [subject locationManager:subject.locationManager didUpdateHeading:mockHeading];
+
+        [classMock stopMocking];
+    });
+
+    it(@"should stop heading services when all requests are canceled", ^{
+        id classMock = OCMClassMock(CLLocationManager.class);
+        OCMStub(ClassMethod([classMock headingAvailable])).andReturn(YES);
+
+        INTUHeadingRequestID requestID = [subject subscribeToHeadingUpdatesWithBlock:^(CLHeading *heading, INTUHeadingStatus status) {
+            // Do nothing with the update
+        }];
+        [subject locationManager:subject.locationManager didUpdateHeading:mockHeading];
+
+        expect(subject.isUpdatingHeading).to.beTruthy();
+
+        [subject cancelHeadingRequest:requestID];
+
+        expect(subject.isUpdatingHeading).to.beFalsy();
+
+        [classMock stopMocking];
     });
 });
 
@@ -190,6 +251,52 @@ describe(@"subscribing for significant location changes with a block", ^{
             [subject locationManager:subject.locationManager didUpdateLocations:@[location]];
         });
         
+    });
+});
+
+describe(@"subscribing to heading changes with a block", ^{
+    it(@"calls the block on heading change", ^{
+        id classMock = OCMClassMock(CLLocationManager.class);
+        OCMStub(ClassMethod([classMock headingAvailable])).andReturn(YES);
+
+        __block BOOL called = NO;
+        [subject subscribeToHeadingUpdatesWithBlock:^(CLHeading *heading, INTUHeadingStatus status) {
+            called = YES;
+        }];
+
+        [subject locationManager:subject.locationManager didUpdateHeading:mockHeading];
+
+        waitUntil(^(DoneCallback done) {
+            dispatch_after(0.5, dispatch_get_main_queue(), ^{
+                done();
+            });
+        });
+
+        expect(called).to.beTruthy();
+
+        [classMock stopMocking];
+    });
+
+    it(@"passes the heading", ^{
+        id classMock = OCMClassMock(CLLocationManager.class);
+        OCMStub(ClassMethod([classMock headingAvailable])).andReturn(YES);
+
+        __block INTUHeadingStatus requestStatus = NSIntegerMax;
+        [subject subscribeToHeadingUpdatesWithBlock:^(CLHeading *heading, INTUHeadingStatus status) {
+            expect(heading).to.equal(heading);
+            requestStatus = status;
+        }];
+        [subject locationManager:subject.locationManager didUpdateHeading:mockHeading];
+
+        waitUntil(^(DoneCallback done) {
+            dispatch_after(0.5, dispatch_get_main_queue(), ^{
+                done();
+            });
+        });
+
+        expect(requestStatus).to.equal(INTUHeadingStatusSuccess);
+
+        [classMock stopMocking];
     });
 });
 
@@ -301,6 +408,93 @@ describe(@"when the location manager fails", ^{
         });
 
         expect(recurringCallbackCount).to.equal(2);
+    });
+});
+
+describe(@"when the device doesn't support heading", ^{
+    it(@"should cancel it when support becomes unavailable", ^{
+        id classMock = OCMClassMock(CLLocationManager.class);
+        OCMStub(ClassMethod([classMock headingAvailable])).andReturn(YES);
+
+        __block BOOL called = NO;
+        __block INTUHeadingStatus requestStatus = NSIntegerMax;
+
+        [subject subscribeToHeadingUpdatesWithBlock:^(CLHeading *heading, INTUHeadingStatus status) {
+            called = YES;
+            requestStatus = status;
+        }];
+
+        [subject locationManager:subject.locationManager didUpdateHeading:mockHeading];
+
+        waitUntil(^(DoneCallback done) {
+            dispatch_after(0.5, dispatch_get_main_queue(), ^{
+                done();
+            });
+        });
+
+        expect(subject.isUpdatingHeading).to.beTruthy();
+        expect(called).to.beTruthy();
+        expect(requestStatus).to.equal(INTUHeadingStatusSuccess);
+
+        [classMock stopMocking];
+
+        OCMStub(ClassMethod([classMock headingAvailable])).andReturn(NO);
+
+        // Reset and call it again to see if it gave correct status
+        called = NO;
+        requestStatus = NSIntegerMax;
+        [subject locationManager:subject.locationManager didUpdateHeading:mockHeading];
+
+        waitUntil(^(DoneCallback done) {
+            dispatch_after(0.5, dispatch_get_main_queue(), ^{
+                done();
+            });
+        });
+
+        expect(called).to.beTruthy();
+        expect(requestStatus).to.equal(INTUHeadingStatusUnavailable);
+
+        // Reset and call it again to see if it was canceled
+        called = NO;
+        [subject locationManager:subject.locationManager didUpdateHeading:mockHeading];
+
+        waitUntil(^(DoneCallback done) {
+            dispatch_after(0.5, dispatch_get_main_queue(), ^{
+                done();
+            });
+        });
+
+        expect(called).to.beFalsy();
+
+        // Ensure all heading services are stopped
+        expect(subject.isUpdatingHeading).to.beFalsy();
+
+        [classMock stopMocking];
+    });
+
+    it(@"should cancel a new heading subscription before it can even start", ^{
+        id classMock = OCMClassMock(CLLocationManager.class);
+        OCMStub(ClassMethod([classMock headingAvailable])).andReturn(NO);
+
+        __block BOOL called = NO;
+        __block INTUHeadingStatus requestStatus;
+        [subject subscribeToHeadingUpdatesWithBlock:^(CLHeading *heading, INTUHeadingStatus status) {
+            called = YES;
+            requestStatus = status;
+        }];
+
+        [subject locationManager:subject.locationManager didUpdateHeading:mockHeading];
+
+        waitUntil(^(DoneCallback done) {
+            dispatch_after(0.5, dispatch_get_main_queue(), ^{
+                done();
+            });
+        });
+
+        expect(called).to.beTruthy();
+        expect(requestStatus).to.equal(INTUHeadingStatusUnavailable);
+
+        [classMock stopMocking];
     });
 });
 
