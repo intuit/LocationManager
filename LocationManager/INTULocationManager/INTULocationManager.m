@@ -108,7 +108,8 @@ static id _sharedInstance;
         _locationManager = [[CLLocationManager alloc] init];
         _locationManager.delegate = self;
         
-#if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_7_1 && __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_8_4
+#ifdef __IPHONE_8_4
+#if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_8_4
         /* iOS 9 requires setting allowsBackgroundLocationUpdates to YES in order to receive background location updates.
          We only set it to YES if the location background mode is enabled for this app, as the documentation suggests it is a
          fatal programmer error otherwise. */
@@ -118,7 +119,8 @@ static id _sharedInstance;
                 [_locationManager setAllowsBackgroundLocationUpdates:YES];
             }
         }
-#endif /* __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_7_1 && __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_8_4 */
+#endif /* __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_8_4 */
+#endif /* __IPHONE_8_4 */
 
         _locationRequests = @[];
     }
