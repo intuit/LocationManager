@@ -504,7 +504,7 @@ static id _sharedInstance;
     
     for (INTULocationRequest *locationRequest in self.locationRequests) {
         if (locationRequest.hasTimedOut) {
-            // Request has timed out, complete it
+            // Non-recurring request has timed out, complete it
             [self completeLocationRequest:locationRequest];
             continue;
         }
@@ -708,8 +708,16 @@ static id _sharedInstance;
 {
     INTULMLog(@"Location services error: %@", [error localizedDescription]);
     self.updateFailed = YES;
-    
-    [self completeAllLocationRequests];
+
+    for (INTULocationRequest *locationRequest in self.locationRequests) {
+        if (locationRequest.isRecurring) {
+            // Keep the recurring request alive
+            [self processRecurringRequest:locationRequest];
+        } else {
+            // Fail any non-recurring requests
+            [self completeLocationRequest:locationRequest];
+        }
+    }
 }
 
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status

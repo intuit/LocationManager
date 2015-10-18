@@ -233,16 +233,62 @@ describe(@"authorization status changes", ^{
 });
 
 describe(@"when the location manager fails", ^{
-    it(@"should complete all active requests", ^{
-        __block BOOL called = NO;
+    it(@"should complete all non-recurring requests", ^{
+        __block NSInteger singleCallbackCount = 0;
         [subject requestLocationWithDesiredAccuracy:INTULocationAccuracyRoom timeout:0.1 delayUntilAuthorized:YES block:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
-            called = YES;
+            singleCallbackCount++;
         }];
 
         NSError *error = [NSError errorWithDomain:@"domain" code:1337 userInfo:@{}];
         [subject locationManager:subject.locationManager didFailWithError:error];
 
-        expect(called).will.beTruthy();
+        waitUntil(^(DoneCallback done) {
+            dispatch_after(0.5, dispatch_get_main_queue(), ^{
+                done();
+            });
+        });
+
+        expect(singleCallbackCount).to.equal(1);
+
+        // Fail it a second time and ensure it doesn't get called a second time
+        [subject locationManager:subject.locationManager didFailWithError:error];
+
+        waitUntil(^(DoneCallback done) {
+            dispatch_after(0.5, dispatch_get_main_queue(), ^{
+                done();
+            });
+        });
+
+        expect(singleCallbackCount).to.equal(1);
+    });
+
+    it(@"should keep alive all recurring requests", ^{
+        __block NSInteger recurringCallbackCount = 0;
+        [subject subscribeToLocationUpdatesWithDesiredAccuracy:INTULocationAccuracyBlock block:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
+            recurringCallbackCount++;
+        }];
+
+        NSError *error = [NSError errorWithDomain:@"domain" code:1337 userInfo:@{}];
+        [subject locationManager:subject.locationManager didFailWithError:error];
+
+        waitUntil(^(DoneCallback done) {
+            dispatch_after(0.5, dispatch_get_main_queue(), ^{
+                done();
+            });
+        });
+
+        expect(recurringCallbackCount).to.equal(1);
+
+        // Fail it a second time and see if it's still called
+        [subject locationManager:subject.locationManager didFailWithError:error];
+
+        waitUntil(^(DoneCallback done) {
+            dispatch_after(0.5, dispatch_get_main_queue(), ^{
+                done();
+            });
+        });
+
+        expect(recurringCallbackCount).to.equal(2);
     });
 });
 

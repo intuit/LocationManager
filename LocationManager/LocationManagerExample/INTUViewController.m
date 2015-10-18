@@ -97,8 +97,7 @@
             strongSelf.statusLabel.text = [NSString stringWithFormat:@"'Location updates' subscription block called with Current Location:\n%@", currentLocation];
         }
         else {
-            // An error occurred, which causes the subscription to cancel automatically (this block will not execute again unless it is used to start a new subscription).
-            strongSelf.locationRequestID = NSNotFound;
+            // An error occurred
             strongSelf.statusLabel.text = [strongSelf getErrorDescription:status];
         }
     }];
@@ -119,8 +118,7 @@
             strongSelf.statusLabel.text = [NSString stringWithFormat:@"'Significant changes' subscription block called with Current Location:\n%@", currentLocation];
         }
         else {
-            // An error occurred, which causes the subscription to cancel automatically (this block will not execute again unless it is used to start a new subscription).
-            strongSelf.locationRequestID = NSNotFound;
+            // An error occurred
             strongSelf.statusLabel.text = [strongSelf getErrorDescription:status];
         }
     }];

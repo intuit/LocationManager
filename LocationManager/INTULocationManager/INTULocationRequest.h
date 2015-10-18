@@ -74,7 +74,7 @@ typedef NS_ENUM(NSInteger, INTULocationRequestType) {
 @property (nonatomic, assign) NSTimeInterval timeout;
 /** How long the location request has been alive since the timeout value was last set. */
 @property (nonatomic, readonly) NSTimeInterval timeAlive;
-/** Whether this location request has timed out (will also be YES if it has been completed). */
+/** Whether this location request has timed out (will also be YES if it has been completed). Subcriptions can never time out. */
 @property (nonatomic, readonly) BOOL hasTimedOut;
 /** The block to execute when the location request completes. */
 @property (nonatomic, copy, __INTU_NULLABLE) INTULocationRequestBlock block;
