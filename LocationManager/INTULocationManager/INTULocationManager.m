@@ -107,6 +107,12 @@ static id _sharedInstance;
     if (self) {
         _locationManager = [[CLLocationManager alloc] init];
         _locationManager.delegate = self;
+        if ([_locationManager respondsToSelector:@selector(setAllowsBackgroundLocationUpdates:)]) {
+            if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedAlways) {
+                [_locationManager setAllowsBackgroundLocationUpdates:YES];
+            }
+        }
+
         _locationRequests = @[];
     }
     return self;
@@ -732,6 +738,12 @@ static id _sharedInstance;
 #else
     else if (status == kCLAuthorizationStatusAuthorized) {
 #endif /* __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_7_1 */
+        if ([_locationManager respondsToSelector:@selector(setAllowsBackgroundLocationUpdates:)]) {
+            if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedAlways) {
+                [_locationManager setAllowsBackgroundLocationUpdates:YES];
+            }
+        }
+        
         // Start the timeout timer for location requests that were waiting for authorization
         for (INTULocationRequest *locationRequest in self.locationRequests) {
             [locationRequest startTimeoutTimerIfNeeded];
