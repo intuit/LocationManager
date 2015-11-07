@@ -47,6 +47,13 @@ __INTU_ASSUME_NONNULL_BEGIN
 + (instancetype)sharedInstance;
 
 /**
+ * Specifies the minimum amount of change in meters needed for a location service update. Observers will not be notified of updates less than the stated filter value.
+ *
+ * @discussion The default value for this is kCLDistanceFilterNone.
+ */
+@property (nonatomic) INTULocationFilterAccuracy distanceFilter;
+
+/**
  Asynchronously requests the current location of the device using location services.
  
  @param desiredAccuracy The accuracy level desired (refers to the accuracy and recency of the location).

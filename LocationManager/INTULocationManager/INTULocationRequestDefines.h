@@ -101,6 +101,10 @@ typedef NS_ENUM(NSInteger, INTULocationAccuracy) {
     INTULocationAccuracyRoom,
 };
 
+/** An alias of the distance filter accuracy in meters.
+ Specifies the minimum amount of change in meters needed for a location service update. Observers will not be notified of updates less than the stated filter value. Default value is kCLDistanceFilterNone */
+typedef CLLocationDistance INTULocationFilterAccuracy;
+
 /** A status that will be passed in to the completion block of a location request. */
 typedef NS_ENUM(NSInteger, INTULocationStatus) {
     // These statuses will accompany a valid location.
