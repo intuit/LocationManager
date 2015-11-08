@@ -339,6 +339,10 @@ static id _sharedInstance;
     [newLocationRequests addObject:locationRequest];
     self.locationRequests = newLocationRequests;
     INTULMLog(@"Location Request added with ID: %ld", (long)locationRequest.requestID);
+    
+    // Process all location requests now, as we may be able to immediately complete the request just added above
+    // if a location update was recently received (stored in self.currentLocation) that satisfies its criteria.
+    [self processLocationRequests];
 }
 
 /**
@@ -609,10 +613,13 @@ static id _sharedInstance;
     CLLocation *currentLocation = self.currentLocation;
     INTULocationAccuracy achievedAccuracy = [self achievedAccuracyForLocation:currentLocation];
     
-    // No need for dispatch_async when calling this block, since this method is only called from a CLLocationManager callback
-    if (locationRequest.block) {
-        locationRequest.block(currentLocation, achievedAccuracy, status);
-    }
+    // INTULocationManager is not thread safe and should only be called from the main thread, so we should already be executing on the main thread now.
+    // dispatch_async is used to ensure that the completion block for a request is not executed before the request ID is returned.
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (locationRequest.block) {
+            locationRequest.block(currentLocation, achievedAccuracy, status);
+        }
+    });
 }
 
 /**
