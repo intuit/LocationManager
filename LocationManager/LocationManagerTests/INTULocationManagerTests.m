@@ -141,6 +141,12 @@ describe(@"subscribing for location updates with a block", ^{
         }];
 
         [subject locationManager:subject.locationManager didUpdateLocations:@[location]];
+        
+        waitUntil(^(DoneCallback done) {
+            dispatch_after(0.5, dispatch_get_main_queue(), ^{
+                done();
+            });
+        });
 
         expect(called).to.beTruthy();
     });
@@ -165,6 +171,12 @@ describe(@"subscribing for significant location changes with a block", ^{
         }];
         
         [subject locationManager:subject.locationManager didUpdateLocations:@[location]];
+        
+        waitUntil(^(DoneCallback done) {
+            dispatch_after(0.5, dispatch_get_main_queue(), ^{
+                done();
+            });
+        });
         
         expect(called).to.beTruthy();
     });
