@@ -172,6 +172,8 @@ static id _sharedInstance;
                                        delayUntilAuthorized:(BOOL)delayUntilAuthorized
                                                       block:(INTULocationRequestBlock)block
 {
+    NSAssert([NSThread isMainThread], @"INTULocationManager should only be called from the main thread.");
+    
     if (desiredAccuracy == INTULocationAccuracyNone) {
         NSAssert(desiredAccuracy != INTULocationAccuracyNone, @"INTULocationAccuracyNone is not a valid desired accuracy.");
         desiredAccuracy = INTULocationAccuracyCity; // default to the lowest valid desired accuracy
@@ -224,6 +226,8 @@ static id _sharedInstance;
 - (INTULocationRequestID)subscribeToLocationUpdatesWithDesiredAccuracy:(INTULocationAccuracy)desiredAccuracy
                                                                  block:(INTULocationRequestBlock)block
 {
+    NSAssert([NSThread isMainThread], @"INTULocationManager should only be called from the main thread.");
+    
     INTULocationRequest *locationRequest = [[INTULocationRequest alloc] initWithType:INTULocationRequestTypeSubscription];
     locationRequest.desiredAccuracy = desiredAccuracy;
     locationRequest.block = block;
@@ -244,6 +248,8 @@ static id _sharedInstance;
  */
 - (INTULocationRequestID)subscribeToSignificantLocationChangesWithBlock:(INTULocationRequestBlock)block
 {
+    NSAssert([NSThread isMainThread], @"INTULocationManager should only be called from the main thread.");
+    
     INTULocationRequest *locationRequest = [[INTULocationRequest alloc] initWithType:INTULocationRequestTypeSignificantChanges];
     locationRequest.block = block;
     
@@ -258,6 +264,8 @@ static id _sharedInstance;
  */
 - (void)forceCompleteLocationRequest:(INTULocationRequestID)requestID
 {
+    NSAssert([NSThread isMainThread], @"INTULocationManager should only be called from the main thread.");
+    
     for (INTULocationRequest *locationRequest in self.locationRequests) {
         if (locationRequest.requestID == requestID) {
             if (locationRequest.isRecurring) {
@@ -277,6 +285,8 @@ static id _sharedInstance;
  */
 - (void)cancelLocationRequest:(INTULocationRequestID)requestID
 {
+    NSAssert([NSThread isMainThread], @"INTULocationManager should only be called from the main thread.");
+    
     for (INTULocationRequest *locationRequest in self.locationRequests) {
         if (locationRequest.requestID == requestID) {
             [locationRequest cancel];
