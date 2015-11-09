@@ -297,6 +297,17 @@ static id _sharedInstance;
     }
 }
 
+/**
+ * Specifies the minimum amount of change in meters needed for a location service update. Observers will not be notified of updates less than the stated filter value.
+ */
+- (void)setDistanceFilter:(INTULocationFilterAccuracy)distanceFilter
+{
+    _distanceFilter = distanceFilter;
+
+    // Note: This updates the distance filter for all requests
+    self.locationManager.distanceFilter = distanceFilter;
+}
+
 #pragma mark Internal methods
 
 /**
