@@ -1,5 +1,5 @@
 //
-//  INTUHeadingRequest.m
+//  INTURequestIDGenerator.h
 //
 //  Copyright (c) 2014-2015 Intuit Inc.
 //
@@ -23,46 +23,17 @@
 //  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#import "INTUHeadingRequest.h"
-#import "INTURequestIDGenerator.h"
+#import "INTULocationRequestDefines.h"
 
-@implementation INTUHeadingRequest
+__INTU_ASSUME_NONNULL_BEGIN
 
-/**
- Designated initializer. Initializes and returns a newly allocated heading request.
- */
-- (instancetype)init
-{
-    if (self = [super init]) {
-        _requestID = [INTURequestIDGenerator getUniqueRequestID];
-        _isRecurring = YES;
-    }
-    return self;
-}
+@interface INTURequestIDGenerator : NSObject
 
 /**
- Two heading requests are considered equal if their request IDs match.
+ Returns a unique request ID (within the lifetime of the application).
  */
-- (BOOL)isEqual:(id)object
-{
-    if (object == self) {
-        return YES;
-    }
-    if (!object || ![object isKindOfClass:[self class]]) {
-        return NO;
-    }
-    if (((INTUHeadingRequest *)object).requestID == self.requestID) {
-        return YES;
-    }
-    return NO;
-}
-
-/**
- Return a hash based on the string representation of the request ID.
- */
-- (NSUInteger)hash
-{
-    return [[NSString stringWithFormat:@"%ld", (long)self.requestID] hash];
-}
++(INTULocationRequestID)getUniqueRequestID;
 
 @end
+
+__INTU_ASSUME_NONNULL_END

@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		68D330E9A7D2C70696EAE91E /* libPods-LocationManagerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 33F6B5D26A2A908D7FE4E66C /* libPods-LocationManagerTests.a */; };
+		6CF999DE1C97CB4800F0760E /* INTURequestIDGenerator.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CF999DC1C97CB4800F0760E /* INTURequestIDGenerator.h */; };
+		6CF999DF1C97CB4800F0760E /* INTURequestIDGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CF999DD1C97CB4800F0760E /* INTURequestIDGenerator.m */; };
+		6CF999E11C97CC7B00F0760E /* INTURequestIDGeneratorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CF999E01C97CC7B00F0760E /* INTURequestIDGeneratorTests.m */; };
 		A70B4FD11B4A25040016F95A /* INTULocationManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6681CD281B1306C30080DBA9 /* INTULocationManager.framework */; };
 		A70B4FD21B4A25040016F95A /* INTULocationManager.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6681CD281B1306C30080DBA9 /* INTULocationManager.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B116684318E5CEDD00D1E022 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B116684218E5CEDD00D1E022 /* Foundation.framework */; };
@@ -72,6 +75,9 @@
 		33F6B5D26A2A908D7FE4E66C /* libPods-LocationManagerTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LocationManagerTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6681CD281B1306C30080DBA9 /* INTULocationManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = INTULocationManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6681CD2B1B1306C30080DBA9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6CF999DC1C97CB4800F0760E /* INTURequestIDGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INTURequestIDGenerator.h; path = INTULocationManager/INTURequestIDGenerator.h; sourceTree = SOURCE_ROOT; };
+		6CF999DD1C97CB4800F0760E /* INTURequestIDGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INTURequestIDGenerator.m; path = INTULocationManager/INTURequestIDGenerator.m; sourceTree = SOURCE_ROOT; };
+		6CF999E01C97CC7B00F0760E /* INTURequestIDGeneratorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INTURequestIDGeneratorTests.m; path = LocationManagerTests/INTURequestIDGeneratorTests.m; sourceTree = SOURCE_ROOT; };
 		7E50D50636467BE8F94DC954 /* Pods-LocationManagerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LocationManagerTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LocationManagerTests/Pods-LocationManagerTests.release.xcconfig"; sourceTree = "<group>"; };
 		9775B8FFF4C5D422EB3489E6 /* Pods-LocationManagerExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LocationManagerExampleTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LocationManagerExampleTests/Pods-LocationManagerExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B116683F18E5CEDD00D1E022 /* LocationManagerExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LocationManagerExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -150,6 +156,8 @@
 				B19756081B21202700313073 /* INTULocationRequest.m */,
 				B19756091B21202700313073 /* INTULocationRequestDefines.h */,
 				B19756061B21202700313073 /* INTULocationManager+Internal.h */,
+				6CF999DC1C97CB4800F0760E /* INTURequestIDGenerator.h */,
+				6CF999DD1C97CB4800F0760E /* INTURequestIDGenerator.m */,
 				6681CD2A1B1306C30080DBA9 /* Supporting Files */,
 			);
 			name = INTULocationManager;
@@ -240,6 +248,7 @@
 				B19756111B2124CE00313073 /* INTULocationManagerTests.m */,
 				B19756121B2124CE00313073 /* INTULocationRequestTests.m */,
 				D4818E011BC9E20600226586 /* INTUHeadingRequestTests.m */,
+				6CF999E01C97CC7B00F0760E /* INTURequestIDGeneratorTests.m */,
 				B116686818E5CEDD00D1E022 /* Supporting Files */,
 			);
 			name = LocationManagerTests;
@@ -267,6 +276,7 @@
 				B197560C1B21202700313073 /* INTULocationManager+Internal.h in Headers */,
 				B197560F1B21202700313073 /* INTULocationRequestDefines.h in Headers */,
 				B197560A1B21202700313073 /* INTULocationManager.h in Headers */,
+				6CF999DE1C97CB4800F0760E /* INTURequestIDGenerator.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -457,6 +467,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6CF999DF1C97CB4800F0760E /* INTURequestIDGenerator.m in Sources */,
 				D4198ABF1BB1A6AA007E5A0C /* INTUHeadingRequest.m in Sources */,
 				B197560E1B21202700313073 /* INTULocationRequest.m in Sources */,
 				B197560B1B21202700313073 /* INTULocationManager.m in Sources */,
@@ -477,6 +488,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6CF999E11C97CC7B00F0760E /* INTURequestIDGeneratorTests.m in Sources */,
 				D4818E031BC9E20600226586 /* INTUHeadingRequestTests.m in Sources */,
 				B19756141B2124CE00313073 /* INTULocationRequestTests.m in Sources */,
 				B19756131B2124CE00313073 /* INTULocationManagerTests.m in Sources */,
