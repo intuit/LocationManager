@@ -78,8 +78,19 @@ typedef NS_ENUM(NSInteger, INTULocationServicesState) {
     INTULocationServicesStateDisabled
 };
 
+/** The possible states that heading services can be in. */
+typedef NS_ENUM(NSInteger, INTUHeadingServicesState) {
+    /** Heading services are available on the device */
+    INTUHeadingServicesStateAvailable,
+    /** Heading services are available on the device */
+    INTUHeadingServicesStateUnavailable,
+};
+
 /** A unique ID that corresponds to one location request. */
 typedef NSInteger INTULocationRequestID;
+
+/** A unique ID that corresponds to one heading request. */
+typedef NSInteger INTUHeadingRequestID;
 
 /** An abstraction of both the horizontal accuracy and recency of location data.
     Room is the highest level of accuracy/recency; City is the lowest level. */
@@ -100,6 +111,10 @@ typedef NS_ENUM(NSInteger, INTULocationAccuracy) {
     /** 5 meters or better, and received within the last 5 seconds. Highest accuracy. */
     INTULocationAccuracyRoom,
 };
+
+/** An alias of the heading filter accuracy in degrees.
+    Specifies the minimum amount of change in degrees needed for a heading service update. Observers will not be notified of updates less than the stated filter value. */
+typedef CLLocationDegrees INTUHeadingFilterAccuracy;
 
 /** A status that will be passed in to the completion block of a location request. */
 typedef NS_ENUM(NSInteger, INTULocationStatus) {
@@ -122,6 +137,20 @@ typedef NS_ENUM(NSInteger, INTULocationStatus) {
     INTULocationStatusError
 };
 
+/** A status that will be passed in to the completion block of a heading request. */
+typedef NS_ENUM(NSInteger, INTUHeadingStatus) {
+    // These statuses will accompany a valid heading.
+    /** Got a heading successfully. */
+    INTUHeadingStatusSuccess = 0,
+
+    // These statuses indicate some sort of error, and will accompany a nil heading.
+    /** Heading was invalid. */
+    INTUHeadingStatusInvalid,
+
+    /** Heading services are not available on the device */
+    INTUHeadingStatusUnavailable
+};
+
 /**
  A block type for a location request, which is executed when the request succeeds, fails, or times out.
  
@@ -132,5 +161,13 @@ typedef NS_ENUM(NSInteger, INTULocationStatus) {
                actions are required (such as displaying an error message to the user, retrying with another request, quietly proceeding, etc).
  */
 typedef void(^INTULocationRequestBlock)(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status);
+
+/**
+ A block type for a heading request, which is executed when the request succeeds.
+
+ @param currentHeading  The most recent current heading available when the block executes.
+ @param status          The status of the request - whether it succeeded or failed due to some sort of error. This can be used to understand if any further action is needed.
+ */
+typedef void(^INTUHeadingRequestBlock)(CLHeading *currentHeading, INTUHeadingStatus status);
 
 #endif /* INTU_LOCATION_REQUEST_DEFINES_H */

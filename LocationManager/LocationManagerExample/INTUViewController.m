@@ -32,6 +32,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *statusLabel;
 @property (weak, nonatomic) IBOutlet UISwitch *subscriptionForAllChangesSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *subscriptionForSignificantChangesSwitch;
+@property (weak, nonatomic) IBOutlet UISwitch *subscriptionForAllHeadingChangesSwitch;
 @property (weak, nonatomic) IBOutlet UILabel *timeoutLabel;
 @property (weak, nonatomic) IBOutlet UILabel *desiredAccuracyLabel;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *desiredAccuracyControl;
@@ -45,6 +46,7 @@
 @property (assign, nonatomic) NSTimeInterval timeout;
 
 @property (assign, nonatomic) INTULocationRequestID locationRequestID;
+@property (assign, nonatomic) INTUHeadingRequestID headingRequestID;
 
 @end
 
@@ -56,16 +58,20 @@
 	
     self.subscriptionForAllChangesSwitch.on = NO;
     self.subscriptionForSignificantChangesSwitch.on = NO;
+    self.subscriptionForAllHeadingChangesSwitch.on = NO;
     self.desiredAccuracyControl.selectedSegmentIndex = 0;
     self.desiredAccuracy = INTULocationAccuracyCity;
     self.timeoutSlider.value = 10.0;
     self.timeout = 10.0;
     
     self.locationRequestID = NSNotFound;
-    self.statusLabel.text = @"Tap the button below to start a new location request.";
+    self.headingRequestID = NSNotFound;
+    self.statusLabel.text = @"Tap the button below to start a new location or heading request.";
 }
 
-- (NSString *)getErrorDescription:(INTULocationStatus)status
+#pragma mark - Locations
+
+- (NSString *)getLocationErrorDescription:(INTULocationStatus)status
 {
     if (status == INTULocationStatusServicesNotDetermined) {
         return @"Error: User has not responded to the permissions alert.";
@@ -98,7 +104,7 @@
         }
         else {
             // An error occurred
-            strongSelf.statusLabel.text = [strongSelf getErrorDescription:status];
+            strongSelf.statusLabel.text = [strongSelf getLocationErrorDescription:status];
         }
     }];
 }
@@ -119,7 +125,7 @@
         }
         else {
             // An error occurred
-            strongSelf.statusLabel.text = [strongSelf getErrorDescription:status];
+            strongSelf.statusLabel.text = [strongSelf getLocationErrorDescription:status];
         }
     }];
 }
@@ -148,7 +154,7 @@
                                   }
                                   else {
                                       // An error occurred
-                                      strongSelf.statusLabel.text = [strongSelf getErrorDescription:status];
+                                      strongSelf.statusLabel.text = [strongSelf getLocationErrorDescription:status];
                                   }
                                   
                                   strongSelf.locationRequestID = NSNotFound;
@@ -275,6 +281,48 @@
         self.statusLabel.text = @"Location request in progress...";
     } else {
         [self.activityIndicator stopAnimating];
+    }
+}
+
+#pragma mark - Heading
+
+- (NSString *)getHeadingErrorDescription:(INTUHeadingStatus)status
+{
+    if (status == INTUHeadingStatusUnavailable) {
+        return @"Error: Heading services are not available on this device.";
+    }
+    return @"An unknown error occurred.\n(Are you using iOS Simulator with location set to 'None'?)";
+}
+
+- (void)startHeadingRequest
+{
+    self.statusLabel.text = @"Heading subscription in progress...";
+
+    __weak __typeof(self) weakSelf = self;
+    self.headingRequestID = [[INTULocationManager sharedInstance] subscribeToHeadingUpdatesWithBlock:^(CLHeading *heading, INTUHeadingStatus status) {
+        __typeof(weakSelf) strongSelf = weakSelf;
+        if (status == INTUHeadingStatusSuccess) {
+            // An updated heading is available
+            strongSelf.statusLabel.text = [NSString stringWithFormat:@"'Heading updates' subscription block called with Current Heading:\n%@", heading];
+        } else {
+            strongSelf.statusLabel.text = [self getHeadingErrorDescription:status];
+        }
+    }];
+}
+
+- (void)cancelHeadingRequest
+{
+    [[INTULocationManager sharedInstance] cancelHeadingRequest:self.headingRequestID];
+    self.headingRequestID = NSNotFound;
+    self.statusLabel.text = @"Heading subscription canceled.";
+}
+
+- (IBAction)headingSubscriptionSwitchChanged:(UISwitch *)sender
+{
+    if (sender.on) {
+        [self startHeadingRequest];
+    } else {
+        [self cancelHeadingRequest];
     }
 }
 

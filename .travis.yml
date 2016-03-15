@@ -6,6 +6,9 @@ xcode_scheme: LocationManagerExample
 xcode_sdk: iphonesimulator
 podfile: LocationManager/Podfile
 
+rvm:
+  - 2.2.2
+
 before_install:
   - gem install cocoapods --no-ri --no-rdoc
   - gem install slather --no-ri --no-rdoc

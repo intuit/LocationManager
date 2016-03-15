@@ -24,7 +24,7 @@
 //
 
 #import "INTULocationRequest.h"
-
+#import "INTURequestIDGenerator.h"
 
 @interface INTULocationRequest ()
 
@@ -40,17 +40,6 @@
 
 
 @implementation INTULocationRequest
-
-static INTULocationRequestID _nextRequestID = 0;
-
-/**
- Returns a unique request ID (within the lifetime of the application).
- */
-+ (INTULocationRequestID)getUniqueRequestID
-{
-    _nextRequestID++;
-    return _nextRequestID;
-}
 
 /**
  Throws an exeption when you try to create a location request using a non-designated initializer.
@@ -70,7 +59,7 @@ static INTULocationRequestID _nextRequestID = 0;
 {
     self = [super init];
     if (self) {
-        _requestID = [INTULocationRequest getUniqueRequestID];
+        _requestID = [INTURequestIDGenerator getUniqueRequestID];
         _type = type;
         _hasTimedOut = NO;
     }
