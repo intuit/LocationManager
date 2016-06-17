@@ -13,6 +13,8 @@ rvm:
 before_install:
   - gem install cocoapods --no-ri --no-rdoc
   # - gem install slather --no-ri --no-rdoc
+  
+script: set -o pipefail && xcodebuild test -workspace [Project].xcworkspace -scheme [Scheme] -sdk iphonesimulator9.3 | xcpretty
 
 after_success: 
     # slather
