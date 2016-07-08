@@ -1,0 +1,6 @@
+This is a "working" example of the LocationManager library ported to swift from the original Objective-c example
+
+You'll need to install the LocationManager framework. 
+I used Carthage when I tested it out, but have not included the Carthage path in this folder.
+Once you install the framework, you'll need to go to MyProject > General > Embedded Binaries and add the framework
+ 
