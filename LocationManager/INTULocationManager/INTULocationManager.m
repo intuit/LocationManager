@@ -991,7 +991,7 @@ BOOL INTUCLHeadingIsIsValid(CLHeading *heading)
 #pragma mark - Additions
 /** It is possible to force enable background location fetch even if your set any kind of Authorizations */
 - (void)setBackgroundLocationUpdate:(BOOL) enabled {
-    _locationManager.allowsBackgroundLocationUpdates = enable;
+    _locationManager.allowsBackgroundLocationUpdates = enabled;
 }
 
 @end
