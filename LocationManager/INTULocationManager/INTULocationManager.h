@@ -145,6 +145,11 @@ __INTU_ASSUME_NONNULL_BEGIN
 /** Immediately cancels the heading subscription request with the given requestID (if it exists), without executing the original request block. */
 - (void)cancelHeadingRequest:(INTUHeadingRequestID)requestID;
 
+#pragma mark - Additions
+
+/** It is possible to force enable background location fetch even if your set any kind of Authorizations */
+- (void)setBackgroundLocationUpdate:(BOOL) enabled;
+
 @end
 
 __INTU_ASSUME_NONNULL_END

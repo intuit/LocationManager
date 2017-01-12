@@ -97,8 +97,8 @@ static id _sharedInstance;
     return INTULocationServicesStateAvailable;
 }
 
-/** 
- Returns the current state of heading services for this device. 
+/**
+ Returns the current state of heading services for this device.
  */
 + (INTUHeadingServicesState)headingServicesState
 {
@@ -142,7 +142,7 @@ static id _sharedInstance;
         }
 #endif /* __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_8_4 */
 #endif /* __IPHONE_8_4 */
-
+        
         _locationRequests = @[];
     }
     return self;
@@ -155,11 +155,11 @@ static id _sharedInstance;
  
  @param desiredAccuracy The accuracy level desired (refers to the accuracy and recency of the location).
  @param timeout         The maximum amount of time (in seconds) to wait for a location with the desired accuracy before completing.
-                            If this value is 0.0, no timeout will be set (will wait indefinitely for success, unless request is force completed or canceled).
+ If this value is 0.0, no timeout will be set (will wait indefinitely for success, unless request is force completed or canceled).
  @param block           The block to be executed when the request succeeds, fails, or times out. Three parameters are passed into the block:
-                            - The current location (the most recent one acquired, regardless of accuracy level), or nil if no valid location was acquired
-                            - The achieved accuracy for the current location (may be less than the desired accuracy if the request failed)
-                            - The request status (if it succeeded, or if not, why it failed)
+ - The current location (the most recent one acquired, regardless of accuracy level), or nil if no valid location was acquired
+ - The achieved accuracy for the current location (may be less than the desired accuracy if the request failed)
+ - The request status (if it succeeded, or if not, why it failed)
  
  @return The location request ID, which can be used to force early completion or cancel the request while it is in progress.
  */
@@ -179,14 +179,14 @@ static id _sharedInstance;
  
  @param desiredAccuracy      The accuracy level desired (refers to the accuracy and recency of the location).
  @param timeout              The maximum amount of time (in seconds) to wait for a location with the desired accuracy before completing. If
-                             this value is 0.0, no timeout will be set (will wait indefinitely for success, unless request is force completed or canceled).
+ this value is 0.0, no timeout will be set (will wait indefinitely for success, unless request is force completed or canceled).
  @param delayUntilAuthorized A flag specifying whether the timeout should only take effect after the user responds to the system prompt requesting
-                             permission for this app to access location services. If YES, the timeout countdown will not begin until after the
-                             app receives location services permissions. If NO, the timeout countdown begins immediately when calling this method.
+ permission for this app to access location services. If YES, the timeout countdown will not begin until after the
+ app receives location services permissions. If NO, the timeout countdown begins immediately when calling this method.
  @param block                The block to be executed when the request succeeds, fails, or times out. Three parameters are passed into the block:
-                                 - The current location (the most recent one acquired, regardless of accuracy level), or nil if no valid location was acquired
-                                 - The achieved accuracy for the current location (may be less than the desired accuracy if the request failed)
-                                 - The request status (if it succeeded, or if not, why it failed)
+ - The current location (the most recent one acquired, regardless of accuracy level), or nil if no valid location was acquired
+ - The achieved accuracy for the current location (may be less than the desired accuracy if the request failed)
+ - The request status (if it succeeded, or if not, why it failed)
  
  @return The location request ID, which can be used to force early completion or cancel the request while it is in progress.
  */
@@ -224,7 +224,7 @@ static id _sharedInstance;
  If an error occurs, the block will execute with a status other than INTULocationStatusSuccess, and the subscription will be canceled automatically.
  
  @param block The block to execute every time an updated location is available.
-              The status will be INTULocationStatusSuccess unless an error occurred; it will never be INTULocationStatusTimedOut.
+ The status will be INTULocationStatusSuccess unless an error occurred; it will never be INTULocationStatusTimedOut.
  
  @return The location request ID, which can be used to cancel the subscription of location updates to this block.
  */
@@ -241,8 +241,8 @@ static id _sharedInstance;
  
  @param desiredAccuracy The accuracy level desired, which controls how much power is used by the device's location services.
  @param block           The block to execute every time an updated location is available. Note that this block runs for every update, regardless of
-                        whether the achievedAccuracy is at least the desiredAccuracy.
-                        The status will be INTULocationStatusSuccess unless an error occurred; it will never be INTULocationStatusTimedOut.
+ whether the achievedAccuracy is at least the desiredAccuracy.
+ The status will be INTULocationStatusSuccess unless an error occurred; it will never be INTULocationStatusTimedOut.
  
  @return The location request ID, which can be used to cancel the subscription of location updates to this block.
  */
@@ -265,7 +265,7 @@ static id _sharedInstance;
  If an error occurs, the block will execute with a status other than INTULocationStatusSuccess, and the subscription will be canceled automatically.
  
  @param block The block to execute every time an updated location is available.
-              The status will be INTULocationStatusSuccess unless an error occurred; it will never be INTULocationStatusTimedOut.
+ The status will be INTULocationStatusSuccess unless an error occurred; it will never be INTULocationStatusTimedOut.
  
  @return The location request ID, which can be used to cancel the subscription of significant location changes to this block.
  */
@@ -324,7 +324,7 @@ static id _sharedInstance;
 
 /**
  Asynchronously requests the current heading of the device using location services.
-
+ 
  @param block The block to be executed when the request succeeds. One parameter is passed into the block:
  - The current heading (the most recent one acquired, regardless of accuracy level), or nil if no valid heading was acquired
  
@@ -334,9 +334,9 @@ static id _sharedInstance;
 {
     INTUHeadingRequest *headingRequest = [[INTUHeadingRequest alloc] init];
     headingRequest.block = block;
-
+    
     [self addHeadingRequest:headingRequest];
-
+    
     return headingRequest.requestID;
 }
 
@@ -437,7 +437,7 @@ static id _sharedInstance;
  Returns the most recent current location, or nil if the current location is unknown, invalid, or stale.
  */
 - (CLLocation *)currentLocation
-{    
+{
     if (_currentLocation) {
         // Location isn't nil, so test to see if it is valid
         if (!CLLocationCoordinate2DIsValid(_currentLocation.coordinate) || (_currentLocation.coordinate.latitude == 0.0 && _currentLocation.coordinate.longitude == 0.0)) {
@@ -778,7 +778,7 @@ static id _sharedInstance;
         // The current heading is invalid; discard it and return nil
         _currentHeading = nil;
     }
-
+    
     // Heading is either nil or valid at this point, return it
     return _currentHeading;
 }
@@ -789,7 +789,7 @@ static id _sharedInstance;
 BOOL INTUCLHeadingIsIsValid(CLHeading *heading)
 {
     return heading.trueHeading > 0 &&
-           heading.headingAccuracy > 0;
+    heading.headingAccuracy > 0;
 }
 
 /**
@@ -798,7 +798,7 @@ BOOL INTUCLHeadingIsIsValid(CLHeading *heading)
 - (void)addHeadingRequest:(INTUHeadingRequest *)headingRequest
 {
     NSAssert(headingRequest, @"Must pass in a non-nil heading request.");
-
+    
     // If heading services are not available, just return
     if ([INTULocationManager headingServicesState] == INTUHeadingServicesStateUnavailable) {
         // dispatch_async is used to ensure that the completion block for a request is not executed before the request ID is returned.
@@ -810,12 +810,12 @@ BOOL INTUCLHeadingIsIsValid(CLHeading *heading)
         INTULMLog(@"Heading Request (ID %ld) NOT added since device heading is unavailable.", (long)headingRequest.requestID);
         return;
     }
-
+    
     __INTU_GENERICS(NSMutableArray, INTUHeadingRequest *) *newHeadingRequests = [NSMutableArray arrayWithArray:self.headingRequests];
     [newHeadingRequests addObject:headingRequest];
     self.headingRequests = newHeadingRequests;
     INTULMLog(@"Heading Request added with ID: %ld", (long)headingRequest.requestID);
-
+    
     [self startUpdatingHeadingIfNeeded];
 }
 
@@ -841,7 +841,7 @@ BOOL INTUCLHeadingIsIsValid(CLHeading *heading)
     __INTU_GENERICS(NSMutableArray, INTUHeadingRequest *) *newHeadingRequests = [NSMutableArray arrayWithArray:self.headingRequests];
     [newHeadingRequests removeObject:headingRequest];
     self.headingRequests = newHeadingRequests;
-
+    
     [self stopUpdatingHeadingIfPossible];
 }
 
@@ -876,9 +876,9 @@ BOOL INTUCLHeadingIsIsValid(CLHeading *heading)
 - (void)processRecurringHeadingRequest:(INTUHeadingRequest *)headingRequest
 {
     NSAssert(headingRequest.isRecurring, @"This method should only be called for recurring heading requests.");
-
+    
     INTUHeadingStatus status = [self statusForHeadingRequest:headingRequest];
-
+    
     // Check if the request had a fatal error and should be canceled
     if (status == INTUHeadingStatusUnavailable) {
         // dispatch_async is used to ensure that the completion block for a request is not executed before the request ID is returned.
@@ -887,11 +887,11 @@ BOOL INTUCLHeadingIsIsValid(CLHeading *heading)
                 headingRequest.block(nil, status);
             }
         });
-
+        
         [self cancelHeadingRequest:headingRequest.requestID];
         return;
     }
-
+    
     // dispatch_async is used to ensure that the completion block for a request is not executed before the request ID is returned.
     dispatch_async(dispatch_get_main_queue(), ^{
         if (headingRequest.block) {
@@ -908,12 +908,12 @@ BOOL INTUCLHeadingIsIsValid(CLHeading *heading)
     if ([INTULocationManager headingServicesState] == INTUHeadingServicesStateUnavailable) {
         return INTUHeadingStatusUnavailable;
     }
-
+    
     // The accessor will return nil for an invalid heading results
     if (!self.currentHeading) {
         return INTUHeadingStatusInvalid;
     }
-
+    
     return INTUHeadingStatusSuccess;
 }
 
@@ -947,7 +947,7 @@ BOOL INTUCLHeadingIsIsValid(CLHeading *heading)
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading
 {
     self.currentHeading = newHeading;
-
+    
     // Process the heading requests using the updated heading
     [self processRecurringHeadingRequests];
 }
@@ -956,7 +956,7 @@ BOOL INTUCLHeadingIsIsValid(CLHeading *heading)
 {
     INTULMLog(@"Location services error: %@", [error localizedDescription]);
     self.updateFailed = YES;
-
+    
     for (INTULocationRequest *locationRequest in self.locationRequests) {
         if (locationRequest.isRecurring) {
             // Keep the recurring request alive
@@ -978,14 +978,20 @@ BOOL INTUCLHeadingIsIsValid(CLHeading *heading)
 #if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_7_1
     else if (status == kCLAuthorizationStatusAuthorizedAlways || status == kCLAuthorizationStatusAuthorizedWhenInUse) {
 #else
-    else if (status == kCLAuthorizationStatusAuthorized) {
+        else if (status == kCLAuthorizationStatusAuthorized) {
 #endif /* __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_7_1 */
-
-        // Start the timeout timer for location requests that were waiting for authorization
-        for (INTULocationRequest *locationRequest in self.locationRequests) {
-            [locationRequest startTimeoutTimerIfNeeded];
+            
+            // Start the timeout timer for location requests that were waiting for authorization
+            for (INTULocationRequest *locationRequest in self.locationRequests) {
+                [locationRequest startTimeoutTimerIfNeeded];
+            }
         }
     }
+
+#pragma mark - Additions
+/** It is possible to force enable background location fetch even if your set any kind of Authorizations */
+- (void)setBackgroundLocationUpdate:(BOOL) enabled {
+    _locationManager.allowsBackgroundLocationUpdates = enabled;
 }
 
 @end
