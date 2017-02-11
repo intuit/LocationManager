@@ -25,7 +25,7 @@
 
 #import "INTULocationRequestDefines.h"
 
-__INTU_ASSUME_NONNULL_BEGIN
+NS_ASSUME_NONNULL_BEGIN
 
 @interface INTURequestIDGenerator : NSObject
 
@@ -36,4 +36,4 @@ __INTU_ASSUME_NONNULL_BEGIN
 
 @end
 
-__INTU_ASSUME_NONNULL_END
+NS_ASSUME_NONNULL_END

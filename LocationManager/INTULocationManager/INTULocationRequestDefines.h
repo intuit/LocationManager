@@ -29,16 +29,6 @@
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
 
-#if __has_feature(nullability)
-#   define __INTU_ASSUME_NONNULL_BEGIN      NS_ASSUME_NONNULL_BEGIN
-#   define __INTU_ASSUME_NONNULL_END        NS_ASSUME_NONNULL_END
-#   define __INTU_NULLABLE                  nullable
-#else
-#   define __INTU_ASSUME_NONNULL_BEGIN
-#   define __INTU_ASSUME_NONNULL_END
-#   define __INTU_NULLABLE
-#endif
-
 #if __has_feature(objc_generics)
 #   define __INTU_GENERICS(type, ...)       type<__VA_ARGS__>
 #else
