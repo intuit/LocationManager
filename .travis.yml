@@ -14,7 +14,7 @@ before_install:
   - gem install cocoapods --no-ri --no-rdoc
   - gem install slather --no-ri --no-rdoc
   
-script: set -o pipefail && xcodebuild test -workspace LocationManager/LocationManager.xcworkspace -scheme LocationManagerExample -sdk iphonesimulator9.3
+script: set -o pipefail && xcodebuild test -workspace LocationManager/LocationManager.xcworkspace -scheme LocationManagerExample -sdk iphonesimulator10.2
 
 after_success: 
     slather
