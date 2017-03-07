@@ -986,6 +986,7 @@ BOOL INTUCLHeadingIsIsValid(CLHeading *heading)
             [locationRequest startTimeoutTimerIfNeeded];
         }
     }
+}
 
 #pragma mark - Additions
 /** It is possible to force enable background location fetch even if your set any kind of Authorizations */
