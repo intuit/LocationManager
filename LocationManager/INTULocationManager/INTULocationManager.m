@@ -116,7 +116,7 @@ static id _sharedInstance;
 {
     static dispatch_once_t _onceToken;
     dispatch_once(&_onceToken, ^{
-        _sharedInstance = [[self alloc] init];
+        _sharedInstance = [[[self class] alloc] init];
     });
     return _sharedInstance;
 }
