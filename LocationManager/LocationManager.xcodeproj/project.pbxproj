@@ -12,6 +12,7 @@
 		6CF999DE1C97CB4800F0760E /* INTURequestIDGenerator.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CF999DC1C97CB4800F0760E /* INTURequestIDGenerator.h */; };
 		6CF999DF1C97CB4800F0760E /* INTURequestIDGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CF999DD1C97CB4800F0760E /* INTURequestIDGenerator.m */; };
 		6CF999E11C97CC7B00F0760E /* INTURequestIDGeneratorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CF999E01C97CC7B00F0760E /* INTURequestIDGeneratorTests.m */; };
+		824DAC161E84AC99008E686E /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 824DAC141E84AC99008E686E /* Launch Screen.storyboard */; };
 		A70B4FD11B4A25040016F95A /* INTULocationManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6681CD281B1306C30080DBA9 /* INTULocationManager.framework */; };
 		A70B4FD21B4A25040016F95A /* INTULocationManager.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6681CD281B1306C30080DBA9 /* INTULocationManager.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B116684318E5CEDD00D1E022 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B116684218E5CEDD00D1E022 /* Foundation.framework */; };
@@ -81,6 +82,7 @@
 		6CF999DD1C97CB4800F0760E /* INTURequestIDGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INTURequestIDGenerator.m; path = INTULocationManager/INTURequestIDGenerator.m; sourceTree = SOURCE_ROOT; };
 		6CF999E01C97CC7B00F0760E /* INTURequestIDGeneratorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INTURequestIDGeneratorTests.m; path = LocationManagerTests/INTURequestIDGeneratorTests.m; sourceTree = SOURCE_ROOT; };
 		770FEBDD9E9D6E6178F4BC25 /* libPods-LocationManagerExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LocationManagerExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		824DAC151E84AC99008E686E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "Base.lproj/Launch Screen.storyboard"; sourceTree = "<group>"; };
 		86C6854C8EED3DEE3EBAD605 /* Pods-LocationManagerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LocationManagerTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LocationManagerTests/Pods-LocationManagerTests.release.xcconfig"; sourceTree = "<group>"; };
 		A65EF7FFF1DEABE139F4891F /* Pods-LocationManagerExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LocationManagerExample.release.xcconfig"; path = "Pods/Target Support Files/Pods-LocationManagerExample/Pods-LocationManagerExample.release.xcconfig"; sourceTree = "<group>"; };
 		B116683F18E5CEDD00D1E022 /* LocationManagerExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LocationManagerExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -226,6 +228,7 @@
 				B116685118E5CEDD00D1E022 /* INTUAppDelegate.h */,
 				B116685218E5CEDD00D1E022 /* INTUAppDelegate.m */,
 				B116685418E5CEDD00D1E022 /* Main.storyboard */,
+				824DAC141E84AC99008E686E /* Launch Screen.storyboard */,
 				B116685718E5CEDD00D1E022 /* INTUViewController.h */,
 				B116685818E5CEDD00D1E022 /* INTUViewController.m */,
 				B116685A18E5CEDD00D1E022 /* Images.xcassets */,
@@ -406,6 +409,7 @@
 			files = (
 				B116685B18E5CEDD00D1E022 /* Images.xcassets in Resources */,
 				B116684D18E5CEDD00D1E022 /* InfoPlist.strings in Resources */,
+				824DAC161E84AC99008E686E /* Launch Screen.storyboard in Resources */,
 				B116685618E5CEDD00D1E022 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -562,6 +566,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		824DAC141E84AC99008E686E /* Launch Screen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				824DAC151E84AC99008E686E /* Base */,
+			);
+			name = "Launch Screen.storyboard";
+			sourceTree = "<group>";
+		};
 		B116684B18E5CEDD00D1E022 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
