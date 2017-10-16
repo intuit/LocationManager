@@ -136,7 +136,7 @@ static id _sharedInstance;
          fatal programmer error otherwise. */
         NSArray *backgroundModes = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"UIBackgroundModes"];
         if ([backgroundModes containsObject:@"location"]) {
-            if ([_locationManager respondsToSelector:@selector(setAllowsBackgroundLocationUpdates:)]) {
+            if (@available(iOS 9, *)) {
                 [_locationManager setAllowsBackgroundLocationUpdates:YES];
             }
         }
