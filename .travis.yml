@@ -17,7 +17,7 @@ before_install:
   - gem install cocoapods
   - pod repo update
   
-script: set -o pipefail && xcodebuild test -workspace LocationManager/LocationManager.xcworkspace -scheme LocationManagerExample -destination 'platform=iOS Simulator,name=iPhone 8 Plus,OS=11.0.1'
+script: set -o pipefail && xcodebuild test -workspace LocationManager/LocationManager.xcworkspace -scheme LocationManagerExample -destination 'platform=iOS Simulator,name=iPhone 8 Plus,OS=11.0'
 
 after_success: 
     slather
