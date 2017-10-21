@@ -1,21 +1,22 @@
 sudo: false
 language: objective-c
+os: osx
 cache: cocoapods
 xcode_workspace: LocationManager/LocationManager.xcworkspace
 xcode_scheme: LocationManagerExample
-xcode_sdk: iphonesimulator10.3
-osx_image: xcode9.0
+xcode_sdk: iphonesimulator11.0
+osx_image: xcode9
 podfile: LocationManager/Podfile
 
 rvm:
   - 2.2.2
 
 before_install:
-  - gem install cocoapods --no-ri --no-rdoc
+  # - gem install cocoapods --no-ri --no-rdoc
   - gem install slather --no-ri --no-rdoc
   - pod repo update
   
-script: set -o pipefail && xcodebuild test -workspace LocationManager/LocationManager.xcworkspace -scheme LocationManagerExample -destination 'platform=iOS Simulator,name=iPhone 8 Plus,OS=11.0'
+script: set -o pipefail && xcodebuild test -workspace LocationManager/LocationManager.xcworkspace -scheme LocationManagerExample -destination 'platform=iOS Simulator,name=iPhone 8 Plus,OS=11.0.1'
 
 after_success: 
     slather
