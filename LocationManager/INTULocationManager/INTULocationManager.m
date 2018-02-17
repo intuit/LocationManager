@@ -1017,4 +1017,9 @@ BOOL INTUCLHeadingIsIsValid(CLHeading *heading)
         _locationManager.showsBackgroundLocationIndicator = shows;
     }
 }
+    
+- (void)setPausesLocationUpdatesAutomatically:(BOOL) pauses
+{
+    _locationManager.pausesLocationUpdatesAutomatically = pauses
+}
 @end
