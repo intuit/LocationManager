@@ -1011,6 +1011,8 @@ BOOL INTUCLHeadingIsIsValid(CLHeading *heading)
 }
 
 - (void)setShowsBackgroundLocationIndicator:(BOOL) shows {
-    _locationManager.showsBackgroundLocationIndicator = shows;
+    if (@available(iOS 11, *)) {
+        _locationManager.showsBackgroundLocationIndicator = shows;
+    }
 }
 @end
