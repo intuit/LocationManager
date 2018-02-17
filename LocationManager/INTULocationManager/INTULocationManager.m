@@ -1020,6 +1020,6 @@ BOOL INTUCLHeadingIsIsValid(CLHeading *heading)
     
 - (void)setPausesLocationUpdatesAutomatically:(BOOL) pauses
 {
-    _locationManager.pausesLocationUpdatesAutomatically = pauses
+    _locationManager.pausesLocationUpdatesAutomatically = pauses;
 }
 @end
