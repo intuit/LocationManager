@@ -150,6 +150,22 @@ NS_ASSUME_NONNULL_BEGIN
 /** It is possible to force enable background location fetch even if your set any kind of Authorizations */
 - (void)setBackgroundLocationUpdate:(BOOL) enabled;
 
+/**
+ Sets a Boolean indicating whether the status bar changes its appearance when location services
+ are used in the background.
+ 
+ This property affects only apps that received always authorization. When such an app moves to the background,
+ the system uses this property to determine whether to change the status bar appearance to indicate that
+ location services are in use. Displaying a modified status bar gives the user a quick way to return to your app.
+ The default value of this property is false.
+ 
+ For apps with when-in-use authorization, the system always changes the status bar appearance when
+ the app uses location services in the background.
+ 
+ @param shows           Boolean indicating whether the status bar changes its appearance when location services are used in the background.
+ */
+- (void)setShowsBackgroundLocationIndicator:(BOOL) shows;
+
 @end
 
 NS_ASSUME_NONNULL_END

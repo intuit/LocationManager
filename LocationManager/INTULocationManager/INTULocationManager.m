@@ -1010,4 +1010,7 @@ BOOL INTUCLHeadingIsIsValid(CLHeading *heading)
     _locationManager.allowsBackgroundLocationUpdates = enabled;
 }
 
+- (void)setShowsBackgroundLocationIndicator:(BOOL) shows {
+    _locationManager.showsBackgroundLocationIndicator = shows;
+}
 @end
