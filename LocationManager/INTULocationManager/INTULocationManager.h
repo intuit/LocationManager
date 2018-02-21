@@ -169,7 +169,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Sets a Boolean value indicating whether the location manager object may pause location updates.
  
- @param shows           Boolean value indicating whether the location manager object may pause location updates.
+ @param pauses           Boolean value indicating whether the location manager object may pause location updates.
  */
 - (void)setPausesLocationUpdatesAutomatically:(BOOL) pauses;
 
