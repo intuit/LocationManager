@@ -1007,7 +1007,19 @@ BOOL INTUCLHeadingIsIsValid(CLHeading *heading)
 #pragma mark - Additions
 /** It is possible to force enable background location fetch even if your set any kind of Authorizations */
 - (void)setBackgroundLocationUpdate:(BOOL) enabled {
-    _locationManager.allowsBackgroundLocationUpdates = enabled;
+    if (@available(iOS 9, *)) {
+        _locationManager.allowsBackgroundLocationUpdates = enabled;
+    }
 }
 
+- (void)setShowsBackgroundLocationIndicator:(BOOL) shows {
+    if (@available(iOS 11, *)) {
+        _locationManager.showsBackgroundLocationIndicator = shows;
+    }
+}
+    
+- (void)setPausesLocationUpdatesAutomatically:(BOOL) pauses
+{
+    _locationManager.pausesLocationUpdatesAutomatically = pauses;
+}
 @end
