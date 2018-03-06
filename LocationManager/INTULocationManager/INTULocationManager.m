@@ -666,11 +666,18 @@ static id _sharedInstance;
     // INTULocationManager is not thread safe and should only be called from the main thread, so we should already be executing on the main thread now.
     // dispatch_async is used to ensure that the completion block for a request is not executed before the request ID is returned, for example in the
     // case where the user has denied permission to access location services and the request is immediately completed with the appropriate error.
-    dispatch_async(dispatch_get_main_queue(), ^{
+    if ([NSThread isMainThread]) {
         if (locationRequest.block) {
             locationRequest.block(currentLocation, achievedAccuracy, status);
         }
-    });
+    }
+    else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (locationRequest.block) {
+                locationRequest.block(currentLocation, achievedAccuracy, status);
+            }
+        });
+    }
     
     INTULMLog(@"Location Request completed with ID: %ld, currentLocation: %@, achievedAccuracy: %lu, status: %lu", (long)locationRequest.requestID, currentLocation, (unsigned long) achievedAccuracy, (unsigned long)status);
 }
@@ -688,11 +695,18 @@ static id _sharedInstance;
     
     // INTULocationManager is not thread safe and should only be called from the main thread, so we should already be executing on the main thread now.
     // dispatch_async is used to ensure that the completion block for a request is not executed before the request ID is returned.
-    dispatch_async(dispatch_get_main_queue(), ^{
+    if ([NSThread isMainThread]) {
         if (locationRequest.block) {
             locationRequest.block(currentLocation, achievedAccuracy, status);
         }
-    });
+    }
+    else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (locationRequest.block) {
+                locationRequest.block(currentLocation, achievedAccuracy, status);
+            }
+        });
+    }
 }
 
 /**
@@ -818,11 +832,18 @@ BOOL INTUCLHeadingIsIsValid(CLHeading *heading)
     // If heading services are not available, just return
     if ([INTULocationManager headingServicesState] == INTUHeadingServicesStateUnavailable) {
         // dispatch_async is used to ensure that the completion block for a request is not executed before the request ID is returned.
-        dispatch_async(dispatch_get_main_queue(), ^{
+        if ([NSThread isMainThread]) {
             if (headingRequest.block) {
                 headingRequest.block(nil, INTUHeadingStatusUnavailable);
             }
-        });
+        }
+        else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (headingRequest.block) {
+                    headingRequest.block(nil, INTUHeadingStatusUnavailable);
+                }
+            });
+        }
         INTULMLog(@"Heading Request (ID %ld) NOT added since device heading is unavailable.", (long)headingRequest.requestID);
         return;
     }
@@ -898,22 +919,36 @@ BOOL INTUCLHeadingIsIsValid(CLHeading *heading)
     // Check if the request had a fatal error and should be canceled
     if (status == INTUHeadingStatusUnavailable) {
         // dispatch_async is used to ensure that the completion block for a request is not executed before the request ID is returned.
-        dispatch_async(dispatch_get_main_queue(), ^{
+        if ([NSThread isMainThread]) {
             if (headingRequest.block) {
                 headingRequest.block(nil, status);
             }
-        });
+        }
+        else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (headingRequest.block) {
+                    headingRequest.block(nil, status);
+                }
+            });
+        }
 
         [self cancelHeadingRequest:headingRequest.requestID];
         return;
     }
 
     // dispatch_async is used to ensure that the completion block for a request is not executed before the request ID is returned.
-    dispatch_async(dispatch_get_main_queue(), ^{
+    if ([NSThread isMainThread]) {
         if (headingRequest.block) {
             headingRequest.block(self.currentHeading, status);
         }
-    });
+    }
+    else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (headingRequest.block) {
+                headingRequest.block(self.currentHeading, status);
+            }
+        });
+    }
 }
 
 /**
