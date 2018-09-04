@@ -49,6 +49,8 @@ NS_ASSUME_NONNULL_BEGIN
 /** Returns the singleton instance of this class. */
 + (instancetype)sharedInstance;
 
+@property (nonatomic, assign) INTUAuthorizationType preferredAuthorizationType;
+
 #pragma mark Location Requests
 
 /**
