@@ -160,4 +160,10 @@ typedef void(^INTULocationRequestBlock)(CLLocation *currentLocation, INTULocatio
  */
 typedef void(^INTUHeadingRequestBlock)(CLHeading *currentHeading, INTUHeadingStatus status);
 
+typedef NS_ENUM(NSUInteger, INTUAuthorizationType) {
+    INTUAuthorizationTypeAuto,
+    INTUAuthorizationTypeAlways,
+    INTUAuthorizationTypeWhenInUse,
+};
+
 #endif /* INTU_LOCATION_REQUEST_DEFINES_H */

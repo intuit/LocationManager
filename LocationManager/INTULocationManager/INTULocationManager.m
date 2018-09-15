@@ -128,6 +128,7 @@ static id _sharedInstance;
     if (self) {
         _locationManager = [[CLLocationManager alloc] init];
         _locationManager.delegate = self;
+        self.preferredAuthorizationType = INTUAuthorizationTypeAuto;
         
 #ifdef __IPHONE_8_4
 #if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_8_4
@@ -463,27 +464,43 @@ static id _sharedInstance;
     double iOSVersion = floor(NSFoundationVersionNumber);
     BOOL isiOSVersion7to10 = iOSVersion > NSFoundationVersionNumber_iOS_7_1 && iOSVersion <= NSFoundationVersionNumber10_11_Max;
     if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined) {
+        BOOL canRequestAlways = NO;
+        BOOL canRequestWhenInUse = NO;
         if (isiOSVersion7to10) {
-            BOOL hasAlwaysKey = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"NSLocationAlwaysUsageDescription"] != nil;
-            BOOL hasWhenInUseKey = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"NSLocationWhenInUseUsageDescription"] != nil;
-            if (hasAlwaysKey) {
-                [self.locationManager requestAlwaysAuthorization];
-            } else if (hasWhenInUseKey) {
-                [self.locationManager requestWhenInUseAuthorization];
-            } else {
-                // At least one of the keys NSLocationAlwaysUsageDescription or NSLocationWhenInUseUsageDescription MUST be present in the Info.plist file to use location services on iOS 8+.
-                NSAssert(hasAlwaysKey || hasWhenInUseKey, @"To use location services in iOS 8+, your Info.plist must provide a value for either NSLocationWhenInUseUsageDescription or NSLocationAlwaysUsageDescription.");
-            }
+            canRequestAlways = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"NSLocationAlwaysUsageDescription"] != nil;
+            canRequestWhenInUse = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"NSLocationWhenInUseUsageDescription"] != nil;
         } else {
-            BOOL hasAlwaysAndInUseKey = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"NSLocationAlwaysAndWhenInUseUsageDescription"] != nil;
-            BOOL hasWhenInUseKey = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"NSLocationWhenInUseUsageDescription"] != nil;
-            if (hasAlwaysAndInUseKey) {
-                [self.locationManager requestAlwaysAuthorization];
-            } else if (hasWhenInUseKey) {
-                [self.locationManager requestWhenInUseAuthorization];
+            canRequestAlways = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"NSLocationAlwaysAndWhenInUseUsageDescription"] != nil;
+            canRequestWhenInUse = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"NSLocationWhenInUseUsageDescription"] != nil;
+        }
+        BOOL needRequestAlways = NO;
+        BOOL needRequestWhenInUse = NO;
+        switch (self.preferredAuthorizationType) {
+            case INTUAuthorizationTypeAuto:
+                needRequestAlways = canRequestAlways;
+                needRequestWhenInUse = canRequestWhenInUse;
+                break;
+            case INTUAuthorizationTypeAlways:
+                needRequestAlways = canRequestAlways;
+                break;
+            case INTUAuthorizationTypeWhenInUse:
+                needRequestWhenInUse = canRequestWhenInUse;
+                break;
+                
+            default:
+                break;
+        }
+        if (needRequestAlways) {
+            [self.locationManager requestAlwaysAuthorization];
+        } else if (needRequestWhenInUse) {
+            [self.locationManager requestWhenInUseAuthorization];
+        } else {
+            if (isiOSVersion7to10) {
+                // At least one of the keys NSLocationAlwaysUsageDescription or NSLocationWhenInUseUsageDescription MUST be present in the Info.plist file to use location services on iOS 8+.
+                NSAssert(canRequestAlways || canRequestWhenInUse, @"To use location services in iOS 8+, your Info.plist must provide a value for either NSLocationWhenInUseUsageDescription or NSLocationAlwaysUsageDescription.");
             } else {
                 // Key NSLocationAlwaysAndWhenInUseUsageDescription MUST be present in the Info.plist file to use location services on iOS 11+.
-                NSAssert(hasAlwaysAndInUseKey, @"To use location services in iOS 11+, your Info.plist must provide a value for NSLocationAlwaysAndWhenInUseUsageDescription.");
+                NSAssert(canRequestAlways, @"To use location services in iOS 11+, your Info.plist must provide a value for NSLocationAlwaysAndWhenInUseUsageDescription.");
             }
         }
     }
