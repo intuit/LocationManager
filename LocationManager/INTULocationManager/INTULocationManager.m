@@ -153,6 +153,30 @@ static id _sharedInstance;
 
 /**
  Asynchronously requests the current location of the device using location services.
+
+ @param desiredAccuracy The accuracy level desired (refers to the accuracy and recency of the location).
+ @param timeout         The maximum amount of time (in seconds) to wait for a location with the desired accuracy before completing.
+                            If this value is 0.0, no timeout will be set (will wait indefinitely for success, unless request is force completed or canceled).
+ @param block           The block to be executed when the request succeeds, fails, or times out. Three parameters are passed into the block:
+                            - The current location (the most recent one acquired, regardless of accuracy level), or nil if no valid location was acquired
+                            - The achieved accuracy for the current location (may be less than the desired accuracy if the request failed)
+                            - The request status (if it succeeded, or if not, why it failed)
+
+ @return The location request ID, which can be used to force early completion or cancel the request while it is in progress.
+ */
+- (INTULocationRequestID)requestLocationWithDesiredAccuracy:(INTULocationAccuracy)desiredAccuracy
+                                                    timeout:(NSTimeInterval)timeout
+                                                      block:(INTULocationRequestBlock)block
+{
+    return [self requestLocationWithDesiredAccuracy:desiredAccuracy
+                                desiredActivityType:CLActivityTypeOther
+                                            timeout:timeout
+                               delayUntilAuthorized:NO
+                                              block:block];
+}
+
+/**
+ Asynchronously requests the current location of the device using location services.
  
  @param desiredAccuracy The accuracy level desired (refers to the accuracy and recency of the location).
  @param timeout         The maximum amount of time (in seconds) to wait for a location with the desired accuracy before completing.
@@ -165,10 +189,12 @@ static id _sharedInstance;
  @return The location request ID, which can be used to force early completion or cancel the request while it is in progress.
  */
 - (INTULocationRequestID)requestLocationWithDesiredAccuracy:(INTULocationAccuracy)desiredAccuracy
+                                        desiredActivityType:(CLActivityType)desiredActivityType
                                                     timeout:(NSTimeInterval)timeout
                                                       block:(INTULocationRequestBlock)block
 {
     return [self requestLocationWithDesiredAccuracy:desiredAccuracy
+                                desiredActivityType:desiredActivityType
                                             timeout:timeout
                                delayUntilAuthorized:NO
                                               block:block];
@@ -177,8 +203,38 @@ static id _sharedInstance;
 /**
  Asynchronously requests the current location of the device using location services, optionally waiting until the user grants the app permission
  to access location services before starting the timeout countdown.
+
+ @param desiredAccuracy      The accuracy level desired (refers to the accuracy and recency of the location).
+ @param timeout              The maximum amount of time (in seconds) to wait for a location with the desired accuracy before completing. If
+                             this value is 0.0, no timeout will be set (will wait indefinitely for success, unless request is force completed or canceled).
+ @param delayUntilAuthorized A flag specifying whether the timeout should only take effect after the user responds to the system prompt requesting
+                             permission for this app to access location services. If YES, the timeout countdown will not begin until after the
+                             app receives location services permissions. If NO, the timeout countdown begins immediately when calling this method.
+ @param block                The block to be executed when the request succeeds, fails, or times out. Three parameters are passed into the block:
+                                 - The current location (the most recent one acquired, regardless of accuracy level), or nil if no valid location was acquired
+                                 - The achieved accuracy for the current location (may be less than the desired accuracy if the request failed)
+                                 - The request status (if it succeeded, or if not, why it failed)
+
+ @return The location request ID, which can be used to force early completion or cancel the request while it is in progress.
+ */
+- (INTULocationRequestID)requestLocationWithDesiredAccuracy:(INTULocationAccuracy)desiredAccuracy
+                                                    timeout:(NSTimeInterval)timeout
+                                       delayUntilAuthorized:(BOOL)delayUntilAuthorized
+                                                      block:(INTULocationRequestBlock)block
+{
+    return [self requestLocationWithDesiredAccuracy:desiredAccuracy
+                                desiredActivityType:CLActivityTypeOther
+                                            timeout:timeout
+                               delayUntilAuthorized:delayUntilAuthorized
+                                              block:block];
+}
+
+/**
+ Asynchronously requests the current location of the device using location services, optionally waiting until the user grants the app permission
+ to access location services before starting the timeout countdown.
  
  @param desiredAccuracy      The accuracy level desired (refers to the accuracy and recency of the location).
+ @param desiredActivityType  The activity type desired for the location tracking.
  @param timeout              The maximum amount of time (in seconds) to wait for a location with the desired accuracy before completing. If
                              this value is 0.0, no timeout will be set (will wait indefinitely for success, unless request is force completed or canceled).
  @param delayUntilAuthorized A flag specifying whether the timeout should only take effect after the user responds to the system prompt requesting
@@ -192,6 +248,7 @@ static id _sharedInstance;
  @return The location request ID, which can be used to force early completion or cancel the request while it is in progress.
  */
 - (INTULocationRequestID)requestLocationWithDesiredAccuracy:(INTULocationAccuracy)desiredAccuracy
+                                        desiredActivityType:(CLActivityType)desiredActivityType
                                                     timeout:(NSTimeInterval)timeout
                                        delayUntilAuthorized:(BOOL)delayUntilAuthorized
                                                       block:(INTULocationRequestBlock)block
@@ -208,6 +265,7 @@ static id _sharedInstance;
     locationRequest.desiredAccuracy = desiredAccuracy;
     locationRequest.timeout = timeout;
     locationRequest.block = block;
+    locationRequest.desiredActivityType = desiredActivityType;
     
     BOOL deferTimeout = delayUntilAuthorized && ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined);
     if (!deferTimeout) {
@@ -232,6 +290,28 @@ static id _sharedInstance;
 - (INTULocationRequestID)subscribeToLocationUpdatesWithBlock:(INTULocationRequestBlock)block
 {
     return [self subscribeToLocationUpdatesWithDesiredAccuracy:INTULocationAccuracyRoom
+                                           desiredActivityType:CLActivityTypeOther
+                                                         block:block];
+}
+
+/**
+ Creates a subscription for location updates that will execute the block once per update indefinitely (until canceled), regardless of the accuracy of each location.
+ The specified desired accuracy is passed along to location services, and controls how much power is used, with higher accuracies using more power.
+ If an error occurs, the block will execute with a status other than INTULocationStatusSuccess, and the subscription will be canceled automatically.
+
+ @param desiredAccuracy The accuracy level desired, which controls how much power is used by the device's location services.
+ @param desiredActivityType The activity type that is to be tracked, controls when/if tracking it paused.
+ @param block           The block to execute every time an updated location is available. Note that this block runs for every update, regardless of
+                        whether the achievedAccuracy is at least the desiredAccuracy.
+                        The status will be INTULocationStatusSuccess unless an error occurred; it will never be INTULocationStatusTimedOut.
+
+ @return The location request ID, which can be used to cancel the subscription of location updates to this block.
+ */
+- (INTULocationRequestID)subscribeToLocationUpdatesWithDesiredAccuracy:(INTULocationAccuracy)desiredAccuracy
+                                                                 block:(INTULocationRequestBlock)block
+{
+    return [self subscribeToLocationUpdatesWithDesiredAccuracy:desiredAccuracy
+                                           desiredActivityType:CLActivityTypeOther
                                                          block:block];
 }
 
@@ -241,6 +321,7 @@ static id _sharedInstance;
  If an error occurs, the block will execute with a status other than INTULocationStatusSuccess, and the subscription will be canceled automatically.
  
  @param desiredAccuracy The accuracy level desired, which controls how much power is used by the device's location services.
+ @param desiredActivityType The activity type that is to be tracked, controls when/if tracking it paused.
  @param block           The block to execute every time an updated location is available. Note that this block runs for every update, regardless of
                         whether the achievedAccuracy is at least the desiredAccuracy.
                         The status will be INTULocationStatusSuccess unless an error occurred; it will never be INTULocationStatusTimedOut.
@@ -248,12 +329,14 @@ static id _sharedInstance;
  @return The location request ID, which can be used to cancel the subscription of location updates to this block.
  */
 - (INTULocationRequestID)subscribeToLocationUpdatesWithDesiredAccuracy:(INTULocationAccuracy)desiredAccuracy
+                                                   desiredActivityType:(CLActivityType)desiredActivityType
                                                                  block:(INTULocationRequestBlock)block
 {
     NSAssert([NSThread isMainThread], @"INTULocationManager should only be called from the main thread.");
     
     INTULocationRequest *locationRequest = [[INTULocationRequest alloc] initWithType:INTULocationRequestTypeSubscription];
     locationRequest.desiredAccuracy = desiredAccuracy;
+    locationRequest.desiredActivityType = desiredActivityType;
     locationRequest.block = block;
     
     [self addLocationRequest:locationRequest];
@@ -385,7 +468,8 @@ static id _sharedInstance;
             // Take the max of the maximum desired accuracy for all existing location requests and the desired accuracy of the new request we're currently adding
             maximumDesiredAccuracy = MAX(locationRequest.desiredAccuracy, maximumDesiredAccuracy);
             [self updateWithMaximumDesiredAccuracy:maximumDesiredAccuracy];
-            
+            [self updateWithDesiredActivityType:locationRequest.desiredActivityType];
+
             [self startUpdatingLocationIfNeeded];
         }
             break;
@@ -547,6 +631,43 @@ static id _sharedInstance;
             break;
         default:
             NSAssert(nil, @"Invalid maximum desired accuracy!");
+            break;
+    }
+}
+
+/**
+ Sets the CLLocationManager desiredActivityType
+ */
+- (void)updateWithDesiredActivityType:(CLActivityType)desiredActivityType
+{
+    switch (desiredActivityType) {
+        case CLActivityTypeFitness:
+            if (self.locationManager.activityType != CLActivityTypeFitness) {
+                self.locationManager.activityType = CLActivityTypeFitness;
+                INTULMLog(@"Changing location services activity type to: fitness.");
+            }
+            break;
+        case CLActivityTypeAutomotiveNavigation:
+            if (self.locationManager.activityType != CLActivityTypeAutomotiveNavigation) {
+                self.locationManager.activityType = CLActivityTypeAutomotiveNavigation;
+                INTULMLog(@"Changing location services activity type to: automotive navigation.");
+            }
+            break;
+        case CLActivityTypeAirborne:
+            if (self.locationManager.activityType != CLActivityTypeAirborne) {
+                self.locationManager.activityType = CLActivityTypeAirborne;
+                INTULMLog(@"Changing location services activity type to: airborne.");
+            }
+            break;
+        case CLActivityTypeOtherNavigation:
+            if (self.locationManager.activityType != CLActivityTypeOtherNavigation) {
+                self.locationManager.activityType = CLActivityTypeOtherNavigation;
+                INTULMLog(@"Changing location services activity type to: other navigation.");
+            }
+            break;
+        case CLActivityTypeOther:
+        default:
+            self.locationManager.activityType = CLActivityTypeOther;
             break;
     }
 }
