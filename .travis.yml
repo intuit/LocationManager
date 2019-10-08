@@ -5,7 +5,7 @@ cache: cocoapods
 xcode_workspace: LocationManager/LocationManager.xcworkspace
 xcode_scheme: LocationManagerExample
 xcode_sdk: iphonesimulator12.0
-osx_image: xcode9
+osx_image: xcode10
 podfile: LocationManager/Podfile
 
 before_install:
