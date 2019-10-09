@@ -1,13 +1,13 @@
 Pod::Spec.new do |s|
   s.name                  = "INTULocationManager"
-  s.version               = "4.3.2"
+  s.version               = "4.4.0"
   s.homepage              = "https://github.com/intuit/LocationManager"
   s.license               = { :type => 'MIT', :file => 'LICENSE' }
-  s.author                = { "Lucien Dupont" => "lucien_dupont@intuit.com" }
-  s.source                = { :git => "https://github.com/intuit/LocationManager.git", :tag => "v4.3.2" }
+  s.author                = { "Lucien Dupont" => "lucien@chromedomesoftware.com" }
+  s.source                = { :git => "https://github.com/intuit/LocationManager.git", :tag => "v4.4.0" }
   s.source_files          = 'LocationManager/INTULocationManager'
   s.platform              = :ios
-  s.ios.deployment_target = '9.0'
+  s.ios.deployment_target = '12.0'
   s.requires_arc          = true
   s.summary               = "Easily get the device's current location on iOS."
   s.description           = <<-DESC
