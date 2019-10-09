@@ -4,8 +4,8 @@ os: osx
 cache: cocoapods
 xcode_workspace: LocationManager/LocationManager.xcworkspace
 xcode_scheme: LocationManagerExample
-xcode_sdk: iphonesimulator11.0
-osx_image: xcode9
+xcode_sdk: iphonesimulator12.0
+osx_image: xcode10
 podfile: LocationManager/Podfile
 
 before_install:
@@ -14,7 +14,7 @@ before_install:
   - gem install cocoapods
   - pod repo update
   
-script: set -o pipefail && xcodebuild test -workspace LocationManager/LocationManager.xcworkspace -scheme LocationManagerExample -destination 'platform=iOS Simulator,name=iPhone 8 Plus,OS=11.0'
+script: set -o pipefail && xcodebuild test -workspace LocationManager/LocationManager.xcworkspace -scheme LocationManagerExample -destination 'platform=iOS Simulator,name=iPhone 8 Plus,OS=12.0'
 
 after_success: 
     slather

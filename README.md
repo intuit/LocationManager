@@ -62,6 +62,9 @@ Starting with iOS 8, you **must** provide a description for how your app uses lo
 #### iOS 11
 Starting with iOS 11, you **must** provide a description for how your app uses location services by setting a string for the key `NSLocationAlwaysAndWhenInUseUsageDescription` in your app's `Info.plist` file.
 
+#### iOS 12
+Starting with iOS 12, you will have access to set the `desiredActivityType` as `CLActivityTypeAirborne`.
+
 ### Getting the Current Location (once)
 To get the device's current location, use the method `requestLocationWithDesiredAccuracy:timeout:block:`.
 
@@ -72,6 +75,15 @@ INTULocationAccuracyNeighborhood  // 1000 meters or better, received within the 
 INTULocationAccuracyBlock         // 100 meters or better, received within the last 1 minute
 INTULocationAccuracyHouse         // 15 meters or better, received within the last 15 seconds
 INTULocationAccuracyRoom          // 5 meters or better, received within the last 5 seconds      -- highest accuracy
+```
+
+The `desiredActivityType` parameter indicated the **type of activity** that is being tracked. The possible values are:
+```objective-c
+CLActivityTypeFitness               // Track fitness activities such as walking, running, cycling, and so on
+CLActivityTypeAutomotiveNavigation  // Track location changes to the automobile
+CLActivityTypeAirborne              // Track airborne activities - iOS 12 and above
+CLActivityTypeOtherNavigation       // Track vehicular navigation that are not automobile related
+CLActivityTypeOther                 // Track unknown activities. This is the default value
 ```
 
 The `timeout` parameter specifies that how long you are willing to wait for a location with the accuracy you requested. The timeout guarantees that your block will execute within this period of time, either with a location of at least the accuracy you requested (`INTULocationStatusSuccess`), or with whichever location could be determined before the timeout interval was up (`INTULocationStatusTimedOut`). Pass `0.0` for no timeout *(not recommended)*.

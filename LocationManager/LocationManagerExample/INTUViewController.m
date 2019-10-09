@@ -36,6 +36,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *timeoutLabel;
 @property (weak, nonatomic) IBOutlet UILabel *desiredAccuracyLabel;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *desiredAccuracyControl;
+@property (weak, nonatomic) IBOutlet UILabel *desiredActivityLabel;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *desiredActivityTypeControl;
 @property (weak, nonatomic) IBOutlet UISlider *timeoutSlider;
 @property (weak, nonatomic) IBOutlet UIButton *requestCurrentLocationButton;
 @property (weak, nonatomic) IBOutlet UIButton *cancelRequestButton;
@@ -43,6 +45,7 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @property (assign, nonatomic) INTULocationAccuracy desiredAccuracy;
+@property (assign, nonatomic) CLActivityType desiredActivityType;
 @property (assign, nonatomic) NSTimeInterval timeout;
 
 @property (assign, nonatomic) INTULocationRequestID locationRequestID;
@@ -55,15 +58,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	
+
     self.subscriptionForAllChangesSwitch.on = NO;
     self.subscriptionForSignificantChangesSwitch.on = NO;
     self.subscriptionForAllHeadingChangesSwitch.on = NO;
     self.desiredAccuracyControl.selectedSegmentIndex = 0;
+    self.desiredActivityTypeControl.selectedSegmentIndex = 0;
     self.desiredAccuracy = INTULocationAccuracyCity;
+    self.desiredActivityType = CLActivityTypeAirborne;
     self.timeoutSlider.value = 10.0;
     self.timeout = 10.0;
-    
+
     self.locationRequestID = NSNotFound;
     self.headingRequestID = NSNotFound;
     self.statusLabel.text = @"Tap the button below to start a new location or heading request.";
@@ -97,7 +102,7 @@
     INTULocationManager *locMgr = [INTULocationManager sharedInstance];
     self.locationRequestID = [locMgr subscribeToLocationUpdatesWithBlock:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
         __typeof(weakSelf) strongSelf = weakSelf;
-        
+
         if (status == INTULocationStatusSuccess) {
             // A new updated location is available in currentLocation, and achievedAccuracy indicates how accurate this particular location is
             strongSelf.statusLabel.text = [NSString stringWithFormat:@"'Location updates' subscription block called with Current Location:\n%@", currentLocation];
@@ -118,7 +123,7 @@
     INTULocationManager *locMgr = [INTULocationManager sharedInstance];
     self.locationRequestID = [locMgr subscribeToSignificantLocationChangesWithBlock:^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
         __typeof(weakSelf) strongSelf = weakSelf;
-        
+
         if (status == INTULocationStatusSuccess) {
             // A new updated location is available in currentLocation, and achievedAccuracy indicates how accurate this particular location is
             strongSelf.statusLabel.text = [NSString stringWithFormat:@"'Significant changes' subscription block called with Current Location:\n%@", currentLocation];
@@ -138,12 +143,13 @@
     __weak __typeof(self) weakSelf = self;
     INTULocationManager *locMgr = [INTULocationManager sharedInstance];
     self.locationRequestID = [locMgr requestLocationWithDesiredAccuracy:self.desiredAccuracy
+                                                    desiredActivityType:self.desiredActivityType
                                                                 timeout:self.timeout
                                                    delayUntilAuthorized:YES
                                                                   block:
                               ^(CLLocation *currentLocation, INTULocationAccuracy achievedAccuracy, INTULocationStatus status) {
                                   __typeof(weakSelf) strongSelf = weakSelf;
-                                  
+
                                   if (status == INTULocationStatusSuccess) {
                                       // achievedAccuracy is at least the desired accuracy (potentially better)
                                       strongSelf.statusLabel.text = [NSString stringWithFormat:@"Location request successful! Current Location:\n%@", currentLocation];
@@ -156,7 +162,7 @@
                                       // An error occurred
                                       strongSelf.statusLabel.text = [strongSelf getLocationErrorDescription:status];
                                   }
-                                  
+
                                   strongSelf.locationRequestID = NSNotFound;
                               }];
 }
@@ -208,18 +214,21 @@
             [self.subscriptionForAllChangesSwitch setOn:NO animated:YES];
         }
     }
-    
+
     self.desiredAccuracyControl.userInteractionEnabled = !sender.on;
+    self.desiredActivityTypeControl.userInteractionEnabled = !sender.on;
     self.timeoutSlider.userInteractionEnabled = !sender.on;
-    
+
     CGFloat alpha = sender.on ? 0.2 : 1.0;
     [UIView animateWithDuration:0.3 animations:^{
         self.desiredAccuracyLabel.alpha = alpha;
+        self.desiredActivityLabel.alpha = alpha;
         self.desiredAccuracyControl.alpha = alpha;
+        self.desiredActivityTypeControl.alpha = alpha;
         self.timeoutLabel.alpha = alpha;
         self.timeoutSlider.alpha = alpha;
     }];
-    
+
     NSString *requestLocationButtonTitle = sender.on ? @"Start Subscription" : @"Request Current Location";
     [self.requestCurrentLocationButton setTitle:requestLocationButtonTitle forState:UIControlStateNormal];
 }
@@ -247,6 +256,29 @@
     }
 }
 
+- (IBAction)desiredActivityControlChanged:(UISegmentedControl *)sender
+{
+    switch (sender.selectedSegmentIndex) {
+        case 0:
+            self.desiredActivityType = CLActivityTypeAirborne;
+            break;
+        case 1:
+            self.desiredActivityType = CLActivityTypeAutomotiveNavigation;
+            break;
+        case 2:
+            self.desiredActivityType = CLActivityTypeFitness;
+            break;
+        case 3:
+            self.desiredActivityType = CLActivityTypeOtherNavigation;
+            break;
+        case 4:
+            self.desiredActivityType = CLActivityTypeOther;
+            break;
+        default:
+            break;
+    }
+}
+
 - (IBAction)timeoutSliderChanged:(UISlider *)sender
 {
     self.timeout = round(sender.value);
@@ -265,17 +297,18 @@
 - (void)setLocationRequestID:(INTULocationRequestID)locationRequestID
 {
     _locationRequestID = locationRequestID;
-    
+
     BOOL isProcessingLocationRequest = (locationRequestID != NSNotFound);
-    
+
     self.subscriptionForAllChangesSwitch.enabled = !isProcessingLocationRequest;
     self.subscriptionForSignificantChangesSwitch.enabled = !isProcessingLocationRequest;
     self.desiredAccuracyControl.enabled = !isProcessingLocationRequest;
+    self.desiredActivityTypeControl.enabled = !isProcessingLocationRequest;
     self.timeoutSlider.enabled = !isProcessingLocationRequest;
     self.requestCurrentLocationButton.enabled = !isProcessingLocationRequest;
     self.forceCompleteRequestButton.enabled = isProcessingLocationRequest && !self.subscriptionForAllChangesSwitch.on && !self.subscriptionForSignificantChangesSwitch.on;
     self.cancelRequestButton.enabled = isProcessingLocationRequest;
-    
+
     if (isProcessingLocationRequest) {
         [self.activityIndicator startAnimating];
         self.statusLabel.text = @"Location request in progress...";
