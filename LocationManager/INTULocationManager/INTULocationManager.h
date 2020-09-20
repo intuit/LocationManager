@@ -50,6 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)sharedInstance;
 
 @property (nonatomic, assign) INTUAuthorizationType preferredAuthorizationType;
+@property (nonatomic, assign) INTUAccuracyAuthorization accuracyAuthorization;
 
 #pragma mark Location Requests
 
@@ -184,6 +185,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /** Immediately cancels the heading subscription request with the given requestID (if it exists), without executing the original request block. */
 - (void)cancelHeadingRequest:(INTUHeadingRequestID)requestID;
+
+- (void)requestTemporaryFullAccuracyAuthorizationWithPurposeKey:(nonnull NSString *)purposeKey completion:(void (^ _Nullable)(NSError * _Nullable))completion;
 
 #pragma mark - Additions
 

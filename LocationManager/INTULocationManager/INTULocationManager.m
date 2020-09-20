@@ -83,15 +83,26 @@ static id _sharedInstance;
 {
     if ([CLLocationManager locationServicesEnabled] == NO) {
         return INTULocationServicesStateDisabled;
-    }
-    else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined) {
-        return INTULocationServicesStateNotDetermined;
-    }
-    else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied) {
-        return INTULocationServicesStateDenied;
-    }
-    else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusRestricted) {
-        return INTULocationServicesStateRestricted;
+    } else if (@available(iOS 14.0, *)) {
+        if (CLLocationManager.authorizationStatus == kCLAuthorizationStatusNotDetermined) {
+            return INTULocationServicesStateNotDetermined;
+        }
+        else if (CLLocationManager.authorizationStatus == kCLAuthorizationStatusDenied) {
+            return INTULocationServicesStateDenied;
+        }
+        else if (CLLocationManager.authorizationStatus == kCLAuthorizationStatusRestricted) {
+            return INTULocationServicesStateRestricted;
+        }
+    } else {
+        if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined) {
+            return INTULocationServicesStateNotDetermined;
+        }
+        else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied) {
+            return INTULocationServicesStateDenied;
+        }
+        else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusRestricted) {
+            return INTULocationServicesStateRestricted;
+        }
     }
 
     return INTULocationServicesStateAvailable;
@@ -267,9 +278,16 @@ static id _sharedInstance;
     locationRequest.block = block;
     locationRequest.desiredActivityType = desiredActivityType;
 
-    BOOL deferTimeout = delayUntilAuthorized && ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined);
-    if (!deferTimeout) {
-        [locationRequest startTimeoutTimerIfNeeded];
+    if (@available(iOS 14.0, *)) {
+        BOOL deferTimeout = delayUntilAuthorized && (CLLocationManager.authorizationStatus == kCLAuthorizationStatusNotDetermined);
+        if (!deferTimeout) {
+            [locationRequest startTimeoutTimerIfNeeded];
+        }
+    } else {
+        BOOL deferTimeout = delayUntilAuthorized && ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined);
+        if (!deferTimeout) {
+            [locationRequest startTimeoutTimerIfNeeded];
+        }
     }
 
     [self addLocationRequest:locationRequest];
@@ -402,6 +420,10 @@ static id _sharedInstance;
             break;
         }
     }
+}
+
+- (void)requestTemporaryFullAccuracyAuthorizationWithPurposeKey:(nonnull NSString *)purposeKey completion:(void (^ _Nullable)(NSError * _Nullable))completion {
+    [self.locationManager requestTemporaryFullAccuracyAuthorizationWithPurposeKey:purposeKey completion:completion];
 }
 
 #pragma mark Public heading methods
@@ -547,7 +569,14 @@ static id _sharedInstance;
 
     double iOSVersion = floor(NSFoundationVersionNumber);
     BOOL isiOSVersion7to10 = iOSVersion > NSFoundationVersionNumber_iOS_7_1 && iOSVersion <= NSFoundationVersionNumber10_11_Max;
-    if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined) {
+    BOOL isAuthorizationStatusNotDetermined = NO;
+    if (@available(iOS 14.0, *)) {
+        isAuthorizationStatusNotDetermined = (CLLocationManager.authorizationStatus == kCLAuthorizationStatusNotDetermined);
+    } else {
+        isAuthorizationStatusNotDetermined = ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined);
+    }
+    
+    if (isAuthorizationStatusNotDetermined) {
         BOOL canRequestAlways = NO;
         BOOL canRequestWhenInUse = NO;
         if (isiOSVersion7to10) {
@@ -649,9 +678,14 @@ static id _sharedInstance;
             self.locationManager.activityType = CLActivityTypeAutomotiveNavigation;
             INTULMLog(@"Changing location services activity type to: automotive navigation.");
             break;
-        case CLActivityTypeAirborne:
-            self.locationManager.activityType = CLActivityTypeAirborne;
-            INTULMLog(@"Changing location services activity type to: airborne.");
+        case CLActivityTypeAirborne: {
+            if (@available(iOS 12.0, *)) {
+                self.locationManager.activityType = CLActivityTypeAirborne;
+                INTULMLog(@"Changing location services activity type to: airborne.");
+            } else {
+                // Fallback on earlier versions
+            }
+        }
             break;
         case CLActivityTypeOtherNavigation:
             self.locationManager.activityType = CLActivityTypeOtherNavigation;
@@ -1131,6 +1165,20 @@ BOOL INTUCLHeadingIsIsValid(CLHeading *heading)
         for (INTULocationRequest *locationRequest in self.locationRequests) {
             [locationRequest startTimeoutTimerIfNeeded];
         }
+    }
+}
+
+- (void)locationManagerDidChangeAuthorization:(CLLocationManager *)manager API_AVAILABLE(ios(14.0)) {
+    [self locationManager:manager didChangeAuthorizationStatus:manager.authorizationStatus];
+    switch (manager.accuracyAuthorization) {
+        case CLAccuracyAuthorizationFullAccuracy:
+            self.accuracyAuthorization = INTUAccuracyAuthorizationFullAccuracy;
+            break;
+        case CLAccuracyAuthorizationReducedAccuracy:
+            self.accuracyAuthorization = INTUAccuracyAuthorizationReducedAccuracy;
+            break;
+        default:
+            break;
     }
 }
 

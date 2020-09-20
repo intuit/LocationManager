@@ -7,23 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		104CD635630BCF2DC22246C2 /* libPods-LocationManagerExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 770FEBDD9E9D6E6178F4BC25 /* libPods-LocationManagerExample.a */; };
 		64C07ACA774CA526F8C8A616 /* libPods-LocationManagerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 079D1D6F9971310A91C123BB /* libPods-LocationManagerTests.a */; };
 		6CF999DE1C97CB4800F0760E /* INTURequestIDGenerator.h in Headers */ = {isa = PBXBuildFile; fileRef = 6CF999DC1C97CB4800F0760E /* INTURequestIDGenerator.h */; };
 		6CF999DF1C97CB4800F0760E /* INTURequestIDGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CF999DD1C97CB4800F0760E /* INTURequestIDGenerator.m */; };
 		6CF999E11C97CC7B00F0760E /* INTURequestIDGeneratorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CF999E01C97CC7B00F0760E /* INTURequestIDGeneratorTests.m */; };
-		824DAC161E84AC99008E686E /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 824DAC141E84AC99008E686E /* Launch Screen.storyboard */; };
-		A70B4FD11B4A25040016F95A /* INTULocationManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6681CD281B1306C30080DBA9 /* INTULocationManager.framework */; };
-		A70B4FD21B4A25040016F95A /* INTULocationManager.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6681CD281B1306C30080DBA9 /* INTULocationManager.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		B116684318E5CEDD00D1E022 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B116684218E5CEDD00D1E022 /* Foundation.framework */; };
-		B116684518E5CEDD00D1E022 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B116684418E5CEDD00D1E022 /* CoreGraphics.framework */; };
-		B116684718E5CEDD00D1E022 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B116684618E5CEDD00D1E022 /* UIKit.framework */; };
-		B116684D18E5CEDD00D1E022 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B116684B18E5CEDD00D1E022 /* InfoPlist.strings */; };
-		B116684F18E5CEDD00D1E022 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B116684E18E5CEDD00D1E022 /* main.m */; };
-		B116685318E5CEDD00D1E022 /* INTUAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B116685218E5CEDD00D1E022 /* INTUAppDelegate.m */; };
-		B116685618E5CEDD00D1E022 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B116685418E5CEDD00D1E022 /* Main.storyboard */; };
-		B116685918E5CEDD00D1E022 /* INTUViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B116685818E5CEDD00D1E022 /* INTUViewController.m */; };
-		B116685B18E5CEDD00D1E022 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B116685A18E5CEDD00D1E022 /* Images.xcassets */; };
 		B116686218E5CEDD00D1E022 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B116686118E5CEDD00D1E022 /* XCTest.framework */; };
 		B116686318E5CEDD00D1E022 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B116684218E5CEDD00D1E022 /* Foundation.framework */; };
 		B116686418E5CEDD00D1E022 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B116684618E5CEDD00D1E022 /* UIKit.framework */; };
@@ -41,37 +28,6 @@
 		D4818E031BC9E20600226586 /* INTUHeadingRequestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D4818E011BC9E20600226586 /* INTUHeadingRequestTests.m */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		A70B4FD31B4A25040016F95A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B116683718E5CEDD00D1E022 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 6681CD271B1306C30080DBA9;
-			remoteInfo = INTULocationManager;
-		};
-		B116686518E5CEDD00D1E022 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B116683718E5CEDD00D1E022 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = B116683E18E5CEDD00D1E022;
-			remoteInfo = LocationManagerExample;
-		};
-/* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		A70B4FD51B4A25040016F95A /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				A70B4FD21B4A25040016F95A /* INTULocationManager.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
 		079D1D6F9971310A91C123BB /* libPods-LocationManagerTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LocationManagerTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		10DE6CE10369776EEBC116AE /* Pods-LocationManagerExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LocationManagerExample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LocationManagerExample/Pods-LocationManagerExample.debug.xcconfig"; sourceTree = "<group>"; };
@@ -82,22 +38,11 @@
 		6CF999DD1C97CB4800F0760E /* INTURequestIDGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INTURequestIDGenerator.m; path = INTULocationManager/INTURequestIDGenerator.m; sourceTree = SOURCE_ROOT; };
 		6CF999E01C97CC7B00F0760E /* INTURequestIDGeneratorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = INTURequestIDGeneratorTests.m; path = LocationManagerTests/INTURequestIDGeneratorTests.m; sourceTree = SOURCE_ROOT; };
 		770FEBDD9E9D6E6178F4BC25 /* libPods-LocationManagerExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LocationManagerExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		824DAC151E84AC99008E686E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "Base.lproj/Launch Screen.storyboard"; sourceTree = "<group>"; };
 		86C6854C8EED3DEE3EBAD605 /* Pods-LocationManagerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LocationManagerTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LocationManagerTests/Pods-LocationManagerTests.release.xcconfig"; sourceTree = "<group>"; };
 		A65EF7FFF1DEABE139F4891F /* Pods-LocationManagerExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LocationManagerExample.release.xcconfig"; path = "Pods/Target Support Files/Pods-LocationManagerExample/Pods-LocationManagerExample.release.xcconfig"; sourceTree = "<group>"; };
-		B116683F18E5CEDD00D1E022 /* LocationManagerExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LocationManagerExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B116684218E5CEDD00D1E022 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		B116684418E5CEDD00D1E022 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		B116684618E5CEDD00D1E022 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		B116684A18E5CEDD00D1E022 /* LocationManagerExample-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LocationManagerExample-Info.plist"; sourceTree = "<group>"; };
-		B116684C18E5CEDD00D1E022 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		B116684E18E5CEDD00D1E022 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		B116685118E5CEDD00D1E022 /* INTUAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = INTUAppDelegate.h; sourceTree = "<group>"; };
-		B116685218E5CEDD00D1E022 /* INTUAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = INTUAppDelegate.m; sourceTree = "<group>"; };
-		B116685518E5CEDD00D1E022 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		B116685718E5CEDD00D1E022 /* INTUViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = INTUViewController.h; sourceTree = "<group>"; };
-		B116685818E5CEDD00D1E022 /* INTUViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = INTUViewController.m; sourceTree = "<group>"; };
-		B116685A18E5CEDD00D1E022 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		B116686018E5CEDD00D1E022 /* LocationManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LocationManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B116686118E5CEDD00D1E022 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		B19756041B21202700313073 /* INTULocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INTULocationManager.h; path = INTULocationManager/INTULocationManager.h; sourceTree = SOURCE_ROOT; };
@@ -120,18 +65,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B116683C18E5CEDD00D1E022 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B116684518E5CEDD00D1E022 /* CoreGraphics.framework in Frameworks */,
-				A70B4FD11B4A25040016F95A /* INTULocationManager.framework in Frameworks */,
-				B116684718E5CEDD00D1E022 /* UIKit.framework in Frameworks */,
-				B116684318E5CEDD00D1E022 /* Foundation.framework in Frameworks */,
-				104CD635630BCF2DC22246C2 /* libPods-LocationManagerExample.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -191,7 +124,6 @@
 			isa = PBXGroup;
 			children = (
 				6681CD291B1306C30080DBA9 /* INTULocationManager */,
-				B116684818E5CEDD00D1E022 /* LocationManagerExample */,
 				B116686718E5CEDD00D1E022 /* LocationManagerTests */,
 				B116684118E5CEDD00D1E022 /* Frameworks */,
 				B116684018E5CEDD00D1E022 /* Products */,
@@ -202,7 +134,6 @@
 		B116684018E5CEDD00D1E022 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B116683F18E5CEDD00D1E022 /* LocationManagerExample.app */,
 				B116686018E5CEDD00D1E022 /* LocationManagerTests.xctest */,
 				6681CD281B1306C30080DBA9 /* INTULocationManager.framework */,
 			);
@@ -220,31 +151,6 @@
 				079D1D6F9971310A91C123BB /* libPods-LocationManagerTests.a */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		B116684818E5CEDD00D1E022 /* LocationManagerExample */ = {
-			isa = PBXGroup;
-			children = (
-				B116685118E5CEDD00D1E022 /* INTUAppDelegate.h */,
-				B116685218E5CEDD00D1E022 /* INTUAppDelegate.m */,
-				B116685418E5CEDD00D1E022 /* Main.storyboard */,
-				824DAC141E84AC99008E686E /* Launch Screen.storyboard */,
-				B116685718E5CEDD00D1E022 /* INTUViewController.h */,
-				B116685818E5CEDD00D1E022 /* INTUViewController.m */,
-				B116685A18E5CEDD00D1E022 /* Images.xcassets */,
-				B116684918E5CEDD00D1E022 /* Supporting Files */,
-			);
-			path = LocationManagerExample;
-			sourceTree = "<group>";
-		};
-		B116684918E5CEDD00D1E022 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				B116684A18E5CEDD00D1E022 /* LocationManagerExample-Info.plist */,
-				B116684B18E5CEDD00D1E022 /* InfoPlist.strings */,
-				B116684E18E5CEDD00D1E022 /* main.m */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		B116686718E5CEDD00D1E022 /* LocationManagerTests */ = {
@@ -306,26 +212,6 @@
 			productReference = 6681CD281B1306C30080DBA9 /* INTULocationManager.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		B116683E18E5CEDD00D1E022 /* LocationManagerExample */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = B116687118E5CEDD00D1E022 /* Build configuration list for PBXNativeTarget "LocationManagerExample" */;
-			buildPhases = (
-				F3F53C246715D146F63142C5 /* [CP] Check Pods Manifest.lock */,
-				B116683B18E5CEDD00D1E022 /* Sources */,
-				B116683C18E5CEDD00D1E022 /* Frameworks */,
-				B116683D18E5CEDD00D1E022 /* Resources */,
-				A70B4FD51B4A25040016F95A /* Embed Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				A70B4FD41B4A25040016F95A /* PBXTargetDependency */,
-			);
-			name = LocationManagerExample;
-			productName = LocationManagerExample;
-			productReference = B116683F18E5CEDD00D1E022 /* LocationManagerExample.app */;
-			productType = "com.apple.product-type.application";
-		};
 		B116685F18E5CEDD00D1E022 /* LocationManagerTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B116687418E5CEDD00D1E022 /* Build configuration list for PBXNativeTarget "LocationManagerTests" */;
@@ -338,7 +224,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				B116686618E5CEDD00D1E022 /* PBXTargetDependency */,
 			);
 			name = LocationManagerTests;
 			productName = LocationManagerExampleTests;
@@ -357,14 +242,7 @@
 				TargetAttributes = {
 					6681CD271B1306C30080DBA9 = {
 						CreatedOnToolsVersion = 6.3.2;
-					};
-					B116683E18E5CEDD00D1E022 = {
-						DevelopmentTeam = G4SSPX3CBL;
-						SystemCapabilities = {
-							com.apple.BackgroundModes = {
-								enabled = 1;
-							};
-						};
+						ProvisioningStyle = Automatic;
 					};
 					B116685F18E5CEDD00D1E022 = {
 						TestTargetID = B116683E18E5CEDD00D1E022;
@@ -376,6 +254,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -385,7 +264,6 @@
 			projectRoot = "";
 			targets = (
 				6681CD271B1306C30080DBA9 /* INTULocationManager */,
-				B116683E18E5CEDD00D1E022 /* LocationManagerExample */,
 				B116685F18E5CEDD00D1E022 /* LocationManagerTests */,
 			);
 		};
@@ -396,17 +274,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B116683D18E5CEDD00D1E022 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B116685B18E5CEDD00D1E022 /* Images.xcassets in Resources */,
-				B116684D18E5CEDD00D1E022 /* InfoPlist.strings in Resources */,
-				824DAC161E84AC99008E686E /* Launch Screen.storyboard in Resources */,
-				B116685618E5CEDD00D1E022 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -439,24 +306,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F3F53C246715D146F63142C5 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-LocationManagerExample-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -468,16 +317,6 @@
 				D4198ABF1BB1A6AA007E5A0C /* INTUHeadingRequest.m in Sources */,
 				B197560E1B21202700313073 /* INTULocationRequest.m in Sources */,
 				B197560B1B21202700313073 /* INTULocationManager.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B116683B18E5CEDD00D1E022 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B116685318E5CEDD00D1E022 /* INTUAppDelegate.m in Sources */,
-				B116685918E5CEDD00D1E022 /* INTUViewController.m in Sources */,
-				B116684F18E5CEDD00D1E022 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -494,44 +333,7 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-		A70B4FD41B4A25040016F95A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 6681CD271B1306C30080DBA9 /* INTULocationManager */;
-			targetProxy = A70B4FD31B4A25040016F95A /* PBXContainerItemProxy */;
-		};
-		B116686618E5CEDD00D1E022 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = B116683E18E5CEDD00D1E022 /* LocationManagerExample */;
-			targetProxy = B116686518E5CEDD00D1E022 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin PBXVariantGroup section */
-		824DAC141E84AC99008E686E /* Launch Screen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				824DAC151E84AC99008E686E /* Base */,
-			);
-			name = "Launch Screen.storyboard";
-			sourceTree = "<group>";
-		};
-		B116684B18E5CEDD00D1E022 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				B116684C18E5CEDD00D1E022 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		B116685418E5CEDD00D1E022 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				B116685518E5CEDD00D1E022 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		B197561B1B2124F300313073 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -547,9 +349,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -566,6 +372,8 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.intuit.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -577,10 +385,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -593,6 +405,8 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.intuit.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -683,38 +497,6 @@
 			};
 			name = Release;
 		};
-		B116687218E5CEDD00D1E022 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 10DE6CE10369776EEBC116AE /* Pods-LocationManagerExample.debug.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				DEVELOPMENT_TEAM = G4SSPX3CBL;
-				INFOPLIST_FILE = "LocationManagerExample/LocationManagerExample-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.intuit.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = app;
-			};
-			name = Debug;
-		};
-		B116687318E5CEDD00D1E022 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = A65EF7FFF1DEABE139F4891F /* Pods-LocationManagerExample.release.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				DEVELOPMENT_TEAM = G4SSPX3CBL;
-				INFOPLIST_FILE = "LocationManagerExample/LocationManagerExample-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.intuit.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = app;
-			};
-			name = Release;
-		};
 		B116687518E5CEDD00D1E022 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 16B54B5139902281CB1B0231 /* Pods-LocationManagerTests.debug.xcconfig */;
@@ -772,15 +554,6 @@
 			buildConfigurations = (
 				B116686F18E5CEDD00D1E022 /* Debug */,
 				B116687018E5CEDD00D1E022 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		B116687118E5CEDD00D1E022 /* Build configuration list for PBXNativeTarget "LocationManagerExample" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				B116687218E5CEDD00D1E022 /* Debug */,
-				B116687318E5CEDD00D1E022 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
