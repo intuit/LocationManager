@@ -127,6 +127,11 @@ typedef NS_ENUM(NSInteger, INTULocationStatus) {
     INTULocationStatusError
 };
 
+typedef NS_ENUM(NSInteger, INTUAccuracyAuthorization) {
+    INTUAccuracyAuthorizationFullAccuracy = 0,
+    INTUAccuracyAuthorizationReducedAccuracy
+};
+
 /** A status that will be passed in to the completion block of a heading request. */
 typedef NS_ENUM(NSInteger, INTUHeadingStatus) {
     // These statuses will accompany a valid heading.
