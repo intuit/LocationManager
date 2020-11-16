@@ -1101,15 +1101,22 @@ BOOL INTUCLHeadingIsIsValid(CLHeading *heading)
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
 {
     INTULMLog(@"Location services error: %@", [error localizedDescription]);
-    self.updateFailed = YES;
 
+    INTULocationServicesState locationServicesState = [INTULocationManager locationServicesState];
+    
+    self.updateFailed = YES;
+    
     for (INTULocationRequest *locationRequest in self.locationRequests) {
         if (locationRequest.isRecurring) {
             // Keep the recurring request alive
             [self processRecurringRequest:locationRequest];
         } else {
             // Fail any non-recurring requests
-            [self completeLocationRequest:locationRequest];
+            if (locationServicesState == INTULocationServicesStateNotDetermined && !locationRequest.hasTimedOut) {
+                self.updateFailed = NO;
+            } else {
+                [self completeLocationRequest:locationRequest];
+            }
         }
     }
 }
